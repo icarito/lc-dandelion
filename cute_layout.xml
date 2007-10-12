@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cutelayout>
+    <level y="5">
+        <block type="dirt" x="0"/>
+        <block type="dirt" x="1"/>        
+        <block type="dirt" x="2"/>
+        <block type="dirt" x="3"/>        
+        <block type="dirt" x="4"/>
+        <block type="dirt" x="5"/>        
+        <block type="dirt" x="6"/>
+        <block type="dirt" x="7"/>        
+        <block type="dirt" x="8"/>        
+        <block type="dirt" x="9"/>
+        <block type="dirt" x="10"/>        
+    </level>
+    <level y="4">
+        <block type="grass" x="0"/>
+        <block type="grass" x="1"/>
+        <block type="grass" x="2"/>
+        <block type="grass" x="3"/>
+        <block type="grass" x="4"/>
+        <block type="grass" x="5"/>
+        <block type="grass" x="6"/>
+        <block type="grass" x="7"/>
+        <block type="grass" x="8"/>
+        <block type="grass" x="9"/>
+        <block type="grass" x="10"/>
+        <block type="grass" x="11"/>
+    </level>
+    <level y="3">
+        <block type="grass" x="0"/>
+        <block type="grass" x="1"/>
+        <block type="grass" x="2"/>
+        <block type="water" x="3"/>
+        <block type="water" x="4"/>
+        <block type="water" x="5"/>
+        <block type="grass" x="6"/>
+        <block type="grass" x="7"/>
+        <block type="grass" x="8"/>
+        <block type="sand" x="9"/>
+        <block type="sand" x="10"/>
+        <block type="sand" x="11"/>
+    </level>
+    <level y="2">
+        <block type="grass" x="0"/>
+        <block type="grass" x="1"/>
+        <block type="grass" x="2"/>
+        <block type="water" x="3"/>
+        <block type="ice" x="4"/>
+        <block type="water" x="5"/>
+        <block type="grass" x="6"/>
+        <block type="grass" x="7"/>
+        <block type="grass" x="8"/>
+        <block type="grass" x="9"/>
+        <block type="fire" x="10"/>
+        <block type="grass" x="11"/>
+    </level>
+    <level y="1">
+        <block type="grass" x="0"/>
+        <block type="grass" x="1"/>
+        <block type="grass" x="2"/>
+        <block type="water" x="3"/>
+        <block type="water" x="4"/>
+        <block type="water" x="5"/>
+        <block type="grass" x="6"/>
+        <block type="grass" x="7"/>
+        <block type="grass" x="8"/>
+        <block type="grass" x="9"/>
+        <block type="grass" x="10"/>
+        <block type="grass" x="11"/>
+    </level>
+    <level y="0">
+        <block type="blue" x="0"/>
+        <block type="blue" x="1"/>
+        <block type="blue" x="2"/>
+        <block type="blue" x="3"/>
+        <block type="blue" x="4"/>
+        <block type="blue" x="5"/>
+        <block type="blue" x="6"/>
+        <block type="blue" x="7"/>
+        <block type="blue" x="8"/>
+        <block type="blue" x="9"/>
+        <block type="blue" x="10"/>
+        <block type="blue" x="11"/>
+    </level>
+    <buildings>
+        <building x="5" y="0" type="Roof West" />
+        <building x="6" y="0" type="Roof North" />
+        <building x="7" y="0" type="Roof North" />
+        <building x="8" y="0" type="Roof East" />
+        <building x="5" y="1" type="Wall Block" />
+        <building x="6" y="1" type="Window Tall" />
+        <building x="7" y="1" type="Window Tall" />
+        <building x="8" y="1" type="Wall Block" />
+    </buildings>
+</cutelayout>

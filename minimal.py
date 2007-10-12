@@ -10,7 +10,7 @@ run with "python -i minimal.py" to play with it at the interactive prompt
 import pygame
 pygame.init()
 screen = pygame.display.set_mode((200,200))
-sprite_image = pygame.image.load('spacewars/klingon.png')
+sprite_image = pygame.image.load('icons/pencil_32.png')
 original_image = sprite_image
 black = (0, 0, 0, 255)
 
