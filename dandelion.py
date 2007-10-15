@@ -57,7 +57,14 @@ class ScratchCostume(object):
         return self.image.get_size()
         
     def rotated_and_scaled(self, rotation, scaling):
-        return pygame.transform.rotozoom(self.image, rotation, scaling)
+        if scaling == 1.0:
+            image = self.image
+        else:
+            w,h = self.image.get_size()
+            image = pygame.transform.scale(self.image, (w * scaling, h * scaling))
+        if rotation != 0:
+            image = pygame.transform.rotate(image, rotation)
+        return image
     
 
 class ScratchSprite(Sprite, EventListener):    
@@ -72,7 +79,7 @@ class ScratchSprite(Sprite, EventListener):
         self.loadCostumes(*img_names)
         self.x, self.y = BLOCK_WIDTH / 2, BLOCK_HEIGHT / 2
         self.rotation = 0
-        self.scaling = 0
+        self.scaling = 1.0
         self._updateImage()
 
     def get_rect(self):
@@ -86,10 +93,8 @@ class ScratchSprite(Sprite, EventListener):
         self.y += dy
         
     def _updateImage(self):
-        if self.rotation or self.scaling:
-            self.image = self.currentCostume.rotated_and_scaled(self.rotation, self.scaling)
-        else:
-            self.image = self.currentCostume.image
+        self.image = self.currentCostume.rotated_and_scaled(self.rotation, self.scaling)
+        self.rect = self.image.get_rect(center = (self.x, self.y))
         
     def scale_by(self, factor):
         self.scaling *= factor
@@ -144,8 +149,12 @@ class ScratchListener(EventListener):
         if mod & pygame.KMOD_ALT:
             if key == pygame.K_LEFT:
                 self.world.rotate_by(ROTATE_UNIT)
-            if key == pygame.K_RIGHT:
+            elif key == pygame.K_RIGHT:
                 self.world.rotate_by(-ROTATE_UNIT)
+            elif key == pygame.K_UP:
+                self.world.scale_by(1.1)
+            elif key == pygame.K_DOWN:
+                self.world.scale_by(1.0 / 1.1)
         else:
             if key in (pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT):
                 self.world.move(*KEY_MOVES[key])
@@ -217,6 +226,13 @@ class ScratchWorld(object):
     def rotate_by(self, angle):
         self._mark_dirty()
         self.sprite.rotate_by(angle)
+        self.sprite.draw(self.surface)
+        self.dirty_rects.append(self.sprite.get_rect())
+        pygame.display.update(self.dirty_rects)
+        
+    def scale_by(self, factor):
+        self._mark_dirty()
+        self.sprite.scale_by(factor)
         self.sprite.draw(self.surface)
         self.dirty_rects.append(self.sprite.get_rect())
         pygame.display.update(self.dirty_rects)
