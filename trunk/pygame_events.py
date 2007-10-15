@@ -48,6 +48,7 @@ class App:
   def __init__(self, fullscreen=False, framerate=15, bitdepth=16,  screensize=(800,480)):
     self.__class__.app = self
     pygame.init()
+    self._dirty_rects = []
     self.framerate = framerate
     if fullscreen:
       self.size = self.width, self.height = pygame.display.list_modes(bitdepth, pygame.FULLSCREEN)[0]
@@ -66,6 +67,14 @@ class App:
 
   def new_surface(self):
     return pygame.Surface(self.size, pygame.SWSURFACE)
+
+  def add_dirty(self, *rects):
+      self._dirty_rects += rects
+    
+  def update(self):
+      if self._dirty_rects:
+          self._dirty_rects, rects = [], self._dirty_rects
+          pygame.display.update(rects)
 
   def _activate_world(self, world):
     if self.current_world:
@@ -122,7 +131,8 @@ if sys.platform in ('win32', 'linux2'):
 
 PULSE_ID = pygame.USEREVENT + 1
 #PULSE_RATE = 1000/30                       # 1/30 second
-PULSE_RATE = 1000/15                       # 1/15 second
+# PULSE_RATE = 1000/15                       # 1/15 second
+PULSE_RATE = 1000/20                       # 1/20 second
 
 class EventDispatcher:
   '''
@@ -187,6 +197,7 @@ class EventDispatcher:
       elif event.type == pygame.MOUSEBUTTONUP:
         self._mouseup(event, time)
       elif event.type == PULSE_ID:
+        app.update()
         self.listener.onpulse()
       else:
         pass # not handling joystick, video, or user events

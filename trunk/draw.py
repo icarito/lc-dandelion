@@ -3,6 +3,7 @@ from pygame import Rect
 import pygame
 from pygame_ext import Color, draw_oval, draw_rounded_rect, draw_rect, draw_line
 from pygame_ext import pygame_to_pil_img
+from dandelion import ScratchSprite
 
 def open_file():
     return getoutput(['python', 'gtk_dialogs.py', '-open'])
@@ -67,6 +68,7 @@ class ColorPicker(EventListener):
     def update_color(self, color):
         pygame.draw.rect(self.surface, color, self.swatch_rect)
         pygame.draw.rect(app.surface, color, self.swatch_rect)
+        app.pen_color = color
 
     def ondrag(self, pos):
         if self.picker_rect.collidepoint(*pos):
@@ -75,6 +77,9 @@ class ColorPicker(EventListener):
             color = self.surface.get_at((x-dx, y-dy))
             self.update_color(color)
             pygame.display.update(self.swatch_rect)
+            
+    def onclick(self, button, pos):
+        self.ondrag(pos)
 
     def draw(self, surface):
         surface.blit(self.surface, self.rect)
@@ -173,17 +178,41 @@ class Tools(Panel):
         x = 0; y += 50
         self.add_subview(ColorPicker(), (x,y))
 
+class Tool(EventListener):
+    ''' Abstract tool '''
 
-def pen_ondrag(self, pos):
-    print 'pen_drag'
-    update_rect = draw_line(app.surface, app.pen_color, app.last_pos, pos, app.pen_width)
-    app.last_pos = pos
-    self.dirty_rect.union_ip(update_rect)
-    pygame.display.update(update_rect)
+    cursor = None
+    cursor_offset = 8,8
 
-def pen_onclick(self, button, pos):
-    print 'pen_click'
-    app.last_pos = pos
+    def ondrag(self, pos):
+        pass
+
+    def onclick(self, pos):
+        pass
+        
+    def cursor_rect(self, pos):
+        x,y = pos
+        dx, dy = self.cursor_offset
+        return self.cursor.get_rect(center=(x+dx, y+dy))
+
+    def onmouseover(self, pos):
+        rect = app.surface.blit(self.cursor, self.cursor_rect(pos))
+        
+
+class PenTool(Tool):
+    
+    cursor = pygame.image.load('icons/pencil.png')
+
+    def ondrag(self, pos):
+        #print 'pen_drag'
+        update_rect = draw_line(app.surface, app.pen_color, app.last_pos, pos, app.pen_width)
+        app.last_pos = pos
+        self.dirty_rect.union_ip(update_rect)
+        pygame.display.update(update_rect)
+
+    def onclick(self, button, pos):
+        #print 'pen_click'
+        app.last_pos = pos
      
 
 class Controls(Panel):
@@ -243,6 +272,8 @@ class DrawWorld(Panel):
     def __init__(self, surface):
         global app
         app = App.getApp()
+        app.pen_color = Color.black
+        app.pen_width = 1.0
         Panel.__init__(self, None, None, surface)
 
     def init_subviews(self):
@@ -264,8 +295,7 @@ class DrawWorld(Panel):
         canvas_rect = Rect(100, 40, right_width, canvas_height).inflate(-2,-2)
         global canvas
         canvas = Canvas(self, canvas_rect)
-        canvas.set_handler('onclick', pen_onclick)
-        canvas.set_handler('ondrag', pen_ondrag)
+        app.tool = PenTool
 
     def draw(self):
         self.surface.fill(Color.white)
@@ -274,11 +304,8 @@ class DrawWorld(Panel):
         pygame.display.update()
        
 def main():
-  global app
   #app = App(fullscreen=True)
   app = App(fullscreen=False)
-  app.pen_width = 1
-  app.pen_color = Color.black
   world = DrawWorld(app.new_surface())
   app.add_world(world)
   app.run()
