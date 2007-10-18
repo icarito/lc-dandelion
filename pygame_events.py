@@ -25,7 +25,7 @@ def get_screen_size():
     import objc
     import AppKit
     size = AppKit.NSScreen.mainScreen().visibleFrame()[1]
-    #size = int(size.width), int(size.height)
+    size = int(size.width), int(size.height)
     del AppKit
     del objc
    # how do I calculate size on Linux and elsewhere?
@@ -46,6 +46,8 @@ class App:
       return cls.app
 
   def __init__(self, fullscreen=False, framerate=15, bitdepth=16,  screensize=(800,480)):
+    global app
+    app = self
     self.__class__.app = self
     pygame.init()
     self._dirty_rects = []
@@ -249,7 +251,7 @@ class EventDispatcher:
       if not self._is_dragging:
         self._is_dragging = True
         self.listener.ondragbegin(pos)
-      self.listener.ondrag(pos)
+      self.listener.ondrag(pos, prev)
 
   def _keydown(self, event, time):
     self.listener.onkeypress(event.key, event.mod, False)
@@ -286,7 +288,10 @@ class EventDispatcher:
 class EventListener(object):
 
   def __init__(self, owner=None):
-    self.owner = owner
+    if owner:
+        self.owner = owner
+    else:
+        owner = self
     self.subviews = []
 
   def set_owner(self, owner):
@@ -332,10 +337,10 @@ class EventListener(object):
         if view.get_rect().collidepoint(*pos):
             view.ondragend(pos)
 
-  def ondrag(self, pos):
+  def ondrag(self, pos, prev):
     for view in self.subviews:
         if view.get_rect().collidepoint(*pos):
-            view.ondrag(pos)
+            view.ondrag(pos, prev)
 
   def onkeypress(self, key, mod, isrepeat):
     for view in self.subviews:

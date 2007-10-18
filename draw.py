@@ -4,6 +4,7 @@ import pygame
 from pygame_ext import Color, draw_oval, draw_rounded_rect, draw_rect, draw_line
 from pygame_ext import pygame_to_pil_img
 from dandelion import ScratchSprite
+from pygame_flood_fill import seed_fillA
 
 def open_file():
     return getoutput(['python', 'gtk_dialogs.py', '-open'])
@@ -17,6 +18,61 @@ def getoutput(cmd_lst):
     from subprocess import Popen, PIPE
     output = Popen(cmd_lst, stdout=PIPE).communicate()[0]
     return output.strip()
+    
+class Tool(EventListener):
+    ''' Abstract tool '''
+
+    cursor = None
+    cursor_hotspot = 0,0
+    
+    def __init__(self):
+        EventListener.__init__(self)
+        # For debugging, put a red dot where the hotspot is
+        pygame.draw.line(self.cursor, Color.red, self.cursor_hotspot, self.cursor_hotspot) 
+
+    def ondrag(self, pos, prev):
+        pass
+
+    def onclick(self, button, pos):
+        pass
+        
+    def cursor_rect(self, pos):
+        x,y = pos
+        dx, dy = self.cursor_hotspot
+        return self.cursor.get_rect(center=(x-dx, y-dy))
+
+    def onmouseover(self, pos):
+        rect = app.surface.blit(self.cursor, self.cursor_rect(pos))
+        app.add_dirty(rect)
+        
+
+class PenTool(Tool):
+    
+    cursor = pygame.image.load('icons/pencil.png')
+    
+    def __init__(self):
+        Tool.__init__(self)
+        self.last_pos = (0,0)
+
+    def ondrag(self, pos, prev):
+        update_rect = draw_line(app.surface, app.pen_color, prev, pos, app.pen_width)
+        app.add_dirty(update_rect)
+
+    def onclick(self, button, pos):
+        update_rect = draw_line(app.surface, app.pen_color, pos, pos, app.pen_width)
+        app.add_dirty(update_rect)
+        
+class FillTool(Tool):
+    
+    cursor = pygame.image.load('icons/paintcan.png')
+
+    def onclick(self, button, pos):
+        x,y = pos
+        pattern = pygame.Surface((1,1))
+        pattern.fill(app.pen_color)
+        update_rect = seed_fillA(app.surface, x, y, pattern)
+        app.add_dirty(update_rect)
+     
 
 class Panel(EventListener):
 
@@ -70,7 +126,7 @@ class ColorPicker(EventListener):
         pygame.draw.rect(app.surface, color, self.swatch_rect)
         app.pen_color = color
 
-    def ondrag(self, pos):
+    def ondrag(self, pos, prev):
         if self.picker_rect.collidepoint(*pos):
             x,y = pos
             dx,dy = self.picker_rect.topleft
@@ -79,18 +135,21 @@ class ColorPicker(EventListener):
             pygame.display.update(self.swatch_rect)
             
     def onclick(self, button, pos):
-        self.ondrag(pos)
+        self.ondrag(pos, pos)
 
     def draw(self, surface):
         surface.blit(self.surface, self.rect)
 
 class Icon(EventListener):
 
-    def __init__(self, name):
+    def __init__(self, name, tool=None, default=False):
         EventListener.__init__(self)
         self.surface = pygame.image.load('icons/%s_32.png' % name)
         self.name = name
-	self.rect = Rect(0,0,32,32)
+        self.rect = Rect(0,0,32,32)
+        self.tool = tool
+        if default:
+            app.current_tool = tool
 
     def get_rect(self):
         return self.rect
@@ -102,35 +161,11 @@ class Icon(EventListener):
         surface.blit(self.surface, self.rect)
 
     def onclick(self, button, pos):
-        print '%s clicked' % self.name
+        if self.tool:
+            app.current_tool = self.tool
 
-REDUCE_ICON = Icon('arrow_in')
-EXPAND_ICON = Icon('arrow_out')
-ROTATE_CLOCKWISE_ICON = Icon('arrow_rotate_clockwise')
-ROTATE_COUNTERCLOCKWISE_ICON = Icon('arrow_rotate_anticlockwise')
-
-COLOR_WHEEL_ICON = Icon('color_wheel')
-COLOR_SWATCH_ICON = Icon('color_swatch')
-ARROW_CURSOR_ICON = Icon('cursor')
-PAINTBRUSH_ICON = Icon('paintbrush')
-PAINTCAN_ICON = Icon('paintcan')
-PENCIL_ICON = Icon('pencil')
-FLIP_VERTICAL_ICON = Icon('shape_flip_vertical')
-FLIP_HORIZONTAL_ICON = Icon('shape_flip_horizontal')
-ZOOM_ICON = Icon('zoom')
-ZOOM_IN_ICON = Icon('zoom_in')
-ZOOM_OUT_ICON = Icon('zoom_out')
 IMPORT_ICON = Icon('folder')
 SAVE_ICON = Icon('picture_save')
-PLACEHOLDER_ICON = Icon('plugin')
-RECT_TOOL_ICON = Icon('rect')
-ROUND_RECT_TOOL_ICON = Icon('rounded_rect')
-ELLIPSE_TOOL_ICON = Icon('ellipse')
-LINE_TOOL_ICON = Icon('line')
-TEXT_TOOL_ICON = Icon('text_allcaps')
-UNDO_ICON = Icon('arrow_undo')
-REDO_ICON = Icon('arrow_redo')
-
 
 class Menu(Panel):
 
@@ -151,82 +186,25 @@ class Menu(Panel):
         SAVE_ICON.set_handler('onclick', save_image)
         self.add_subview(SAVE_ICON, (x,y))
 
-class Tools(Panel):
-
-    def init_subviews(self):
-        x,y = self.get_rect().topleft
-        x += 4; y += 4
-        def choose_pen(self, button, pos):
-            canvas.set_handler('onclick', pen_onclick)
-            canvas.set_handler('ondrag', pen_ondrag)
-        PENCIL_ICON.set_handler('onclick', choose_pen)
-        self.add_subview(PENCIL_ICON, (x,y))
-        x += 50
-        self.add_subview(PLACEHOLDER_ICON, (x,y))
-        x -= 50; y += 50
-        self.add_subview(PAINTCAN_ICON, (x,y))
-        x += 50
-        self.add_subview(RECT_TOOL_ICON, (x,y))
-        x -= 50; y += 50
-        self.add_subview(ELLIPSE_TOOL_ICON, (x,y))
-        x += 50
-        self.add_subview(ROUND_RECT_TOOL_ICON, (x,y))
-        x -= 50; y += 50
-        self.add_subview(LINE_TOOL_ICON, (x,y))
-        x += 50
-        self.add_subview(TEXT_TOOL_ICON, (x,y))
-        x = 0; y += 50
-        self.add_subview(ColorPicker(), (x,y))
-
-class Tool(EventListener):
-    ''' Abstract tool '''
-
-    cursor = None
-    cursor_offset = 8,8
-
-    def ondrag(self, pos):
-        pass
-
-    def onclick(self, pos):
-        pass
-        
-    def cursor_rect(self, pos):
-        x,y = pos
-        dx, dy = self.cursor_offset
-        return self.cursor.get_rect(center=(x+dx, y+dy))
-
-    def onmouseover(self, pos):
-        rect = app.surface.blit(self.cursor, self.cursor_rect(pos))
-        
-
-class PenTool(Tool):
-    
-    cursor = pygame.image.load('icons/pencil.png')
-
-    def ondrag(self, pos):
-        #print 'pen_drag'
-        update_rect = draw_line(app.surface, app.pen_color, app.last_pos, pos, app.pen_width)
-        app.last_pos = pos
-        self.dirty_rect.union_ip(update_rect)
-        pygame.display.update(update_rect)
-
-    def onclick(self, button, pos):
-        #print 'pen_click'
-        app.last_pos = pos
-     
+FLIP_VERTICAL_ICON = Icon('shape_flip_vertical')
+FLIP_HORIZONTAL_ICON = Icon('shape_flip_horizontal')
+UNDO_ICON = Icon('arrow_undo')
+REDO_ICON = Icon('arrow_redo')
+ZOOM_IN_ICON = Icon('zoom_in')
+ZOOM_OUT_ICON = Icon('zoom_out')
 
 class Controls(Panel):
 
     def init_subviews(self):
         x,y = self.get_rect().topleft
         x += 4; y += 4
-        self.add_subview(EXPAND_ICON, (x,y))
+        self.add_subview(Icon('arrow_out'), (x,y)) # Expand
         x += 50
-        self.add_subview(REDUCE_ICON, (x,y))
+        self.add_subview(Icon('arrow_in'), (x,y)) # Reduce
         x += 50
-        self.add_subview(ROTATE_COUNTERCLOCKWISE_ICON, (x,y))
+        self.add_subview(Icon('arrow_rotate_clockwise'), (x,y)) # Rotate
         x += 50
-        self.add_subview(ROTATE_CLOCKWISE_ICON, (x,y))
+        self.add_subview(Icon('arrow_rotate_anticlockwise'), (x,y)) # Rotate d'other way
         x += 50
         self.add_subview(FLIP_HORIZONTAL_ICON, (x,y))
         x += 50
@@ -240,6 +218,49 @@ class Controls(Panel):
         x += 50
         self.add_subview(ZOOM_OUT_ICON, (x,y))
 
+PLACEHOLDER_ICON = Icon('plugin')
+RECT_TOOL_ICON = Icon('rect')
+ELLIPSE_TOOL_ICON = Icon('ellipse')
+ROUND_RECT_TOOL_ICON = Icon('rounded_rect')
+LINE_TOOL_ICON = Icon('line')
+TEXT_TOOL_ICON = Icon('text_allcaps')
+
+class Tools(Panel):
+
+    pen_tool = PenTool()
+    fill_tool = FillTool()
+
+
+    def init_subviews(self):
+        x,y = self.get_rect().topleft
+        x += 4; y += 4
+        self.add_subview(Icon('pencil', PenTool(), default=True), (x,y))
+        x += 50
+        self.add_subview(PLACEHOLDER_ICON, (x,y))
+        x -= 50; y += 50
+        self.add_subview(Icon('paintcan', FillTool()), (x,y))
+        x += 50
+        self.add_subview(RECT_TOOL_ICON, (x,y))
+        x -= 50; y += 50
+        self.add_subview(ELLIPSE_TOOL_ICON, (x,y))
+        x += 50
+        self.add_subview(ROUND_RECT_TOOL_ICON, (x,y))
+        x -= 50; y += 50
+        self.add_subview(LINE_TOOL_ICON, (x,y))
+        x += 50
+        self.add_subview(TEXT_TOOL_ICON, (x,y))
+        x = 0; y += 50
+        self.add_subview(ColorPicker(), (x,y))
+
+# Unused Icons, so sad:
+
+COLOR_WHEEL_ICON = Icon('color_wheel')
+COLOR_SWATCH_ICON = Icon('color_swatch')
+ARROW_CURSOR_ICON = Icon('cursor')
+PAINTBRUSH_ICON = Icon('paintbrush')
+ZOOM_ICON = Icon('zoom')
+
+
 
 class Canvas(Panel):
     
@@ -247,13 +268,13 @@ class Canvas(Panel):
     def __init__(self, parent, rect, surface=None):
          Panel.__init__(self, parent, rect, surface)
          self.dirty_rect = Rect(self.get_rect().center,(0,0))
+
     def import_file(self, filename):
         image = pygame.image.load(filename)
         im_rect = self.center_image(image)
-#        self.surface.blit(image, im_rect)
         app.surface.blit(image, im_rect)
+        app.add_dirty(im_rect)
         self.dirty_rect.union_ip(im_rect)
-        pygame.display.update(im_rect)
 
     def save_file(self, filename):
         pyimg = app.surface.subsurface(self.dirty_rect)
@@ -266,6 +287,11 @@ class Canvas(Panel):
         im_rect.center = ca_rect.center
         return im_rect
         
+    def ondrag(self, pos, prev):
+        app.current_tool.ondrag(pos, prev)
+        
+    def onclick(self, button, pos):
+        app.current_tool.onclick(button, pos)
 
 class DrawWorld(Panel):
 
@@ -293,16 +319,14 @@ class DrawWorld(Panel):
         control_rect = Rect(100, 0, right_width, 40).inflate(-2,-2)
         self.controls = Controls(self, control_rect)
         canvas_rect = Rect(100, 40, right_width, canvas_height).inflate(-2,-2)
-        global canvas
         canvas = Canvas(self, canvas_rect)
-        app.tool = PenTool
 
     def draw(self):
         self.surface.fill(Color.white)
         for view in self.subviews:
             view.draw()
-        pygame.display.update()
-       
+            
+                   
 def main():
   #app = App(fullscreen=True)
   app = App(fullscreen=False)
