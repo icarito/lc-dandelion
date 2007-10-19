@@ -1,3 +1,50 @@
+#The scanline floodfill algorithm using our own stack routines, faster
+# via http://student.kuleuven.be/~m0216922/CG/floodfill.html
+
+import pygame
+
+def flood_fill(surface, seed_pos, newColor):
+    
+   screenBuffer = pygame.surfarray.array2d(surface)
+   oldColor = screenBuffer[pos[0]][pos[1]]
+    
+   if(oldColor == newColor) return;
+   stack = []
+
+   h,w = surface.get_rect().size
+   max_x = max_y = 0
+   min_x = w
+   min_y = h
+
+   stack.append(seed_pos)
+
+   while(stack):
+       x,y = stack.pop()
+       y1 = y
+       while(y1 >= 0 && screenBuffer[x][y1] == oldColor) y1--;
+       y1++;
+       spanLeft = spanRight = False;
+       while(y1 < h && screenBuffer[x][y1] == oldColor ):
+           screenBuffer[x][y1] = newColor
+           min_x = min(min_x, x)
+           max_x = max(max_x, x)
+           min_y = min(min_y, y1)
+           max_y = max(max_y, y1)
+           if not spanLeft and x > 0 and screenBuffer[x - 1][y1] == oldColor:
+               push((x - 1, y1))
+               spanLeft = True
+           elif spanLeft and x > 0 and screenBuffer[x - 1][y1] != oldColor:
+               spanLeft = False
+           if not spanRight and x < w - 1 and screenBuffer[x + 1][y1] == oldColor:
+               push((x + 1, y1))
+               spanRight = True
+           elif spanRight and x < w - 1 and screenBuffer[x + 1][y1] != oldColor:
+               spanRight = False
+           y1++
+   pygame.surface.blit_array(surface, screenBuffer)
+   return pygame.Rect(min_x, min_y, max_x - min_x, max_y - min_y)
+
+
 # The following is a rewrite of the seed fill algorithm by Paul Heckbert.
 # The original was published in "Graphics Gems", Academic Press, 1990.
 #
