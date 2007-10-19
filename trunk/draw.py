@@ -5,6 +5,7 @@ from pygame_ext import Color, draw_oval, draw_rounded_rect, draw_rect, draw_line
 from pygame_ext import pygame_to_pil_img
 from dandelion import ScratchSprite
 from pygame_flood_fill import seed_fillA
+from math import ceil
 
 def open_file():
     return getoutput(['python', 'gtk_dialogs.py', '-open'])
@@ -84,7 +85,10 @@ class Panel(EventListener):
              self.rect = rect
         else:
              self.surface = surface
-             self.rect = surface.get_rect()
+             if rect:
+                 self.rect = rect
+             else:
+                 self.rect = surface.get_rect()
         self.init_subviews()
         self.draw()
 
@@ -266,7 +270,7 @@ class Canvas(Panel):
     def __init__(self, parent, rect, surface=None):
          global canvas
          canvas = self
-         Panel.__init__(self, None, None, pygame.Surface(rect.size))
+         Panel.__init__(self, None, rect, pygame.Surface(rect.size))
          self.pen_color = Color.black
          self.pen_width = 1.0
          self.dirty_rect = Rect(self.get_rect().center,(0,0))
@@ -275,21 +279,15 @@ class Canvas(Panel):
     def import_file(self, filename):
         image = pygame.image.load(filename)
         im_rect = self.center_image(image)
-        app.surface.blit(image, im_rect)
-        app.add_dirty(im_rect)
-        self.dirty_rect.union_ip(im_rect)
+        self.draw_image(image, im_rect)
 
     def save_file(self, filename):
         pyimg = app.surface.subsurface(self.dirty_rect)
         pilimg = pygame_to_pil_img(pyimg)
         pilimg.save(filename)
-
-    def center_image(self, image):
-        im_rect = image.get_rect()
-        ca_rect = self.get_rect()
-        im_rect.center = ca_rect.center
-        return im_rect
         
+    # Event handlers
+
     def ondrag(self, pos, prev):
         app.current_tool.ondrag(pos, prev)
         
@@ -310,12 +308,18 @@ class Canvas(Panel):
         
     # Drawing Utilities
 
+    def center_image(self, image):
+        im_rect = image.get_rect()
+        ca_rect = self.get_rect()
+        im_rect.center = ca_rect.center
+        return im_rect
+    
     def points_to_local_rect(self, p1, p2):
         x1,y1 = min(p1[0], p2[0]), min(p1[1], p2[1])
         x2,y2 = max(p1[0], p2[0]), max(p1[1], p2[1])
         w,h = x2 - x1, y2 - y1
         dx, dy = self.rect.topleft
-        return Rect((x1-dx,y1-dy),(w,h))
+        return Rect((x1-dx,y1-dy),(w+1,h+1))
         
     def local_rect(self, rect):
         return rect.move(-self.rect.left, -self.rect.top)
@@ -327,16 +331,17 @@ class Canvas(Panel):
         return point[0] - self.rect.left, point[1] - self.rect.top
         
     def echo_to_app(self, rect, local_rect):
+        print 'echo_to_app(%s, %s)' % (rect, local_rect)
+        self.dirty_rect.union_ip(local_rect)
         app.surface.blit(self.surface, rect, local_rect)
         app.add_dirty(rect)
 
 
     # Drawing routines to draw in both canvas and app surface
 
-    def draw_image(self, source, dest, area=None):
-        self.surface.blit(source, self.local_rect(dest), area)
-        app.surface.blit(source, dest, area)
-        app.add_dirty(dest)
+    def draw_image(self, dest, area=None):
+        self.surface.blit(source, dest, area)
+        self.echo_to_app(self.app_rect(dest), dest)
             
     def draw_rect(self, rect):
         local = self.local_rect(rect)
@@ -359,20 +364,22 @@ class Canvas(Panel):
         self.echo_to_app(rect, local)
         
     def draw_line(self, start_pos, end_pos):
+        print 'draw_line(%s, %s)' % (start_pos, end_pos)
         local = self.points_to_local_rect(start_pos, end_pos)
+        print 'local rect: %s' % local
         # draw line
-        pygame.draw.line(self.surface, self.pen_color, local.topleft, local.bottomright, self.pen_width)
+        r1 = pygame.draw.line(self.surface, self.pen_color, local.topleft, local.bottomright, self.pen_width)
         # draw end caps
-        r1 = pygame.draw.circle(self.surface, self.pen_color, local.topleft, self.pen_width / 2.0)
-        r2 = pygame.draw.circle(self.surface, self.pen_color, local.topleft, self.pen_width / 2.0)
+        r2 = pygame.draw.circle(self.surface, self.pen_color, local.topleft, ceil(self.pen_width / 2.0))
+        r3 = pygame.draw.circle(self.surface, self.pen_color, local.topleft, ceil(self.pen_width / 2.0))
         # put the rects from each of these together for echo_to_app
-        local = r1.union(r2)
+        local = r1.union(r2.union(r3))
         self.echo_to_app(self.app_rect(local), local)
         
     def draw_point(self, pos):
         local = self.local_point(pos)
-        dirty = pygame.draw.circle(self.surface, self.pen_color, local, self.pen_width / 2.0)
-        self.echo_to_app(self.app_rect(local), local)
+        dirty = pygame.draw.circle(self.surface, self.pen_color, local, ceil(self.pen_width / 2.0))
+        self.echo_to_app(self.app_rect(dirty), dirty)
         
         
 
@@ -393,15 +400,15 @@ class DrawWorld(Panel):
         canvas_height = rect.height - 40
         # init canvas panel
         canvas_rect = Rect(100, 40, right_width, canvas_height).inflate(-2,-2)
-        canvas = Canvas(self, canvas_rect)
+        self.add_subview(Canvas(self, canvas_rect))
         # init menu  panel
         menu_rect = Rect(0, 0, 100, 40).inflate(-2,-2)
-        self.menu = Menu(self, menu_rect)
+        self.add_subview(Menu(self, menu_rect))
         # init tools panel
         tool_rect = Rect(0, 40, 100, bottom_offset).inflate(-2,-2)
-        self.tools = Tools(self, tool_rect)
+        self.add_subview(Tools(self, tool_rect))
         control_rect = Rect(100, 0, right_width, 40).inflate(-2,-2)
-        self.controls = Controls(self, control_rect)
+        self.add_subview(Controls(self, control_rect))
 
     def draw(self):
         self.surface.fill(Color.white)
