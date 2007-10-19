@@ -74,10 +74,12 @@ class App:
     return pygame.Surface(self.size, pygame.SWSURFACE)
 
   def add_dirty(self, *rects):
+      print 'adding a dirty rect'
       self._dirty_rects += rects
     
   def update(self):
       if self._dirty_rects:
+          print 'updating with %d dirty rects' % len(self._dirty_rects)
           self._dirty_rects, rects = [], self._dirty_rects
           pygame.display.update(rects)
 
