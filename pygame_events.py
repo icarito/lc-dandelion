@@ -45,7 +45,7 @@ class App:
           cls.app = App(*args, **kws)
       return cls.app
 
-  def __init__(self, fullscreen=False, framerate=15, bitdepth=16,  screensize=(800,480)):
+  def __init__(self, fullscreen=False, framerate=15, bitdepth=16,  screensize=None):
     global app
     app = self
     self.__class__.app = self
@@ -55,6 +55,9 @@ class App:
     if fullscreen:
       self.size = self.width, self.height = pygame.display.list_modes(bitdepth, pygame.FULLSCREEN)[0]
       self.screen = pygame.display.set_mode(self.size, pygame.FULLSCREEN)
+    elif screensize:
+      self.size = screensize
+      self.screen = pygame.display.set_mode(self.size)
     else:
       self.size = get_screen_size()
       self.screen = pygame.display.set_mode(self.size)
