@@ -275,8 +275,10 @@ class Canvas(Panel):
         
     def onmouseout(self, pos):
         app.surface.blit(self.surface, self.dirty_cursor, self.local_rect(self.dirty_cursor))
+        pygame.mouse.set_visibible(True)
         
     def onmouseover(self, pos):
+        pygame.mouse.set_visible(False)
         app.current_tool.onmousemoved(pos, pos)
         self.dirty_cursor = app.current_tool.cursor_rect(pos)
         
