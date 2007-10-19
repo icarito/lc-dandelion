@@ -411,7 +411,7 @@ class DrawWorld(Panel):
                    
 def main():
   #app = App(fullscreen=True)
-  app = App(fullscreen=False)
+  app = App(fullscreen=False, screensize=(800,480))
   world = DrawWorld(app.new_surface())
   app.add_world(world)
   app.run()
