@@ -41,10 +41,10 @@ class Tool(EventListener):
         dx, dy = self.cursor_hotspot
         return self.cursor.get_rect(center=(x-dx, y-dy))
 
-    def onmouseover(self, pos):
+    def onmousemove(self, pos, prev):
         rect = app.surface.blit(self.cursor, self.cursor_rect(pos))
         app.add_dirty(rect)
-        
+        return rect
 
 class PenTool(Tool):
     
@@ -55,12 +55,10 @@ class PenTool(Tool):
         self.last_pos = (0,0)
 
     def ondrag(self, pos, prev):
-        update_rect = draw_line(app.surface, app.pen_color, prev, pos, app.pen_width)
-        app.add_dirty(update_rect)
+        canvas.draw_line(prev, pos)
 
     def onclick(self, button, pos):
-        update_rect = draw_line(app.surface, app.pen_color, pos, pos, app.pen_width)
-        app.add_dirty(update_rect)
+        canvas.draw_point(pos)
         
 class FillTool(Tool):
     
@@ -69,7 +67,7 @@ class FillTool(Tool):
     def onclick(self, button, pos):
         x,y = pos
         pattern = pygame.Surface((1,1))
-        pattern.fill(app.pen_color)
+        pattern.fill(canvas.pen_color)
         update_rect = seed_fillA(app.surface, x, y, pattern)
         app.add_dirty(update_rect)
      
@@ -124,7 +122,7 @@ class ColorPicker(EventListener):
     def update_color(self, color):
         pygame.draw.rect(self.surface, color, self.swatch_rect)
         pygame.draw.rect(app.surface, color, self.swatch_rect)
-        app.pen_color = color
+        canvas.pen_color = color
 
     def ondrag(self, pos, prev):
         if self.picker_rect.collidepoint(*pos):
@@ -266,9 +264,14 @@ class Canvas(Panel):
     
    
     def __init__(self, parent, rect, surface=None):
-         Panel.__init__(self, parent, rect, surface)
+         global canvas
+         canvas = self
+         Panel.__init__(self, None, None, pygame.Surface(rect.size))
+         self.pen_color = Color.black
+         self.pen_width = 1.0
          self.dirty_rect = Rect(self.get_rect().center,(0,0))
-
+         self.dirty_cursor = Rect(0,0,0,0)
+         
     def import_file(self, filename):
         image = pygame.image.load(filename)
         im_rect = self.center_image(image)
@@ -292,14 +295,92 @@ class Canvas(Panel):
         
     def onclick(self, button, pos):
         app.current_tool.onclick(button, pos)
+        
+    def onmousemoved(self, pos, prev):
+        app.surface.blit(self.surface, self.dirty_cursor, self.local_rect(self.dirty_cursor))
+        app.current_tool.onmousemoved(pos, prev)
+        self.dirty_cursor = app.current_tool.cursor_rect(pos)
+        
+    def onmouseout(self, pos):
+        app.surface.blit(self.surface, self.dirty_cursor, self.local_rect(self.dirty_cursor))
+        
+    def onmouseover(self, pos):
+        app.current_tool.onmousemoved(pos, pos)
+        self.dirty_cursor = app.current_tool.cursor_rect(pos)
+        
+    # Drawing Utilities
+
+    def points_to_local_rect(self, p1, p2):
+        x1,y1 = min(p1[0], p2[0]), min(p1[1], p2[1])
+        x2,y2 = max(p1[0], p2[0]), max(p1[1], p2[1])
+        w,h = x2 - x1, y2 - y1
+        dx, dy = self.rect.topleft
+        return Rect((x1-dx,y1-dy),(w,h))
+        
+    def local_rect(self, rect):
+        return rect.move(-self.rect.left, -self.rect.top)
+        
+    def app_rect(self, local):
+        return local.move(self.rect.left, self.rect.top)
+        
+    def local_point(self, point):
+        return point[0] - self.rect.left, point[1] - self.rect.top
+        
+    def echo_to_app(self, rect, local_rect):
+        app.surface.blit(self.surface, rect, local_rect)
+        app.add_dirty(rect)
+
+
+    # Drawing routines to draw in both canvas and app surface
+
+    def draw_image(self, source, dest, area=None):
+        self.surface.blit(source, self.local_rect(dest), area)
+        app.surface.blit(source, dest, area)
+        app.add_dirty(dest)
+            
+    def draw_rect(self, rect):
+        local = self.local_rect(rect)
+        pygame.draw.rect(self.surface, self.pen_color, local, self.pen_width)
+        self.echo_to_app(rect, local)
+        
+    def draw_filled_rect(self, rect):
+        local = self.local_rect(rect)
+        pygame.draw.rect(self.surface, self.pen_color, local, 0)
+        self.echo_to_app(rect, local)
+        
+    def draw_ellipse(self, rect):
+        local = self.local_rect(rect)
+        pygame.draw.ellipse(self.surface, self.pen_color, local, self.pen_width)
+        self.echo_to_app(rect, local)
+        
+    def draw_filled_ellipse(self, rect):
+        local = self.local_rect(rect)
+        pygame.draw.ellipse(self.surface, self.pen_color, local, 0)
+        self.echo_to_app(rect, local)
+        
+    def draw_line(self, start_pos, end_pos):
+        local = self.points_to_local_rect(start_pos, end_pos)
+        # draw line
+        pygame.draw.line(self.surface, self.pen_color, local.topleft, local.bottomright, self.pen_width)
+        # draw end caps
+        r1 = pygame.draw.circle(self.surface, self.pen_color, local.topleft, self.pen_width / 2.0)
+        r2 = pygame.draw.circle(self.surface, self.pen_color, local.topleft, self.pen_width / 2.0)
+        # put the rects from each of these together for echo_to_app
+        local = r1.union(r2)
+        self.echo_to_app(self.app_rect(local), local)
+        
+    def draw_point(self, pos):
+        local = self.local_point(pos)
+        dirty = pygame.draw.circle(self.surface, self.pen_color, local, self.pen_width / 2.0)
+        self.echo_to_app(self.app_rect(local), local)
+        
+        
 
 class DrawWorld(Panel):
 
     def __init__(self, surface):
         global app
         app = App.getApp()
-        app.pen_color = Color.black
-        app.pen_width = 1.0
         Panel.__init__(self, None, None, surface)
 
     def init_subviews(self):
@@ -310,6 +391,9 @@ class DrawWorld(Panel):
         left_offset = 100
         right_width = rect.width - left_offset
         canvas_height = rect.height - 40
+        # init canvas panel
+        canvas_rect = Rect(100, 40, right_width, canvas_height).inflate(-2,-2)
+        canvas = Canvas(self, canvas_rect)
         # init menu  panel
         menu_rect = Rect(0, 0, 100, 40).inflate(-2,-2)
         self.menu = Menu(self, menu_rect)
@@ -318,8 +402,6 @@ class DrawWorld(Panel):
         self.tools = Tools(self, tool_rect)
         control_rect = Rect(100, 0, right_width, 40).inflate(-2,-2)
         self.controls = Controls(self, control_rect)
-        canvas_rect = Rect(100, 40, right_width, canvas_height).inflate(-2,-2)
-        canvas = Canvas(self, canvas_rect)
 
     def draw(self):
         self.surface.fill(Color.white)
