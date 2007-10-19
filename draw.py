@@ -4,7 +4,7 @@ import pygame
 from pygame_ext import Color, draw_oval, draw_rounded_rect, draw_rect, draw_line
 from pygame_ext import pygame_to_pil_img
 from dandelion import ScratchSprite
-from pygame_flood_fill import seed_fillA
+from pygame_flood_fill import flood_fill
 from math import ceil
 
 def open_file():
@@ -66,12 +66,7 @@ class FillTool(Tool):
     cursor = pygame.image.load('icons/paintcan.png')
 
     def onclick(self, button, pos):
-        x,y = pos
-        pattern = pygame.Surface((1,1))
-        pattern.fill(canvas.pen_color)
-        update_rect = seed_fillA(app.surface, x, y, pattern)
-        app.add_dirty(update_rect)
-     
+        canvas.draw_fill(pos)
 
 class Panel(EventListener):
 
@@ -188,12 +183,6 @@ class Menu(Panel):
         SAVE_ICON.set_handler('onclick', save_image)
         self.add_subview(SAVE_ICON, (x,y))
 
-FLIP_VERTICAL_ICON = Icon('shape_flip_vertical')
-FLIP_HORIZONTAL_ICON = Icon('shape_flip_horizontal')
-UNDO_ICON = Icon('arrow_undo')
-REDO_ICON = Icon('arrow_redo')
-ZOOM_IN_ICON = Icon('zoom_in')
-ZOOM_OUT_ICON = Icon('zoom_out')
 
 class Controls(Panel):
 
@@ -208,24 +197,18 @@ class Controls(Panel):
         x += 50
         self.add_subview(Icon('arrow_rotate_anticlockwise'), (x,y)) # Rotate d'other way
         x += 50
-        self.add_subview(FLIP_HORIZONTAL_ICON, (x,y))
+        self.add_subview(Icon('shape_flip_horizontal'), (x,y))
         x += 50
-        self.add_subview(FLIP_VERTICAL_ICON, (x,y))
+        self.add_subview(Icon('shape_flip_vertical'), (x,y))
         x += 50
-        self.add_subview(UNDO_ICON, (x,y))
+        self.add_subview(Icon('arrow_undo'), (x,y))
         x += 50
-        self.add_subview(REDO_ICON, (x,y))
+        self.add_subview(Icon('arrow_redo'), (x,y))
         x += 50
-        self.add_subview(ZOOM_IN_ICON, (x,y))
+        self.add_subview(Icon('zoom_in'), (x,y))
         x += 50
-        self.add_subview(ZOOM_OUT_ICON, (x,y))
+        self.add_subview(Icon('zoom_out'), (x,y))
 
-PLACEHOLDER_ICON = Icon('plugin')
-RECT_TOOL_ICON = Icon('rect')
-ELLIPSE_TOOL_ICON = Icon('ellipse')
-ROUND_RECT_TOOL_ICON = Icon('rounded_rect')
-LINE_TOOL_ICON = Icon('line')
-TEXT_TOOL_ICON = Icon('text_allcaps')
 
 class Tools(Panel):
 
@@ -238,31 +221,22 @@ class Tools(Panel):
         x += 4; y += 4
         self.add_subview(Icon('pencil', PenTool(), default=True), (x,y))
         x += 50
-        self.add_subview(PLACEHOLDER_ICON, (x,y))
+        self.add_subview(Icon('plugin'), (x,y))
         x -= 50; y += 50
         self.add_subview(Icon('paintcan', FillTool()), (x,y))
         x += 50
-        self.add_subview(RECT_TOOL_ICON, (x,y))
+        self.add_subview(Icon('rect'), (x,y))
         x -= 50; y += 50
-        self.add_subview(ELLIPSE_TOOL_ICON, (x,y))
+        self.add_subview(Icon('ellipse'), (x,y))
         x += 50
-        self.add_subview(ROUND_RECT_TOOL_ICON, (x,y))
+        self.add_subview(Icon('rounded_rect'), (x,y))
         x -= 50; y += 50
-        self.add_subview(LINE_TOOL_ICON, (x,y))
+        self.add_subview(Icon('line'), (x,y))
         x += 50
-        self.add_subview(TEXT_TOOL_ICON, (x,y))
+        self.add_subview(Icon('text_allcaps'), (x,y))
         x = 0; y += 50
         self.add_subview(ColorPicker(), (x,y))
-
-# Unused Icons, so sad:
-
-COLOR_WHEEL_ICON = Icon('color_wheel')
-COLOR_SWATCH_ICON = Icon('color_swatch')
-ARROW_CURSOR_ICON = Icon('cursor')
-PAINTBRUSH_ICON = Icon('paintbrush')
-ZOOM_ICON = Icon('zoom')
-
-
+        
 
 class Canvas(Panel):
     
@@ -380,6 +354,10 @@ class Canvas(Panel):
         local = self.local_point(pos)
         dirty = pygame.draw.circle(self.surface, self.pen_color, local, ceil(self.pen_width / 2.0))
         self.echo_to_app(self.app_rect(dirty), dirty)
+        
+    def draw_fill(self, pos):
+        dirty = flood_fill(self.surface, pos, self.pen_color)
+        app.add_dirty(dirty)
         
         
 
