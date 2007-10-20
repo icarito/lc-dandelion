@@ -180,7 +180,7 @@ class EventDispatcher:
   def pump(self):
     self._last_tick += self.clock.tick()
     time = self._last_tick
-    event_queue = pygame.event.get()
+    event_queue = [pygame.event.wait()]
     for event in event_queue:
       if event.type == pygame.QUIT: 
         self._exit()
