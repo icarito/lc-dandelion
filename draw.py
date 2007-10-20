@@ -20,6 +20,13 @@ def getoutput(cmd_lst):
     output = Popen(cmd_lst, stdout=PIPE).communicate()[0]
     return output.strip()
     
+def points_to_rect(p1, p2):
+    x1,y1 = min(p1[0], p2[0]), min(p1[1], p2[1])
+    x2,y2 = max(p1[0], p2[0]), max(p1[1], p2[1])
+    w,h = x2 - x1, y2 - y1
+    return Rect((x1,y1),(w+1,h+1))
+
+    
 class Tool(EventListener):
     ''' Abstract tool '''
 
@@ -30,6 +37,12 @@ class Tool(EventListener):
         EventListener.__init__(self)
         # For debugging, put a red dot where the hotspot is
         pygame.draw.line(self.cursor, Color.red, self.cursor_hotspot, self.cursor_hotspot) 
+
+    def ondragbegin(self, pos):
+        pass
+        
+    def ondragend(self, pos):
+        pass
 
     def ondrag(self, pos, prev):
         pass
@@ -67,6 +80,31 @@ class FillTool(Tool):
 
     def onclick(self, button, pos):
         canvas.draw_fill(pos)
+        
+class RectTool(Tool):
+    
+    cursor = pygame.image.load('icons/pencil.png')
+    
+    def __init__(self):
+        Tool.__init__(self)
+        self.start_pos = None
+        self.last_rect = None
+    
+    def ondragbegin(self, pos):
+        self.start_pos = pos
+        
+    def ondrag(self, pos, prev):
+        prev_rect = points_to_rect(self.start_pos, prev)
+        app.surface.blit(canvas.surface, canvas.local_rect(prev_rect))
+        new_rect = points_to_rect(self.start_pos, pos)
+        pygame.draw.rect(app.surface, canvas.pen_color, new_rect, canvas.pen_width)
+        app.add_dirty(prev_rect, new_rect)
+        
+    def ondragend(self, pos):
+        if not self.start_pos:
+            return
+        canvas.draw_rect_pts(self.start_pos, pos)
+        self.start_pos = None
 
 class Panel(EventListener):
 
@@ -85,7 +123,6 @@ class Panel(EventListener):
              else:
                  self.rect = surface.get_rect()
         self.init_subviews()
-        self.draw()
 
     def get_rect(self):
          return self.rect
@@ -97,6 +134,8 @@ class Panel(EventListener):
         draw_rounded_rect(self.surface, Color.white, self.get_rect(), Color.black, 1, 5)
         for view in self.subviews:
             view.draw(self.surface)
+        app.surface.blit(self.surface, self.rect)
+        app.add_dirty(self.rect)
 
 class ColorPicker(EventListener):
     def __init__(self):
@@ -212,10 +251,6 @@ class Controls(Panel):
 
 class Tools(Panel):
 
-    pen_tool = PenTool()
-    fill_tool = FillTool()
-
-
     def init_subviews(self):
         x,y = self.get_rect().topleft
         x += 4; y += 4
@@ -225,7 +260,7 @@ class Tools(Panel):
         x -= 50; y += 50
         self.add_subview(Icon('paintcan', FillTool()), (x,y))
         x += 50
-        self.add_subview(Icon('rect'), (x,y))
+        self.add_subview(Icon('rect', RectTool()), (x,y))
         x -= 50; y += 50
         self.add_subview(Icon('ellipse'), (x,y))
         x += 50
@@ -245,10 +280,21 @@ class Canvas(Panel):
          global canvas
          canvas = self
          Panel.__init__(self, None, rect, pygame.Surface(rect.size))
+         self.surface.fill(Color.white)
          self.pen_color = Color.black
-         self.pen_width = 1.0
+         self.pen_width = 4
          self.dirty_rect = Rect(self.get_rect().center,(0,0))
          self.dirty_cursor = Rect(0,0,0,0)
+         
+    def border(self):
+        print 'drawing border:', self.rect
+        old_color = self.pen_color
+        old_width = self.pen_width
+        self.pen_color = Color.red
+        self.pen_width = 4
+        self.draw_rect(self.rect)
+        self.pen_color = old_color
+        self.pen_width = old_width
          
     def import_file(self, filename):
         image = pygame.image.load(filename)
@@ -260,10 +306,19 @@ class Canvas(Panel):
         pilimg = pygame_to_pil_img(pyimg)
         pilimg.save(filename)
         
+    def draw(self):
+        pass
+        
     # Event handlers
 
     def ondrag(self, pos, prev):
         app.current_tool.ondrag(pos, prev)
+        
+    def ondragbegin(self, pos):
+        app.current_tool.ondragbegin(pos)
+        
+    def ondragend(self, pos):
+        app.current_tool.ondragend(pos)
         
     def onclick(self, button, pos):
         app.current_tool.onclick(button, pos)
@@ -275,7 +330,7 @@ class Canvas(Panel):
         
     def onmouseout(self, pos):
         app.surface.blit(self.surface, self.dirty_cursor, self.local_rect(self.dirty_cursor))
-        pygame.mouse.set_visibible(True)
+        pygame.mouse.set_visible(True)
         
     def onmouseover(self, pos):
         pygame.mouse.set_visible(False)
@@ -290,12 +345,6 @@ class Canvas(Panel):
         im_rect.center = ca_rect.center
         return im_rect
     
-    def points_to_local_rect(self, p1, p2):
-        x1,y1 = min(p1[0], p2[0]), min(p1[1], p2[1])
-        x2,y2 = max(p1[0], p2[0]), max(p1[1], p2[1])
-        w,h = x2 - x1, y2 - y1
-        dx, dy = self.rect.topleft
-        return Rect((x1-dx,y1-dy),(w+1,h+1))
         
     def local_rect(self, rect):
         return rect.move(-self.rect.left, -self.rect.top)
@@ -307,7 +356,7 @@ class Canvas(Panel):
         return point[0] - self.rect.left, point[1] - self.rect.top
         
     def echo_to_app(self, rect, local_rect):
-        print 'echo_to_app(%s, %s)' % (rect, local_rect)
+        # print 'echo_to_app(%s, %s)' % (rect, local_rect)
         self.dirty_rect.union_ip(local_rect)
         app.surface.blit(self.surface, rect, local_rect)
         app.add_dirty(rect)
@@ -323,6 +372,10 @@ class Canvas(Panel):
         local = self.local_rect(rect)
         pygame.draw.rect(self.surface, self.pen_color, local, self.pen_width)
         self.echo_to_app(rect, local)
+        
+    def draw_rect_pts(self, start, end):
+        rect = points_to_rect(start, end)
+        self.draw_rect(rect)
         
     def draw_filled_rect(self, rect):
         local = self.local_rect(rect)
@@ -340,26 +393,26 @@ class Canvas(Panel):
         self.echo_to_app(rect, local)
         
     def draw_line(self, start_pos, end_pos):
-        print 'draw_line(%s, %s)' % (start_pos, end_pos)
-        local = self.points_to_local_rect(start_pos, end_pos)
-        print 'local rect: %s' % local
+        # print 'draw_line(%s, %s)' % (start_pos, end_pos)
+        start = self.local_point(start_pos)
+        end = self.local_point(end_pos)
         # draw line
-        r1 = pygame.draw.line(self.surface, self.pen_color, local.topleft, local.bottomright, self.pen_width)
+        r1 = pygame.draw.line(self.surface, self.pen_color, start, end, self.pen_width)
         # draw end caps
-        r2 = pygame.draw.circle(self.surface, self.pen_color, local.topleft, ceil(self.pen_width / 2.0))
-        r3 = pygame.draw.circle(self.surface, self.pen_color, local.topleft, ceil(self.pen_width / 2.0))
+        r2 = pygame.draw.circle(self.surface, self.pen_color, end, int(ceil(self.pen_width / 2.0)))
         # put the rects from each of these together for echo_to_app
-        local = r1.union(r2.union(r3))
+        local = r1.union(r2)
         self.echo_to_app(self.app_rect(local), local)
         
     def draw_point(self, pos):
         local = self.local_point(pos)
-        dirty = pygame.draw.circle(self.surface, self.pen_color, local, ceil(self.pen_width / 2.0))
+        dirty = pygame.draw.circle(self.surface, self.pen_color, local, int(ceil(self.pen_width / 2.0)))
         self.echo_to_app(self.app_rect(dirty), dirty)
         
     def draw_fill(self, pos):
-        dirty = flood_fill(self.surface, pos, self.pen_color)
-        app.add_dirty(dirty)
+        dirty = flood_fill(self.surface, self.local_point(pos), self.pen_color)
+    #    self.echo_to_app(self.app_rect(dirty), dirty)
+        self.echo_to_app(self.rect, self.local_rect(self.rect))
         
         
 
@@ -389,12 +442,12 @@ class DrawWorld(Panel):
         self.add_subview(Tools(self, tool_rect))
         control_rect = Rect(100, 0, right_width, 40).inflate(-2,-2)
         self.add_subview(Controls(self, control_rect))
+        self.draw()
 
     def draw(self):
         self.surface.fill(Color.white)
         for view in self.subviews:
             view.draw()
-            
                    
 def main():
   #app = App(fullscreen=True)
