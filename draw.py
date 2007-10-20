@@ -24,7 +24,7 @@ def points_to_rect(p1, p2):
     x1,y1 = min(p1[0], p2[0]), min(p1[1], p2[1])
     x2,y2 = max(p1[0], p2[0]), max(p1[1], p2[1])
     w,h = x2 - x1, y2 - y1
-    return Rect((x1,y1),(w+1,h+1))
+    return Rect((x1,y1),(w+1,h+1)).inflate(canvas.pen_width, canvas.pen_width)
 
     
 class Tool(EventListener):
@@ -95,7 +95,7 @@ class RectTool(Tool):
         
     def ondrag(self, pos, prev):
         prev_rect = points_to_rect(self.start_pos, prev)
-        app.surface.blit(canvas.surface, canvas.local_rect(prev_rect))
+        app.surface.blit(canvas.surface, prev_rect, canvas.local_rect(prev_rect))
         new_rect = points_to_rect(self.start_pos, pos)
         pygame.draw.rect(app.surface, canvas.pen_color, new_rect, canvas.pen_width)
         app.add_dirty(prev_rect, new_rect)
@@ -280,7 +280,7 @@ class Canvas(Panel):
          global canvas
          canvas = self
          Panel.__init__(self, None, rect, pygame.Surface(rect.size))
-         self.surface.fill(Color.white)
+         self.surface.fill(Color.white )
          self.pen_color = Color.black
          self.pen_width = 4
          self.dirty_rect = Rect(self.get_rect().center,(0,0))
@@ -357,6 +357,8 @@ class Canvas(Panel):
         
     def echo_to_app(self, rect, local_rect):
         # print 'echo_to_app(%s, %s)' % (rect, local_rect)
+        rect.inflate_ip(self.pen_width, self.pen_width)
+        local_rect.inflate_ip(self.pen_width, self.pen_width)
         self.dirty_rect.union_ip(local_rect)
         app.surface.blit(self.surface, rect, local_rect)
         app.add_dirty(rect)
@@ -399,10 +401,10 @@ class Canvas(Panel):
         # draw line
         r1 = pygame.draw.line(self.surface, self.pen_color, start, end, self.pen_width)
         # draw end caps
-        r2 = pygame.draw.circle(self.surface, self.pen_color, end, int(ceil(self.pen_width / 2.0)))
+        #r2 = pygame.draw.circle(self.surface, self.pen_color, end, int(ceil(self.pen_width / 2.0)))
         # put the rects from each of these together for echo_to_app
-        local = r1.union(r2)
-        self.echo_to_app(self.app_rect(local), local)
+        #local = r1.union(r2)
+        self.echo_to_app(self.app_rect(r1), r1)
         
     def draw_point(self, pos):
         local = self.local_point(pos)
