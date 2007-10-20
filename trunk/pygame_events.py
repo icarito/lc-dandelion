@@ -74,12 +74,12 @@ class App:
     return pygame.Surface(self.size, pygame.SWSURFACE)
 
   def add_dirty(self, *rects):
-      print 'adding a dirty rect'
+      # print 'adding a dirty rect'
       self._dirty_rects += rects
     
   def update(self):
       if self._dirty_rects:
-          print 'updating with %d dirty rects' % len(self._dirty_rects)
+          # print 'updating with %d dirty rects' % len(self._dirty_rects)
           self._dirty_rects, rects = [], self._dirty_rects
           pygame.display.update(rects)
 
@@ -248,10 +248,11 @@ class EventDispatcher:
     else:
       if self.owner.rect.collidepoint(*pos):
         self._is_mousein = True
-        print 'mouse_in'
+        # print 'mouse_in'
         self.listener.onmousein(pos)
       else:
-        print 'point %s not in rect %s' % (pos, self.ownwer.rect)
+        #print 'point %s not in rect %s' % (pos, self.owner.rect)
+        pass
     if self._is_mousedown:
       if not self._is_dragging:
         self._is_dragging = True

@@ -152,12 +152,12 @@ def draw_oval( surf, color, A, B, radius, width=0):
 
 
 def pygame_to_pil_img(pg_img):
-  imgstr = pygame.image.tostring(pg_img, 'RGB')
+  imgstr = pygame.image.tostring(pg_img, 'RGBA')
   return Image.fromstring('RGB', pg_img.get_size(), imgstr)
 
 def pil_to_pygame_img(pil_img):
   imgstr = pil_img.tostring()
-  return pygame.image.fromstring(imgstr, pil_img.size, 'RGB')
+  return pygame.image.fromstring(imgstr, pil_img.size, 'RGBA')
 
 
 class Color:
