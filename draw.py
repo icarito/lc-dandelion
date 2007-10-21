@@ -24,7 +24,7 @@ def points_to_rect(p1, p2):
     x1,y1 = min(p1[0], p2[0]), min(p1[1], p2[1])
     x2,y2 = max(p1[0], p2[0]), max(p1[1], p2[1])
     w,h = x2 - x1, y2 - y1
-    return Rect((x1,y1),(w+1,h+1)).inflate(canvas.pen_width, canvas.pen_width)
+    return Rect((x1,y1),(w+1,h+1))
 
     
 class Tool(EventListener):
@@ -88,23 +88,47 @@ class RectTool(Tool):
     def __init__(self):
         Tool.__init__(self)
         self.start_pos = None
-        self.last_rect = None
     
     def ondragbegin(self, pos):
         self.start_pos = pos
         
     def ondrag(self, pos, prev):
-        prev_rect = points_to_rect(self.start_pos, prev)
+        prev_rect = points_to_rect(self.start_pos, prev).inflate(canvas.pen_width, canvas.pen_width)
         app.surface.blit(canvas.surface, prev_rect, canvas.local_rect(prev_rect))
         new_rect = points_to_rect(self.start_pos, pos)
         pygame.draw.rect(app.surface, canvas.pen_color, new_rect, canvas.pen_width)
+        app.add_dirty(prev_rect, new_rect.inflate(canvas.pen_width, canvas.pen_width))
+        
+    def ondragend(self, pos):
+        if not self.start_pos:
+            return
+        canvas.draw_rect(points_to_rect(self.start_pos, pos))
+        self.start_pos = None
+        
+class LineTool(Tool):
+    
+    cursor = pygame.image.load('icons/pencil.png')
+    
+    def __init__(self):
+        Tool.__init__(self)
+        self.start_pos = None
+        
+    def ondragbegin(self, pos):
+        self.start_pos = pos
+        
+    def ondrag(self, pos, prev):
+        prev_rect = points_to_rect(self.start_pos, prev).inflate(canvas.pen_width, canvas.pen_width)
+        app.surface.blit(canvas.surface, prev_rect, canvas.local_rect(prev_rect))
+        new_rect = pygame.draw.line(app.surface, canvas.pen_color, prev, pos, canvas.pen_width)
         app.add_dirty(prev_rect, new_rect)
         
     def ondragend(self, pos):
         if not self.start_pos:
             return
-        canvas.draw_rect_pts(self.start_pos, pos)
+        canvas.draw_line(self.start_pos, pos)
         self.start_pos = None
+        
+        
 
 class Panel(EventListener):
 
@@ -266,7 +290,7 @@ class Tools(Panel):
         x += 50
         self.add_subview(Icon('rounded_rect'), (x,y))
         x -= 50; y += 50
-        self.add_subview(Icon('line'), (x,y))
+        self.add_subview(Icon('line', LineTool()), (x,y))
         x += 50
         self.add_subview(Icon('text_allcaps'), (x,y))
         x = 0; y += 50
@@ -323,18 +347,20 @@ class Canvas(Panel):
     def onclick(self, button, pos):
         app.current_tool.onclick(button, pos)
         
-    def onmousemoved(self, pos, prev):
+    def onmousemove(self, pos, prev):
         app.surface.blit(self.surface, self.dirty_cursor, self.local_rect(self.dirty_cursor))
-        app.current_tool.onmousemoved(pos, prev)
+        app.current_tool.onmousemove(pos, prev)
         self.dirty_cursor = app.current_tool.cursor_rect(pos)
         
     def onmouseout(self, pos):
+        print 'onmouseout'
         app.surface.blit(self.surface, self.dirty_cursor, self.local_rect(self.dirty_cursor))
         pygame.mouse.set_visible(True)
         
     def onmouseover(self, pos):
+        print 'onmouseover'
         pygame.mouse.set_visible(False)
-        app.current_tool.onmousemoved(pos, pos)
+        app.current_tool.onmousemove(pos, pos)
         self.dirty_cursor = app.current_tool.cursor_rect(pos)
         
     # Drawing Utilities
