@@ -112,15 +112,17 @@ class LineTool(Tool):
     def __init__(self):
         Tool.__init__(self)
         self.start_pos = None
+        self.prev_rect = None
         
     def ondragbegin(self, pos):
         self.start_pos = pos
         
     def ondrag(self, pos, prev):
-        prev_rect = points_to_rect(self.start_pos, prev).inflate(canvas.pen_width, canvas.pen_width)
-        app.surface.blit(canvas.surface, prev_rect, canvas.local_rect(prev_rect))
-        new_rect = pygame.draw.line(app.surface, canvas.pen_color, prev, pos, canvas.pen_width)
-        app.add_dirty(prev_rect, new_rect)
+        if self.prev_rect:
+            app.add_dirty(self.prev_rect)
+            app.surface.blit(canvas.surface, self.prev_rect, canvas.local_rect(self.prev_rect))
+        self.prev_rect = pygame.draw.line(app.surface, canvas.pen_color, prev, pos, canvas.pen_width)
+        app.add_dirty(self.prev_rect)
         
     def ondragend(self, pos):
         if not self.start_pos:
@@ -128,6 +130,32 @@ class LineTool(Tool):
         canvas.draw_line(self.start_pos, pos)
         self.start_pos = None
         
+class TestTool(Tool):
+    
+    cursor = pygame.image.load('icons/pencil.png')
+    
+    def __init__(self):
+        Tool.__init__(self)
+        self.start_pos = None
+        
+    def ondragbegin(self, pos):
+        rect = pygame.draw.line(app.surface, Color.red, pos, pos)
+        app.add_dirty(rect)
+        self.start_pos = pos
+        
+    def ondrag(self, pos, prev):
+        r1 = pygame.draw.line(app.surface, Color.white, prev, prev)
+        r2 = pygame.draw.line(app.surface, Color.red, pos, pos)
+        app.add_dirty(r1, r2)
+        
+    def ondragend(self, pos):
+        if not self.start_pos:
+            return
+        canvas.pen_color = Color.green
+        canvas.pen_width = 1
+        canvas.draw_line(self.start_pos, self.start_pos)
+        canvas.draw_line(pos, pos)
+        self.start_pos = None
         
 
 class Panel(EventListener):
@@ -280,7 +308,7 @@ class Tools(Panel):
         x += 4; y += 4
         self.add_subview(Icon('pencil', PenTool(), default=True), (x,y))
         x += 50
-        self.add_subview(Icon('plugin'), (x,y))
+        self.add_subview(Icon('plugin', TestTool()), (x,y))
         x -= 50; y += 50
         self.add_subview(Icon('paintcan', FillTool()), (x,y))
         x += 50
@@ -347,21 +375,23 @@ class Canvas(Panel):
     def onclick(self, button, pos):
         app.current_tool.onclick(button, pos)
         
-    def onmousemove(self, pos, prev):
-        app.surface.blit(self.surface, self.dirty_cursor, self.local_rect(self.dirty_cursor))
-        app.current_tool.onmousemove(pos, prev)
-        self.dirty_cursor = app.current_tool.cursor_rect(pos)
+    # Event handling for cursors
         
-    def onmouseout(self, pos):
-        print 'onmouseout'
-        app.surface.blit(self.surface, self.dirty_cursor, self.local_rect(self.dirty_cursor))
-        pygame.mouse.set_visible(True)
+#    def onmousemove(self, pos, prev):
+#        app.surface.blit(self.surface, self.dirty_cursor, self.local_rect(self.dirty_cursor))
+#        app.current_tool.onmousemove(pos, prev)
+#        self.dirty_cursor = app.current_tool.cursor_rect(pos)
         
-    def onmouseover(self, pos):
-        print 'onmouseover'
-        pygame.mouse.set_visible(False)
-        app.current_tool.onmousemove(pos, pos)
-        self.dirty_cursor = app.current_tool.cursor_rect(pos)
+#    def onmouseout(self, pos):
+#        print 'onmouseout'
+#        app.surface.blit(self.surface, self.dirty_cursor, self.local_rect(self.dirty_cursor))
+#        pygame.mouse.set_visible(True)
+        
+#    def onmouseover(self, pos):
+#        print 'onmouseover'
+#        pygame.mouse.set_visible(False)
+#        app.current_tool.onmousemove(pos, pos)
+#        self.dirty_cursor = app.current_tool.cursor_rect(pos)
         
     # Drawing Utilities
 
