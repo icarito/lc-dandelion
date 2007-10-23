@@ -45,8 +45,10 @@ def draw_rounded_rect(surface, color, rect, border_color, border_width, corner_r
   right = [(o_r, i_t), (o_r, i_b)]
   top_right = _arc_points((i_r, i_t), r, 3.0 * pi / 2.0, 2.0 * pi)
   points = top + top_right + right + bottom_right + bottom + bottom_left + left + top_left
-  pygame.draw.polygon(surface, color, points)
-  pygame.draw.polygon(surface, border_color, points, border_width)
+  if color:
+      pygame.draw.polygon(surface, color, points)
+  if border_color:
+      pygame.draw.polygon(surface, border_color, points, border_width)
   return rect
 
 def arc_through(surface, color, start_pt, end_pt, through_pt, width):
