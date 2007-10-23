@@ -104,6 +104,59 @@ class RectTool(Tool):
             return
         canvas.draw_rect(points_to_rect(self.start_pos, pos))
         self.start_pos = None
+
+class EllipseTool(Tool):
+
+    cursor = pygame.image.load('icons/pencil.png')
+
+    def __init__(self):
+        Tool.__init__(self)
+        self.start_pos = None
+
+    def ondragbegin(self, pos):
+        self.start_pos = pos
+
+    def ondrag(self, pos, prev):
+        prev_rect = points_to_rect(self.start_pos, prev).inflate(canvas.pen_width, canvas.pen_width)
+        app.surface.blit(canvas.surface, prev_rect, canvas.local_rect(prev_rect))
+        new_rect = points_to_rect(self.start_pos, pos)
+        try:
+            pygame.draw.ellipse(app.surface, canvas.pen_color, new_rect, canvas.pen_width)
+            app.add_dirty(prev_rect, new_rect.inflate(canvas.pen_width, canvas.pen_width))
+        except ValueError, e:
+            # cannot draw ellipse until mouse has moved furher than the radius of the ellipse
+            pass
+
+    def ondragend(self, pos):
+        if not self.start_pos:
+            return
+        canvas.draw_ellipse(points_to_rect(self.start_pos, pos))
+        self.start_pos = None
+
+class RoundedRectTool(Tool):
+
+    cursor = pygame.image.load('icons/pencil.png')
+
+    def __init__(self):
+        Tool.__init__(self)
+        self.start_pos = None
+
+    def ondragbegin(self, pos):
+        self.start_pos = pos
+
+    def ondrag(self, pos, prev):
+        prev_rect = points_to_rect(self.start_pos, prev).inflate(canvas.pen_width, canvas.pen_width)
+        app.surface.blit(canvas.surface, prev_rect, canvas.local_rect(prev_rect))
+        new_rect = points_to_rect(self.start_pos, pos)
+        draw_rounded_rect(app.surface, None, new_rect, canvas.pen_color, canvas.pen_width, canvas.corner_radius)
+        app.add_dirty(prev_rect, new_rect.inflate(canvas.pen_width, canvas.pen_width))
+
+    def ondragend(self, pos):
+        if not self.start_pos:
+            return
+        canvas.draw_rounded_rect(points_to_rect(self.start_pos, pos))
+        self.start_pos = None
+
         
 class LineTool(Tool):
     
@@ -119,9 +172,10 @@ class LineTool(Tool):
         
     def ondrag(self, pos, prev):
         if self.prev_rect:
-            app.add_dirty(self.prev_rect)
             app.surface.blit(canvas.surface, self.prev_rect, canvas.local_rect(self.prev_rect))
-        self.prev_rect = pygame.draw.line(app.surface, canvas.pen_color, prev, pos, canvas.pen_width)
+            app.add_dirty(self.prev_rect)
+        self.prev_rect = pygame.draw.line(app.surface, canvas.pen_color, self.start_pos, pos, canvas.pen_width).inflate(canvas.pen_width,
+             canvas.pen_width)
         app.add_dirty(self.prev_rect)
         
     def ondragend(self, pos):
@@ -129,6 +183,7 @@ class LineTool(Tool):
             return
         canvas.draw_line(self.start_pos, pos)
         self.start_pos = None
+        self.prev_rect = None
         
 class TestTool(Tool):
     
@@ -314,9 +369,9 @@ class Tools(Panel):
         x += 50
         self.add_subview(Icon('rect', RectTool()), (x,y))
         x -= 50; y += 50
-        self.add_subview(Icon('ellipse'), (x,y))
+        self.add_subview(Icon('ellipse', EllipseTool()), (x,y))
         x += 50
-        self.add_subview(Icon('rounded_rect'), (x,y))
+        self.add_subview(Icon('rounded_rect', RoundedRectTool()), (x,y))
         x -= 50; y += 50
         self.add_subview(Icon('line', LineTool()), (x,y))
         x += 50
@@ -335,6 +390,7 @@ class Canvas(Panel):
          self.surface.fill(Color.white )
          self.pen_color = Color.black
          self.pen_width = 4
+         self.corner_radius = 10
          self.dirty_rect = Rect(self.get_rect().center,(0,0))
          self.dirty_cursor = Rect(0,0,0,0)
          
@@ -438,6 +494,16 @@ class Canvas(Panel):
     def draw_filled_rect(self, rect):
         local = self.local_rect(rect)
         pygame.draw.rect(self.surface, self.pen_color, local, 0)
+        self.echo_to_app(rect, local)
+        
+    def draw_rounded_rect(self, rect):
+        local = self.local_rect(rect)
+        draw_rounded_rect(self.surface, None, local, self.pen_color, self.pen_width, self.corner_radius)
+        self.echo_to_app(rect, local)
+        
+    def draw_fille_rounded_rect(self, rect):
+        local = self.local_rect(rect)
+        draw_rounded_rect(self.surface, self.pen_color, local, None, self.pen_width, self.corner_radius)
         self.echo_to_app(rect, local)
         
     def draw_ellipse(self, rect):
