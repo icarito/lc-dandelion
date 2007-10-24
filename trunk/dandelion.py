@@ -201,9 +201,6 @@ class ScratchWorld(object):
         self.listener.set_owner(self)
         self.sprite = ScratchSprite('cute/Character Cat Girl.png')
         self.sprite.move_to(BLOCK_WIDTH, BLOCK_HEIGHT)
-        self.draw()
-        self.dirty_rects = []
-        pygame.display.update()
 
     def tick(self):
         pass
@@ -220,22 +217,19 @@ class ScratchWorld(object):
         self._mark_dirty()
         self.sprite.move_by(dx,dy)
         self.sprite.draw(self.surface)
-        self.dirty_rects.append(self.sprite.get_rect())
-        pygame.display.update(self.dirty_rects)
+        app.add_dirty(self.sprite.get_rect())
         
     def rotate_by(self, angle):
         self._mark_dirty()
         self.sprite.rotate_by(angle)
         self.sprite.draw(self.surface)
-        self.dirty_rects.append(self.sprite.get_rect())
-        pygame.display.update(self.dirty_rects)
+        app.add_dirty(self.sprite.get_rect())
         
     def scale_by(self, factor):
         self._mark_dirty()
         self.sprite.scale_by(factor)
         self.sprite.draw(self.surface)
-        self.dirty_rects.append(self.sprite.get_rect())
-        pygame.display.update(self.dirty_rects)
+        app.add_dirty(self.sprite.get_rect())
 
     def draw(self):
         self.surface.blit(self.background, self.get_rect())

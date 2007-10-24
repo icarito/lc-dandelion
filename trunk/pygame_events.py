@@ -92,6 +92,7 @@ class App:
     self.surface.blit(world.surface, (0,0))
     self.old_world_surface = world.surface
     world.surface = self.surface
+    world.draw()
     pygame.display.update()
 
   def _deactivate_world(self, world):

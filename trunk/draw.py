@@ -25,8 +25,7 @@ def points_to_rect(p1, p2):
     x2,y2 = max(p1[0], p2[0]), max(p1[1], p2[1])
     w,h = x2 - x1, y2 - y1
     return Rect((x1,y1),(w+1,h+1))
-
-    
+        
 class Tool(EventListener):
     ''' Abstract tool '''
 
@@ -283,14 +282,15 @@ class ColorPicker(EventListener):
     def draw(self, surface):
         surface.blit(self.surface, self.rect)
 
-class Icon(EventListener):
+class IconButton(EventListener):
 
-    def __init__(self, name, tool=None, default=False):
+    def __init__(self, name, tool=None, control=None, default=False):
         EventListener.__init__(self)
         self.surface = pygame.image.load('icons/%s_32.png' % name)
         self.name = name
         self.rect = Rect(0,0,32,32)
         self.tool = tool
+        self.control = control
         if default:
             app.current_tool = tool
 
@@ -306,9 +306,8 @@ class Icon(EventListener):
     def onclick(self, button, pos):
         if self.tool:
             app.current_tool = self.tool
-
-IMPORT_ICON = Icon('folder')
-SAVE_ICON = Icon('picture_save')
+        elif self.control:
+            self.control()
 
 class Menu(Panel):
 
@@ -319,15 +318,13 @@ class Menu(Panel):
             filename = open_file()
             if filename:
                 canvas.import_file(filename) 
-        IMPORT_ICON.set_handler('onclick', import_image)
-        self.add_subview(IMPORT_ICON, (x,y))
+        self.add_subview(IconButton('folder', control=import_image), (x,y))
         x += 50
         def save_image(self, button, pos):
             filename = save_file()
             if filename:
                 canvas.save_file(filename)
-        SAVE_ICON.set_handler('onclick', save_image)
-        self.add_subview(SAVE_ICON, (x,y))
+        self.add_subview(IconButton('picture_save', control=save_image), (x,y))
 
 
 class Controls(Panel):
@@ -335,25 +332,25 @@ class Controls(Panel):
     def init_subviews(self):
         x,y = self.get_rect().topleft
         x += 4; y += 4
-        self.add_subview(Icon('arrow_out'), (x,y)) # Expand
+        self.add_subview(IconButton('arrow_out', control=canvas.expand), (x,y)) # Expand
         x += 50
-        self.add_subview(Icon('arrow_in'), (x,y)) # Reduce
+        self.add_subview(IconButton('arrow_in', control=canvas.contract), (x,y)) # Reduce
         x += 50
-        self.add_subview(Icon('arrow_rotate_clockwise'), (x,y)) # Rotate
+        self.add_subview(IconButton('arrow_rotate_clockwise', control=canvas.rotate_clockwise), (x,y)) # Rotate
         x += 50
-        self.add_subview(Icon('arrow_rotate_anticlockwise'), (x,y)) # Rotate d'other way
+        self.add_subview(IconButton('arrow_rotate_anticlockwise', control=canvas.rotate_anticlockwise), (x,y)) # Rotate d'other way
         x += 50
-        self.add_subview(Icon('shape_flip_horizontal'), (x,y))
+        self.add_subview(IconButton('shape_flip_horizontal', control=canvas.flip_horizontal), (x,y))
         x += 50
-        self.add_subview(Icon('shape_flip_vertical'), (x,y))
+        self.add_subview(IconButton('shape_flip_vertical', control=canvas.flip_vertical), (x,y))
         x += 50
-        self.add_subview(Icon('arrow_undo'), (x,y))
+        self.add_subview(IconButton('arrow_undo'), (x,y))
         x += 50
-        self.add_subview(Icon('arrow_redo'), (x,y))
+        self.add_subview(IconButton('arrow_redo'), (x,y))
         x += 50
-        self.add_subview(Icon('zoom_in'), (x,y))
+        self.add_subview(IconButton('zoom_in'), (x,y))
         x += 50
-        self.add_subview(Icon('zoom_out'), (x,y))
+        self.add_subview(IconButton('zoom_out'), (x,y))
 
 
 class Tools(Panel):
@@ -361,21 +358,21 @@ class Tools(Panel):
     def init_subviews(self):
         x,y = self.get_rect().topleft
         x += 4; y += 4
-        self.add_subview(Icon('pencil', PenTool(), default=True), (x,y))
+        self.add_subview(IconButton('pencil', tool=PenTool(), default=True), (x,y))
         x += 50
-        self.add_subview(Icon('plugin', TestTool()), (x,y))
+        self.add_subview(IconButton('plugin', tool=TestTool()), (x,y))
         x -= 50; y += 50
-        self.add_subview(Icon('paintcan', FillTool()), (x,y))
+        self.add_subview(IconButton('paintcan', tool=FillTool()), (x,y))
         x += 50
-        self.add_subview(Icon('rect', RectTool()), (x,y))
+        self.add_subview(IconButton('rect', tool=RectTool()), (x,y))
         x -= 50; y += 50
-        self.add_subview(Icon('ellipse', EllipseTool()), (x,y))
+        self.add_subview(IconButton('ellipse', tool=EllipseTool()), (x,y))
         x += 50
-        self.add_subview(Icon('rounded_rect', RoundedRectTool()), (x,y))
+        self.add_subview(IconButton('rounded_rect', tool=RoundedRectTool()), (x,y))
         x -= 50; y += 50
-        self.add_subview(Icon('line', LineTool()), (x,y))
+        self.add_subview(IconButton('line', tool=LineTool()), (x,y))
         x += 50
-        self.add_subview(Icon('text_allcaps'), (x,y))
+        self.add_subview(IconButton('text_allcaps'), (x,y))
         x = 0; y += 50
         self.add_subview(ColorPicker(), (x,y))
         
@@ -408,14 +405,16 @@ class Canvas(Panel):
         image = pygame.image.load(filename)
         im_rect = self.center_image(image)
         self.draw_image(image, im_rect)
+        self.dirty_rect = im_rect
 
     def save_file(self, filename):
-        pyimg = app.surface.subsurface(self.dirty_rect)
+        pyimg = self.current_image()
         pilimg = pygame_to_pil_img(pyimg)
         pilimg.save(filename)
         
     def draw(self):
-        pass
+        if self.dirty_cursor.width or self.dirty_cursor.height:
+            self.echo_to_app(self.app_rect(self.dirty_rect), self.dirty_rect)
         
     # Event handlers
 
@@ -448,8 +447,59 @@ class Canvas(Panel):
 #        pygame.mouse.set_visible(False)
 #        app.current_tool.onmousemove(pos, pos)
 #        self.dirty_cursor = app.current_tool.cursor_rect(pos)
+
+    # Controls
+    EXPAND_RATIO = 1.1
+    CONTRACT_RATION = 1.0 / EXPAND_RATIO
+    ROTATION_UNIT = 15.0
+    
+    def transform(self, ratio=None, rotation=None, flip_h=False, flip_v=False):
+        # extract a surface based on dirty_rect
+        old_center = self.dirty_rect.center
+        image = self.current_image()
+        if ratio:
+            # scale it
+            result = pygame.transform.scale(image, (ratio, ratio))
+        elif rotation:
+            result = pygame.transform.rotate(image, rotation)
+        elif flip_h:
+            result = pygame.transform.flip(image, True, False)
+        elif flip_v:
+            result = pygame.transform.flip(image, False, True)
+        else:
+            return
+        rect = result.get_rect(center=old_center)
+        if self.rect.contains(rect):
+            self.dirty_rect = rect
+        else:
+            self.dirty_rect = self.rect
+        self.surface.blit(result, self.dirty_rect, result.get_rect(size = self.dirty_rect.size))
+        self.echo_to_app(rect, self.local_rect(rect))
+        return rect
+        
+    def expand(self):
+        return self.transform(ratio=EXPAND_RATIO)
+        
+    def contract(self):
+        return self.transform(ratio=CONTRACT_RATIO)
+        
+    def rotate_clockwise(self):
+        return self.transform(rotation= -ROTATION_UNIT)
+        
+    def rotate_anticlockwise(self):
+        return self.transform(rotation=ROTATION_UNIT)
+        
+    def flip_horizontal(self):
+        return self.transform(flip_h=True)
+        
+    def flip_vertical(self):
+        return self.transform(flip_v=True)
+        
         
     # Drawing Utilities
+    
+    def current_image(self):
+        return pygame.transform.chop(self.surface, self.dirty_rect)
 
     def center_image(self, image):
         im_rect = image.get_rect()
@@ -566,7 +616,6 @@ class DrawWorld(Panel):
         self.add_subview(Tools(self, tool_rect))
         control_rect = Rect(100, 0, right_width, 40).inflate(-2,-2)
         self.add_subview(Controls(self, control_rect))
-        self.draw()
 
     def draw(self):
         self.surface.fill(Color.white)
