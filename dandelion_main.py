@@ -32,7 +32,7 @@ class DemoDispatcher(EventDispatcher):
     EventDispatcher._keydown(self, event, time)
 
 def main(fullscreen=False):
-  app = App(fullscreen=fullscreen)
+  app = App(fullscreen=False, screensize=(800,480))
   app.event_dispatcher = DemoDispatcher(app)
   app.add_world(ScratchWorld(app.new_surface()))
   app.add_world(DrawWorld(app.new_surface()))
