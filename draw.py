@@ -214,33 +214,33 @@ class TestTool(Tool):
 
 class Panel(EventListener):
 
-    def __init__(self, parent, rect, surface=None):
+    def __init__(self, parent, rect):
         EventListener.__init__(self, self)
         self.listener = self
         self.parent = parent
         if parent:
              parent.add_subview(self)
-             self.surface = parent.surface
-             self.rect = rect
-        else:
-             self.surface = surface
-             if rect:
-                 self.rect = rect
-             else:
-                 self.rect = surface.get_rect()
+        self.rect = rect
+        print 'Initializing', self.__class__.__name__, rect
         self.init_subviews()
 
     def get_rect(self):
          return self.rect
+         
+    def activate(self):
+        pass
+        
+    def deactivate(self):
+        pass
 
     def init_subviews(self):
         pass
 
-    def draw(self):
-        draw_rounded_rect(self.surface, Color.white, self.get_rect(), Color.black, 1, 5)
+    def draw(self, surface):
+        print 'Drawing', self.__class__.__name__, self.rect
+        draw_rounded_rect(surface, Color.white, self.get_rect(), Color.black, 1, 5)
         for view in self.subviews:
-            view.draw(self.surface)
-        app.surface.blit(self.surface, self.rect)
+            view.draw(surface)
         app.add_dirty(self.rect)
 
 class ColorPicker(EventListener):
@@ -380,16 +380,18 @@ class Tools(Panel):
 class Canvas(Panel):
     
    
-    def __init__(self, parent, rect, surface=None):
+    def __init__(self, parent, rect):
          global canvas
          canvas = self
-         Panel.__init__(self, None, rect, pygame.Surface(rect.size))
-         self.surface.fill(Color.white )
+         Panel.__init__(self, parent, rect)
+         self.surface = pygame.Surface(rect.size)
+         self.surface.fill(Color.white ) # paint the canvas off-screen view white
          self.pen_color = Color.black
          self.pen_width = 4
          self.corner_radius = 10
          self.dirty_rect = Rect(self.get_rect().center,(0,0))
          self.dirty_cursor = Rect(0,0,0,0)
+         app.add_dirty(rect)
          
     def border(self):
         print 'drawing border:', self.rect
@@ -411,10 +413,16 @@ class Canvas(Panel):
         pyimg = self.current_image()
         pilimg = pygame_to_pil_img(pyimg)
         pilimg.save(filename)
+    
+    def activate(self):
+        print 'activating canvas:', self.rect, self.surface.get_rect()
+        self.parent.surface.blit(self.surface, self.rect, self.surface.get_rect())
+        app.add_dirty(self.rect)
         
-    def draw(self):
+    def draw(self, surface):
         if self.dirty_cursor.width or self.dirty_cursor.height:
             self.echo_to_app(self.app_rect(self.dirty_rect), self.dirty_rect)
+        print 'Drawing Canvas', self.rect
         
     # Event handlers
 
@@ -450,7 +458,7 @@ class Canvas(Panel):
 
     # Controls
     EXPAND_RATIO = 1.1
-    CONTRACT_RATION = 1.0 / EXPAND_RATIO
+    CONTRACT_RATIO = 1.0 / EXPAND_RATIO
     ROTATION_UNIT = 15.0
     
     def transform(self, ratio=None, rotation=None, flip_h=False, flip_v=False):
@@ -522,7 +530,7 @@ class Canvas(Panel):
         rect.inflate_ip(self.pen_width, self.pen_width)
         local_rect.inflate_ip(self.pen_width, self.pen_width)
         self.dirty_rect.union_ip(local_rect)
-        app.surface.blit(self.surface, rect, local_rect)
+        self.parent.surface.blit(self.surface, rect, local_rect)
         app.add_dirty(rect)
 
 
@@ -551,7 +559,7 @@ class Canvas(Panel):
         draw_rounded_rect(self.surface, None, local, self.pen_color, self.pen_width, self.corner_radius)
         self.echo_to_app(rect, local)
         
-    def draw_fille_rounded_rect(self, rect):
+    def draw_filled_rounded_rect(self, rect):
         local = self.local_rect(rect)
         draw_rounded_rect(self.surface, self.pen_color, local, None, self.pen_width, self.corner_radius)
         self.echo_to_app(rect, local)
@@ -586,7 +594,8 @@ class Canvas(Panel):
     def draw_fill(self, pos):
         dirty = flood_fill(self.surface, self.local_point(pos), self.pen_color)
     #    self.echo_to_app(self.app_rect(dirty), dirty)
-        self.echo_to_app(self.rect, self.local_rect(self.rect))
+        self.parent.surface.blit(self.surface, self.rect, self.surface.get_rect())
+        app.add_dirty(self.rect)
         
         
 
@@ -595,7 +604,12 @@ class DrawWorld(Panel):
     def __init__(self, surface):
         global app
         app = App.getApp()
-        Panel.__init__(self, None, None, surface)
+        self.surface = surface
+        Panel.__init__(self, None, surface.get_rect())
+        
+    def activate(self):
+        for view in self.subviews:
+            view.activate()
 
     def init_subviews(self):
         # get some values for rectangles
@@ -607,25 +621,27 @@ class DrawWorld(Panel):
         canvas_height = rect.height - 40
         # init canvas panel
         canvas_rect = Rect(100, 40, right_width, canvas_height).inflate(-2,-2)
-        self.add_subview(Canvas(self, canvas_rect))
+        self.canvas = Canvas(self, canvas_rect)
         # init menu  panel
         menu_rect = Rect(0, 0, 100, 40).inflate(-2,-2)
-        self.add_subview(Menu(self, menu_rect))
+        self.menu = Menu(self, menu_rect)
         # init tools panel
         tool_rect = Rect(0, 40, 100, bottom_offset).inflate(-2,-2)
-        self.add_subview(Tools(self, tool_rect))
+        self.tools = Tools(self, tool_rect)
+        # init controls panel
         control_rect = Rect(100, 0, right_width, 40).inflate(-2,-2)
-        self.add_subview(Controls(self, control_rect))
+        self.controls = Controls(self, control_rect)
 
     def draw(self):
+        print 'Draw DrawWorld', self.rect
         self.surface.fill(Color.white)
         for view in self.subviews:
-            view.draw()
+            view.draw(self.surface)
                    
 def main():
   #app = App(fullscreen=True)
   app = App(fullscreen=False, screensize=(800,480))
-  world = DrawWorld(app.new_surface())
+  world = DrawWorld(app.surface)
   app.add_world(world)
   app.run()
 
