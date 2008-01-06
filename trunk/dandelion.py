@@ -201,6 +201,12 @@ class ScratchWorld(object):
         self.listener.set_owner(self)
         self.sprite = ScratchSprite('cute/Character Cat Girl.png')
         self.sprite.move_to(BLOCK_WIDTH, BLOCK_HEIGHT)
+        
+    def activate(self):
+        pass
+        
+    def deactivate(self):
+        pass
 
     def tick(self):
         pass

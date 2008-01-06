@@ -6,7 +6,10 @@ import pygame
 def flood_fill(surface, seed_pos, newColor):
     
    screenBuffer = pygame.surfarray.array3d(surface)
-   oldColor = tuple(screenBuffer[seed_pos[0]][seed_pos[1]])
+   x,y = seed_pos
+   oldColor = tuple(screenBuffer[x][y])
+   oldColor = [int(val) for val in oldColor]
+   oldColor = tuple(oldColor)
    newColor = newColor[0], newColor[1], newColor[2] # drop alpha, if present
       
    print 'comparing oldColor (%s) with newColor (%s) (%s)' % (oldColor, newColor, oldColor == newColor)
@@ -20,20 +23,14 @@ def flood_fill(surface, seed_pos, newColor):
    min_y = h
 
    stack.append(seed_pos)
-   iterations = 0
    while(stack):
-       iterations += 1
-       print 'iterations:', iterations
        x,y = stack.pop()
        y1 = y
        while y1 >= 0 and tuple(screenBuffer[x][y1]) == oldColor:
             y1 -= 1
        y1 += 1
        spanLeft = spanRight = False
-       inner_iterations = 0
        while(y1 < h and tuple(screenBuffer[x][y1]) == oldColor ):
-           inner_iterations += 1
-           print '    inner_iterations:', inner_iterations
            screenBuffer[x][y1] = newColor
            min_x = min(min_x, x)
            max_x = max(max_x, x)
@@ -44,10 +41,10 @@ def flood_fill(surface, seed_pos, newColor):
                spanLeft = True
            elif spanLeft and x > 0 and tuple(screenBuffer[x - 1][y1]) != oldColor:
                spanLeft = False
-           if not spanRight and x < w - 1 and tuple(screenBuffer[x + 1][y1]) == oldColor:
+           if not spanRight and x + 1 < w and tuple(screenBuffer[x + 1][y1]) == oldColor:
                stack.append((x + 1, y1))
                spanRight = True
-           elif spanRight and x < w - 1 and tuple(screenBuffer[x + 1][y1]) != oldColor:
+           elif spanRight and x + 1 < w and tuple(screenBuffer[x + 1][y1]) != oldColor:
                spanRight = False
            y1 += 1
    pygame.surfarray.blit_array(surface, screenBuffer)

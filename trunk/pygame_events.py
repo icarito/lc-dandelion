@@ -79,7 +79,7 @@ class App:
     
   def update(self):
       if self._dirty_rects:
-          # print 'updating with %d dirty rects' % len(self._dirty_rects)
+          #print 'updating with %d dirty rects' % len(self._dirty_rects)
           self._dirty_rects, rects = [], self._dirty_rects
           pygame.display.update(rects)
 
@@ -89,16 +89,18 @@ class App:
     self.current_world = world
     self.event_dispatcher.set_owner(world)
     self.event_dispatcher.set_listener(world.listener)
-    self.surface.blit(world.surface, (0,0))
-    self.old_world_surface = world.surface
+#    self.surface.blit(world.surface, (0,0))
+#    self.old_world_surface = world.surface
     world.surface = self.surface
+    world.activate()
     world.draw()
     pygame.display.update()
 
   def _deactivate_world(self, world):
     if self.old_world_surface:
-      world.surface = self.old_world_surface
-      world.surface.blit(self.surface, (0,0))
+      world.deactivate()
+#      world.surface = self.old_world_surface
+#      world.surface.blit(self.surface, (0,0))
     
   def add_world(self, world):
     self.worlds.append(world)
