@@ -4,8 +4,8 @@ Simple generators for cellular automata
 
 import random
 
-DEFAULT_WIDTH=200
-DEFAULT_HEIGHT=200
+DEFAULT_WIDTH=256
+DEFAULT_HEIGHT=256
 
 BLACK = 0,0,0
 WHITE = 255,255,255
@@ -56,7 +56,7 @@ def corner_avg(matrix, x, y):
     return corner_sum(matrix, x, y) / 4.0
     
 def eight_neighbors(matrix, x, y):
-    four_neighbors(matrix, x, y) + corner_neighbors(matrix, x, y)
+    return four_neighbors(matrix, x, y) + corner_neighbors(matrix, x, y)
     
 def nine_neighbors(matrix, x, y):
     return five_neighbors(matrix, x, y) + corner_neighbors(matrix, x, y)
@@ -91,6 +91,15 @@ def random_binary_matrix():
     
 def random_real_matrix():
     return initialize(lambda x,y: random.random())
+    
+def checkerboard(num):
+    def fun():
+        repeat = DEFAULT_WIDTH / (num * 2)
+        row = ([1] * num + [0] * num) * repeat
+        rev = row[::-1]
+        return ([row] * num + [rev] * num) * repeat
+    return fun
+    
     
 def clamp(value):
     if value < 0.0: return 0
@@ -154,16 +163,16 @@ def pygame_test(matrix_init, generation_function, view_adapter):
         return generation_by_point(generation_function, matrix)
     while(True):
         pygame.event.get()
-        x,y = pygame.mouse.get_pos()
-        if 0 < x < DEFAULT_WIDTH and 0 < y < DEFAULT_HEIGHT:
-            print x,y
-            matrix[x][y] = 1.0
+#        x,y = pygame.mouse.get_pos()
+#        if 0 < x < (DEFAULT_WIDTH) and 0 < y < (DEFAULT_HEIGHT):
+#            print x,y
+#            matrix[x][y] = 1.0
         matrix = draw(matrix, sbuffer)
     
     
 if __name__ == '__main__':
     #test()
-    pygame_test(lambda: EMPTY_MATRIX, wave, wave_adapter)
-#    pygame_test(random_binary_matrix, life, life_adapter)
+#    pygame_test(checkerboard(8), wave, wave_adapter)
+    pygame_test(checkerboard(16), life, life_adapter)
     
     
