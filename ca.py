@@ -2,7 +2,8 @@
 Simple generators for cellular automata
 '''
 
-import random
+from numpy import *
+from numpy.random import *
 
 DEFAULT_WIDTH=256
 DEFAULT_HEIGHT=256
@@ -80,17 +81,13 @@ def generation_by_point(function, matrix):
     return [[function(matrix,x,y) for y in glen(matrix[x])] for x in glen(matrix)]
     
 def initialize(function, width=DEFAULT_WIDTH, height=DEFAULT_HEIGHT):
-    return [[function(x,y) for y in xrange(height)] for x in xrange(width)]
+    return fromfunction(function, (width,height)) 
     
-def view(matrix, fmt=str):
-    for y in glen(matrix[0]):
-        print ''.join([fmt(matrix[x][y]) for x in glen(matrix)])
-        
-def random_binary_matrix():
-    return initialize(lambda x,y: random.randint(0,1))
+def random_binary_matrix(width=DEFAULT_WIDTH, height=DEFAULT_HEIGHT):
+    return randint(0,2,(width,height))
     
-def random_real_matrix():
-    return initialize(lambda x,y: random.random())
+def random_real_matrix(width=DEFAULT_WIDTH, height=DEFAULT_HEIGHT):
+    return rand(width,height)
     
 def checkerboard(num):
     def fun():
@@ -107,19 +104,15 @@ def clamp(value):
     return value
     
     
-EMPTY_MATRIX = initialize(lambda x,y: 0)
-UNIT_MATRIX = initialize(lambda x,y: 1)
+EMPTY_MATRIX = zeros((DEFAULT_WIDTH,DEFAULT_HEIGHT), int)
+UNIT_MATRIX = ones((DEFAULT_WIDTH, DEFAULT_HEIGHT), int)
 
 def test():
-    assert(EMPTY_MATRIX != UNIT_MATRIX)
     assert(EMPTY_MATRIX[0][0] == 0)
     assert(EMPTY_MATRIX[DEFAULT_WIDTH-1][DEFAULT_HEIGHT-1] == 0)
     assert(UNIT_MATRIX[0][DEFAULT_HEIGHT-1] == 1)
     assert(UNIT_MATRIX[DEFAULT_WIDTH-1][0] == 1)
-    assert(initialize(lambda x,y: 1) == UNIT_MATRIX)
-    assert(generation_by_value(lambda value: value + 1, EMPTY_MATRIX), UNIT_MATRIX)
     print 'OK'
-    view(EMPTY_MATRIX)
     
 def wave(matrix, x, y):
     C = matrix[x][y]
@@ -154,7 +147,7 @@ def pygame_test(matrix_init, generation_function, view_adapter):
     screen.fill(BLACK)
     sbuffer = pygame.surfarray.array3d(screen)
     matrix = matrix_init()
-    #view(matrix)
+    print matrix
     def draw(matrix, sbuffer):
         for x,y in points(matrix):
             sbuffer[x][y] = view_adapter(matrix[x][y])
@@ -168,10 +161,11 @@ def pygame_test(matrix_init, generation_function, view_adapter):
 #            print x,y
 #            matrix[x][y] = 1.0
         matrix = draw(matrix, sbuffer)
+        time.sleep(0.03)
     
     
 if __name__ == '__main__':
-    #test()
+#    test()
 #    pygame_test(checkerboard(8), wave, wave_adapter)
     pygame_test(checkerboard(16), life, life_adapter)
     
