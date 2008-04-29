@@ -1,0 +1,7 @@
+This is an experimental and example project to see what I can do with dragging (and how easy I can make it) in Cocoa.  There are several projects I want to use the results in:
+
+* Kutia, to drag the turtles
+* DrawingBoard, to create selection rectangles
+* PyScratch, to create draggable, snappable widgets
+
+Probably a lot more.

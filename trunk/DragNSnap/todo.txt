@@ -1,0 +1,4 @@
+* Drag to create a selection rect
+* Drag a widget and have it snap to another widget
+* Put snapping widgets into Interface Builder
+* Drag to rotate vs. drag to move
