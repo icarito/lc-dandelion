@@ -1,0 +1,84 @@
+<!DOCTYPE html 
+      PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:svg="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink">
+	<head>
+		<title>Experimental Blocks Support</title>
+		<link type="text/css" rel="stylesheet" href="blocks.css" />
+		<style type="text/css">
+			table{
+				empty-cells: show;
+				padding: 0px;
+			}
+			td{
+				height: 20px;
+				width: 40px;
+				min-height: 20px;
+				min-width: 40px;
+			}
+			div{
+				height: 10px;
+			}
+			.vt{
+				vertical-align: top;
+			}
+			.tl{
+				-webkit-border-top-left-radius: 10px;
+			}
+			.pz_tl{
+				-webkit-border-top-left-radius: 5px;
+			}
+			.tr{
+				-webkit-border-top-right-radius: 10px;
+			}
+			.pz_tr{
+				-webkit-border-top-right-radius: 5px;
+			}
+			.bl{
+				-webkit-border-bottom-left-radius: 10px;
+			}
+			.pz_bl{
+				-webkit-border-bottom-left-radius: 5px;
+			}
+			.br{
+				-webkit-border-bottom-right-radius: 10px;
+			}
+			.pz_br{
+				-webkit-border-bottom-right-radius: 5px;
+			}
+			.b{
+				background-color: blue;
+			}
+			.w{
+				background-color: white;
+			}
+		</style>
+		<script type="text/javascript" src="jquery-1.2.3.min.js"></script>
+		<script type="text/javascript" src="blocks.js"></script>
+	</head>
+	<body>
+		<svg:svg xmnlns="http://www.w3.org/2000/svg" width="100" height="100" version="1.1">
+			<svg:circle cx="50" cy="50" r="50" fill="red" />
+		</svg:svg>
+		
+		<table cellpadding="0" cellspacing="0">
+			<tr>
+				<td class="tl pz_tr b"></td>
+				<td class="b vt"><div class="pz_br pz_bl w"></div></td>
+				<td class="tr br pz_tl b"></td>
+			</tr>
+			<tr>
+				<td class="b"></td>
+				<td class=""></td>
+				<td class=""></td>
+			</tr>
+			<tr>
+				<td class="bl b"></td>
+				<td class="b"></td>
+				<td class="br tr b"></td>
+			</tr>
+		</table>
+	</body>
+</html>
