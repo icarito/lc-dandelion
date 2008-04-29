@@ -1,0 +1,45 @@
+ArgMorph: I am an abstract superclass for all kinds of argument morphs--morphs that are used to hold the argument for various kinds of BlockMorph.
+
+AttributeArgMorph:
+
+BlockMorph: I and my subclasses represent statements in a block-based graphical programming language.
+
+BooleanArgMorph:
+
+CBlockMorph: I am a command block that contains a nested sequence of command blocks, such as a loop.
+
+ChoiceArgMorph: I am used to represent an ArgMorph that allows the user to choose from a popup menu of choices. For example, I might allow selection of a sensor port from the list ('a', 'b', 'c', 'd').
+
+ChoiceOrExpressionArgMorph: Argument placeholder that can either allow selection from a menu or be replaced with a numeric reporter block.
+
+ColorArgMorph: I represent a color argument for a command block. Clicking on me allows the user to change my color value.
+
+CommandBlockMorph: I represent a command or reporter. I have a label and may also have one or more arguments. The label text, number of arguments, and ordering of arguments and keywords are defined by my commandSpec string. This string consists of a sequence of keywords interspersed with argument specifications that indicate where the arguments appear.
+
+CommentBlockMorph: Main comment stating the purpose of this class and relevant relationship to other classes.
+
+EventHatBlockMorph: I am a hat block for stacks triggered by Scratch events.
+
+EventTitleMorph: I am used as the title for a named event hat. I have a popup list of events that includes a way to type in a new event name.
+
+ExpressionArgMorph: I represent a literal value such as a number or string. I can be edited.
+
+ExpressionArgMorphWithMenu: I represent a literal value such as a number or string. I can be edited by typing or a value can be chosen from a pull-down menu.
+
+HatBlockMorph: I represent a script consisting of a sequence of blocks.
+
+IfElseBlockMorph: I am an "E" shaped block used for the if-then-else control structure.
+
+KeyEventHatMorph: I am a hat block for stacks triggered by Scratch keyboard events.
+
+MouseClickEventHatMorph: I am a hat block for stacks triggered by clicking on an object with the mouse.
+
+ReporterBlockMorph:
+
+SetterBlockMorph: I am a block for setting a variable.
+
+SpriteArgMorph: I represent a scriptable scratch morph argument for a command block.  Clicking on me and then another point on the screen allows the user to set my value to the scriptable scratch morph that has been clicked on.
+
+VariableBlockMorph: I am a block that reports the value of either a built-in or a user variable. When dropped into the workspace, I turn into a WatcherMorph for that variable with an optional slider.
+
+WhenHatBlockMorph: 
