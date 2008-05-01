@@ -8,6 +8,11 @@ td{
 	min-height: 20px;
 	min-width: 40px;
 }
+
+td:nth-child(1){
+    width: 10px;
+}
+
 div{
 	height: 10px;
 }
