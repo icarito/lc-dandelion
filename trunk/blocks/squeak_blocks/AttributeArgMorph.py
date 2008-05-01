@@ -1,0 +1,1 @@
+import ChoiceArgMorphclass AttributeArgMorph(ChoiceArgMorph):    # access methods        def options(self):        '''        Answer my set of attributes        '''        if isinstance(self.owner, CommandBlockMorph) and hasattr(self.owner, 'getAttribute_of'):            return owner.target.attributeNames
