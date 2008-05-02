@@ -20,11 +20,11 @@ def block(width=200, height=45, radius=5, tabwidth=15, tabheight=10, armwidth=10
     '''
     def L(x,y):
         # Lx y
-        return 'A%d %d' % (x,y)
+        return 'L %d,%d' % (x,y)
     def A(x,y):
         # Arx ry x-axis-rotation large-arc-flag sweep-flag x y
-        return 'L%d %d 0 0 0 %d %d' % (radius, radius, x, y)
-    path = ['M%d 0' % radius,
+        return 'A %d,%d 0 0,0 %d,%d' % (radius, radius, x, y)
+    path = ['M %d,0' % radius,
         L(armwidth - radius, 0),
         A(armwidth, radius),
         L(armwidth, tabheight - radius),
