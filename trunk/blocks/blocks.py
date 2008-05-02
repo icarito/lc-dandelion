@@ -14,42 +14,43 @@ perform an absolute absolute vertical lineto to location (x,y+ry)
 perform an absolute elliptical arc operation to coordinate (x+rx,y)
 '''
 
-def block(width=200, height=45, radius=5, tabwidth=15, tabheight=10, armwidth=10):
+def block(width=200, height=45, radius=5, tabwidth=20, tabheight=15, armwidth=20):
     '''
     A basic, single-step block with upper slot, lower tab and no contents
     '''
     def L(x,y):
         # Lx y
         return 'L %d,%d' % (x,y)
-    def A(x,y):
+    def A(x,y,flag=0):
         # Arx ry x-axis-rotation large-arc-flag sweep-flag x y
-        return 'A %d,%d 0 0,0 %d,%d' % (radius, radius, x, y)
+        return 'A %d,%d 0 0,%d %d,%d' % (radius, radius, flag, x, y)
     path = ['M %d,0' % radius,
         L(armwidth - radius, 0),
-        A(armwidth, radius),
+        A(armwidth, radius, 1),
         L(armwidth, tabheight - radius),
         A(armwidth + radius, tabheight),
         L(armwidth + tabwidth - radius, tabheight),
         A(armwidth + tabwidth, tabheight - radius),
         L(armwidth + tabwidth, radius),
-        A(armwidth + tabwidth + radius, 0),
+        A(armwidth + tabwidth + radius, 0, 1),
         L(width - radius, 0),
-        A(width, radius),
+        A(width, radius, 1),
         L(width, height - radius),
-        A(width - radius, height),
+        A(width - radius, height, 1),
         L(armwidth + tabwidth + radius, height),
         A(armwidth + tabwidth, height + radius),
         L(armwidth + tabwidth, height + tabheight - radius),
-        A(armwidth + tabwidth - radius, height + tabheight),
+        A(armwidth + tabwidth - radius, height + tabheight, 1),
         L(armwidth + radius, height + tabheight),
-        A(armwidth, height + tabheight - radius),
+        A(armwidth, height + tabheight - radius, 1),
         L(armwidth, height + radius),
         A(armwidth - radius, height),
         L(radius, height),
-        A(0, height - radius),
-        L(radius, 0),
+        A(0, height - radius, 1),
+        L(0, radius),
+        A(radius, 0, 1),
         'z']
     return ' '.join(path)
     
 if __name__ == '__main__':
-    print block()
+    print block(),
