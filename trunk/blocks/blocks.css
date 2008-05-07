@@ -49,3 +49,38 @@ div{
 .w{
 	background-color: white;
 }
+
+div{
+    position: relative;
+    margin-top: -5px;
+}
+
+.block{
+    height: 31px;
+    width: 200px;
+    background-image: url(block.png);
+}
+
+.container{
+    height: 91px;
+    width: 200px;
+    background-image: url(container.png);
+    padding-left: 15px;
+    padding-top: 30px;
+    padding-bottom: 10px;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: top left;
+}
+
+.trigger{
+    height: 31px;
+    width: 200px;
+    background-image: url(trigger.png);
+}
+
+label{
+    position: absolute;
+    top: 5px;
+    left: 20px;
+}
