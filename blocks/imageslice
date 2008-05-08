@@ -1,0 +1,14 @@
+#!/usr/bin/env python
+
+import os, sys
+import Image
+cwd = os.getcwd()
+base, ext = os.path.splitext(sys.argv[1])
+pngfile = os.path.join(cwd, base + '.png')
+# load image
+# get width/height
+# get offsets
+# slice into 3 horizontal pieces or 9 pieces, depending on number of offsets
+# save each slice into image folder
+
+

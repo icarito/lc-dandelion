@@ -66,11 +66,9 @@ div{
     width: 200px;
     background-image: url(container.png);
     padding-left: 15px;
-    padding-top: 30px;
+    padding-top: 26px;
     padding-bottom: 10px;
-    background-attachment: fixed;
     background-repeat: no-repeat;
-    background-position: top left;
 }
 
 .trigger{
