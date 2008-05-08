@@ -2,13 +2,42 @@
 
 import os, sys
 import Image
+
+def crop_and_save(image, box, filename):
+	im = image.crop(box)
+	im.load()
+	im.save(filename)
+
 cwd = os.getcwd()
 base, ext = os.path.splitext(sys.argv[1])
 pngfile = os.path.join(cwd, base + '.png')
 # load image
+im = Image.open(sys.argv[1])
 # get width/height
+w,h = im.size
 # get offsets
+offsets = [int(i) for i in sys.argv[2:]]
 # slice into 3 horizontal pieces or 9 pieces, depending on number of offsets
+if len(offsets) == 2:
+	l,r = offsets
+	crop_and_save(im, (0,0,l,h-1), base + '_left.png')
+	crop_and_save(im, (l + 1, 0, l + 2, h-1), base + '_centre.png')
+	crop_and_save(im, (r, 0, w-1, h-1), base + '_right.png')
+elif len(offsets) == 4:
+	l,t,r,b = offsets # borders of centre box
+	crop_and_save(im, (0,0,l,t), base + '_top_left.png')
+	crop_and_save(im, (0,t+1,l,t + 2), base + '_left.png')
+	crop_and_save(im, (0,b+1,l,h-1), base + '_bottom_left.png')
+	crop_and_save(im, (l+1,0,l+2,t), base + '_top.png')
+	crop_and_save(im, (l+1,t+1,l+2,t+2), base + '_centre.png')
+	crop_and_save(im, (l+1,b+1,l+2,h-1), base + '_bottom.png')
+	crop_and_save(im, (r+1,0,w-1,t), base + '_top_right.png')
+	crop_and_save(im, (r+1,t+1,w-1,t+2), base + '_right.png')
+	crop_and_save(im, (r+1,b+1,w-1,h-1), base + '_bottom_right.png')
+else:
+	print 'Error, slicing requires either two offsets (for horizontal scaling) or four offsets (for both horizontal and vertical scaling)'
+
+	
 # save each slice into image folder
 
 

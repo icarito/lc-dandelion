@@ -1,55 +1,3 @@
-table{
-	empty-cells: show;
-	padding: 0px;
-}
-td{
-	height: 20px;
-	width: 40px;
-	min-height: 20px;
-	min-width: 40px;
-}
-
-td:nth-child(1){
-    width: 10px;
-}
-
-div{
-	height: 10px;
-}
-.vt{
-	vertical-align: top;
-}
-.tl{
-	-webkit-border-top-left-radius: 10px;
-}
-.pz_tl{
-	-webkit-border-top-left-radius: 5px;
-}
-.tr{
-	-webkit-border-top-right-radius: 10px;
-}
-.pz_tr{
-	-webkit-border-top-right-radius: 5px;
-}
-.bl{
-	-webkit-border-bottom-left-radius: 10px;
-}
-.pz_bl{
-	-webkit-border-bottom-left-radius: 5px;
-}
-.br{
-	-webkit-border-bottom-right-radius: 10px;
-}
-.pz_br{
-	-webkit-border-bottom-right-radius: 5px;
-}
-.b{
-	background-color: blue;
-}
-.w{
-	background-color: white;
-}
-
 div{
     position: relative;
     margin-top: -5px;
@@ -58,23 +6,31 @@ div{
 .block{
     height: 31px;
     width: 200px;
-    background-image: url(block.png);
+    background-image: url(images/block.png);
 }
 
 .container{
-    height: 91px;
     width: 200px;
-    background-image: url(container.png);
+/*    background-color: white;
+    background: url(images/container_top_left.png) top left no-repeat,
+                url(images/container_bottom_left.png) bottom left no-repeat,
+                url(images/container_top_right.png) top right no-repeat,
+                url(images/container_bottom_right.png) bottom right no-repeat,
+                url(images/container_left.png) center left repeat-y;
+                url(images/container_top.png) top repeat-x,
+                url(images/container_bottom.png) bottom repeat-x;
+*/
+    border-width: 27px 10px 25px 44px;
+    -webkit-border-image: uri(images/container.png) 27px 10px 25px 44px;
     padding-left: 15px;
     padding-top: 26px;
-    padding-bottom: 10px;
-    background-repeat: no-repeat;
+    padding-bottom: 30px;
 }
 
 .trigger{
     height: 31px;
     width: 200px;
-    background-image: url(trigger.png);
+    background-image: url(images/trigger.png);
 }
 
 label{
