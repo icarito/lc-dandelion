@@ -11,20 +11,66 @@ div{
 
 .container{
     width: 200px;
-/*    background-color: white;
-    background: url(images/container_top_left.png) top left no-repeat,
-                url(images/container_bottom_left.png) bottom left no-repeat,
-                url(images/container_top_right.png) top right no-repeat,
-                url(images/container_bottom_right.png) bottom right no-repeat,
-                url(images/container_left.png) center left repeat-y;
-                url(images/container_top.png) top repeat-x,
-                url(images/container_bottom.png) bottom repeat-x;
-*/
-    border-width: 27px 10px 25px 44px;
-    -webkit-border-image: uri(images/container.png) 27px 10px 25px 44px;
-    padding-left: 15px;
-    padding-top: 26px;
-    padding-bottom: 30px;
+    margin-top: 0px;
+    padding: 27px 10px 25px 44px;
+}
+.container .top_left{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 44px;
+    height: 22px;
+    background: transparent url(images/container_top_left.png) top left no-repeat;
+}
+.container .top_right{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 5px;
+    height: 22px;
+    background: transparent url(images/container_top_right.png) top right no-repeat;
+}
+.container .bottom_left{
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    width: 44px;
+    height: 26px;
+    background: transparent url(images/container_bottom_left.png) bottom left no-repeat;
+}
+.container .bottom_right{
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    width: 5px;
+    height: 26px;
+    background: transparent url(images/container_bottom_right.png) bottom right no-repeat;
+}
+.container .top{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 151px;
+    height: 22px;
+    margin-left: 44px;
+    margin-right: 5px;
+    background: transparent url(images/container_arm.png) top left repeat-x; 
+}
+.container .bottom{
+    position: absolute;
+    left: 44px;
+    bottom: 0px;
+    width: 151px;
+    height: 26px;
+    background: transparent url(images/container_arm.png) top left repeat-x; 
+}
+.container .left{
+    position: absolute;
+    left: 0px;
+    top: 22px;
+    width: 44px;
+    height: 133px;
+    background: transparent url(images/container_leg.png) top left repeat-y;
 }
 
 .trigger{
