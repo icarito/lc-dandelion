@@ -1,82 +1,98 @@
 div{
     position: relative;
-    margin-top: -5px;
 }
 
 .block{
     height: 31px;
     width: 200px;
-    background-image: url(images/block.png);
+    background: transparent url(images/block.png) top left no-repeat;
+}
+
+.block .right{
+    position: absolute;
+    width: 5px;
+    height: 100%;
+    right: -5px;
+    top: 0px;
+    background: transparent url(images/block.png) -995px 0px no-repeat;
 }
 
 .container{
     width: 200px;
-    margin-top: 0px;
-    padding: 27px 10px 25px 44px;
+    margin-top: 22px;
+    margin-left: 44px;
+    margin-bottom: 26px;
 }
 .container .top_left{
     position: absolute;
-    left: 0px;
-    top: 0px;
+    left: -44px;
+    top: -22px;
     width: 44px;
     height: 22px;
-    background: transparent url(images/container_top_left.png) top left no-repeat;
+    background: transparent url(images/container.png) top left no-repeat;
 }
 .container .top_right{
     position: absolute;
-    right: 0px;
-    top: 0px;
+    right: -5px;
+    top: -22px;
     width: 5px;
     height: 22px;
-    background: transparent url(images/container_top_right.png) top right no-repeat;
+    background: transparent url(images/container.png) top right no-repeat;
 }
 .container .bottom_left{
     position: absolute;
-    left: 0px;
-    bottom: 0px;
+    left: -44px;
+    bottom: -26px;
     width: 44px;
     height: 26px;
-    background: transparent url(images/container_bottom_left.png) bottom left no-repeat;
+    background: transparent url(images/container.png) bottom left no-repeat;
 }
 .container .bottom_right{
     position: absolute;
-    right: 0px;
-    bottom: 0px;
+    right: -5px;
+    bottom: -26px;
     width: 5px;
     height: 26px;
-    background: transparent url(images/container_bottom_right.png) bottom right no-repeat;
+    background: transparent url(images/container.png) bottom right no-repeat;
 }
 .container .top{
     position: absolute;
     left: 0px;
-    top: 0px;
-    width: 151px;
+    top: -22px;
+    width: 100%;
     height: 22px;
-    margin-left: 44px;
-    margin-right: 5px;
-    background: transparent url(images/container_arm.png) top left repeat-x; 
+    background: transparent url(images/container.png) -44px 0px no-repeat;
 }
 .container .bottom{
     position: absolute;
-    left: 44px;
-    bottom: 0px;
-    width: 151px;
+    left: 0px;
+    bottom: -26px;
+    width: 100%;
     height: 26px;
-    background: transparent url(images/container_arm.png) top left repeat-x; 
+    background: transparent url(images/container.png) -44px -985px no-repeat;
 }
 .container .left{
     position: absolute;
-    left: 0px;
-    top: 22px;
-    width: 44px;
-    height: 133px;
-    background: transparent url(images/container_leg.png) top left repeat-y;
+    left: -44px;
+    top: 0px;
+    width: 22px;
+    height: 100%;
+    background: transparent url(images/container.png) 0px -22px no-repeat;
 }
 
 .trigger{
     height: 31px;
     width: 200px;
-    background-image: url(images/trigger.png);
+    background: transparent url(images/trigger.png) top left no-repeat;
+}
+
+.trigger .right{
+    position: absolute;
+    width: 5px;
+    height: 100%;
+    right: -5px;
+    top: 0px;
+    background: transparent url(images/trigger.png) -995px 0px no-repeat;
 }
 
 label{

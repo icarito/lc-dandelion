@@ -1,4 +1,4 @@
-function init_containers(){
+function add_extraneous_elements(){
     $('.container').prepend(
         '<div class="top_left"></div>' + 
         '<div class="top"></div>' + 
@@ -8,6 +8,8 @@ function init_containers(){
         '<div class="bottom"></div>' + 
         '<div class="bottom_right"></div>'
     );
+    $('.block').prepend('<div class="right"></div>');
+    $('.trigger').prepend('<div class="right"></div>');
 }
 
-$(init_containers);
+$(add_extraneous_elements);
