@@ -44,7 +44,7 @@ class Block(object):
 
     def __init__(self, **kws):
         self.color = 'blue'
-        self.width = 200
+        self.width = 1000
         self.height = 25
         self.radius = 3
         self.tabwidth = 11
@@ -223,18 +223,18 @@ class Block(object):
         return [self.vlineby(self.armheight - self.radius * 2)]
         
     def save(self):
-        f = open(self.type + '.svg', 'w')
+        f = open('images/' + self.type + '.svg', 'w')
         f.write(self.fileout())
         f.close()
         
     def convert(self):
         import os, subprocess
-        cwd = os.getcwd()
+        cwd = os.path.join(os.getcwd(), 'images')
         os.environ['locale'] = 'C'
         bin = '/Applications/Inkscape.app/Contents/Resources/bin/inkscape'
         svgfile = os.path.join(cwd, self.type + '.svg')
         pngfile = os.path.join(cwd, self.type + '.png')
-        subprocess.check_call([bin, '--without-gui', '--file=%s' % svgfile,
+        subprocess.check_call([bin, '--without-gui', '--file=%s' % svgfile, '--export-id=%s' % self.type, '--export-id-only',
             '--export-png=%s' % pngfile])
             
     def update(self):
@@ -255,7 +255,7 @@ class Container(Block):
     def __init__(self, **kws):
         super(Container, self).__init__()
         if 'height' not in kws:
-            self.height = 80
+            self.height = 1000
         if 'type' not in kws:
             self.type = 'container'
     
