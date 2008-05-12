@@ -2,19 +2,64 @@ div{
     position: relative;
 }
 
-.block{
+.drop_pointer{
+    position: absolute;
+    left: 14px;
+    top: 0px;
+    width: 11px;
+    height: 6px;
+}
+
+.drop_target{
+    position: absolute;
+    left: 0px;
+    top: 24px;
+    width: 100%;
+    height: 6px;
+}
+
+.drop_ok{
+    background-color: #FFF;
+}
+
+.trigger{
+    padding-top: 31px;
+    width: 200px;
+    background: transparent url(images/trigger.png) top left no-repeat;
+}
+
+.trigger > .right{
+    position: absolute;
+    width: 5px;
     height: 31px;
+    right: -5px;
+    top: 0px;
+    background: transparent url(images/trigger.png) -995px 0px no-repeat;
+}
+
+.block{
+    padding-top: 31px;
     width: 200px;
     background: transparent url(images/block.png) top left no-repeat;
 }
 
-.block .right{
+.block > .block{
+    top: -4px;
+}
+
+.block > .right{
     position: absolute;
     width: 5px;
-    height: 100%;
+    height: 31px;
     right: -5px;
     top: 0px;
     background: transparent url(images/block.png) -995px 0px no-repeat;
+}
+
+label{
+    position: absolute;
+    top: 5px;
+    left: 20px;
 }
 
 .container{
@@ -23,15 +68,28 @@ div{
     margin-left: 44px;
     margin-bottom: 26px;
 }
-.container .top_left{
+
+.container > label{
+    top: -22px;
+}
+.container > .top_left{
     position: absolute;
     left: -44px;
     top: -22px;
     width: 44px;
-    height: 22px;
+    height: 26px;
     background: transparent url(images/container.png) top left no-repeat;
 }
-.container .top_right{
+
+.container > .drop_pointer{
+    top: -22px;
+    left: -30px;
+}
+.container > .drop_target{
+    top: -2px;
+    left: -30px;
+}
+.container > .top_right{
     position: absolute;
     right: -5px;
     top: -22px;
@@ -39,7 +97,7 @@ div{
     height: 22px;
     background: transparent url(images/container.png) top right no-repeat;
 }
-.container .bottom_left{
+.container > .bottom_left{
     position: absolute;
     left: -44px;
     bottom: -26px;
@@ -47,7 +105,7 @@ div{
     height: 26px;
     background: transparent url(images/container.png) bottom left no-repeat;
 }
-.container .bottom_right{
+.container > .bottom_right{
     position: absolute;
     right: -5px;
     bottom: -26px;
@@ -55,7 +113,7 @@ div{
     height: 26px;
     background: transparent url(images/container.png) bottom right no-repeat;
 }
-.container .top{
+.container > .top{
     position: absolute;
     left: 0px;
     top: -22px;
@@ -63,7 +121,7 @@ div{
     height: 22px;
     background: transparent url(images/container.png) -44px 0px no-repeat;
 }
-.container .bottom{
+.container > .bottom{
     position: absolute;
     left: 0px;
     bottom: -26px;
@@ -71,7 +129,7 @@ div{
     height: 26px;
     background: transparent url(images/container.png) -44px -985px no-repeat;
 }
-.container .left{
+.container > .left{
     position: absolute;
     left: -44px;
     top: 0px;
@@ -80,23 +138,7 @@ div{
     background: transparent url(images/container.png) 0px -22px no-repeat;
 }
 
-.trigger{
-    height: 31px;
-    width: 200px;
-    background: transparent url(images/trigger.png) top left no-repeat;
+.container > .container, .container > .block{
+    left: -28px;
 }
 
-.trigger .right{
-    position: absolute;
-    width: 5px;
-    height: 100%;
-    right: -5px;
-    top: 0px;
-    background: transparent url(images/trigger.png) -995px 0px no-repeat;
-}
-
-label{
-    position: absolute;
-    top: 5px;
-    left: 20px;
-}
