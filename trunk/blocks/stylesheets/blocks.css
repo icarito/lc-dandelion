@@ -25,7 +25,7 @@ div{
 .trigger{
     padding-top: 31px;
     width: 200px;
-    background: transparent url(images/trigger.png) top left no-repeat;
+    background: transparent url(../images/trigger.png) top left no-repeat;
 }
 
 .trigger > .right{
@@ -34,13 +34,13 @@ div{
     height: 31px;
     right: -5px;
     top: 0px;
-    background: transparent url(images/trigger.png) -995px 0px no-repeat;
+    background: transparent url(../images/trigger.png) -995px 0px no-repeat;
 }
 
 .block{
     padding-top: 31px;
     width: 200px;
-    background: transparent url(images/block.png) top left no-repeat;
+    background: transparent url(../images/block.png) top left no-repeat;
 }
 
 .block > .block{
@@ -53,7 +53,7 @@ div{
     height: 31px;
     right: -5px;
     top: 0px;
-    background: transparent url(images/block.png) -995px 0px no-repeat;
+    background: transparent url(../images/block.png) -995px 0px no-repeat;
 }
 
 label{
@@ -78,7 +78,7 @@ label{
     top: -22px;
     width: 44px;
     height: 26px;
-    background: transparent url(images/container.png) top left no-repeat;
+    background: transparent url(../images/container.png) top left no-repeat;
 }
 
 .container > .drop_pointer{
@@ -95,7 +95,7 @@ label{
     top: -22px;
     width: 5px;
     height: 22px;
-    background: transparent url(images/container.png) top right no-repeat;
+    background: transparent url(../images/container.png) top right no-repeat;
 }
 .container > .bottom_left{
     position: absolute;
@@ -103,7 +103,7 @@ label{
     bottom: -26px;
     width: 44px;
     height: 26px;
-    background: transparent url(images/container.png) bottom left no-repeat;
+    background: transparent url(../images/container.png) bottom left no-repeat;
 }
 .container > .bottom_right{
     position: absolute;
@@ -111,7 +111,7 @@ label{
     bottom: -26px;
     width: 5px;
     height: 26px;
-    background: transparent url(images/container.png) bottom right no-repeat;
+    background: transparent url(../images/container.png) bottom right no-repeat;
 }
 .container > .top{
     position: absolute;
@@ -119,7 +119,7 @@ label{
     top: -22px;
     width: 100%;
     height: 22px;
-    background: transparent url(images/container.png) -44px 0px no-repeat;
+    background: transparent url(../images/container.png) -44px 0px no-repeat;
 }
 .container > .bottom{
     position: absolute;
@@ -127,7 +127,7 @@ label{
     bottom: -26px;
     width: 100%;
     height: 26px;
-    background: transparent url(images/container.png) -44px -985px no-repeat;
+    background: transparent url(../images/container.png) -44px -985px no-repeat;
 }
 .container > .left{
     position: absolute;
@@ -135,7 +135,7 @@ label{
     top: 0px;
     width: 22px;
     height: 100%;
-    background: transparent url(images/container.png) 0px -22px no-repeat;
+    background: transparent url(../images/container.png) 0px -22px no-repeat;
 }
 
 .container > .container, .container > .block{
