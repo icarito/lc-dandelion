@@ -7,23 +7,27 @@
 	<head>
 		<title>Experimental Blocks Support</title>
 		<link type="text/css" rel="stylesheet" href="blocks.css" />
-		<script type="text/javascript" src="jquery-1.2.3.min.js"></script>
-		<script type="text/javascript" src="blocks.js"></script>
+		<script type="text/javascript" src="javascripts/jquery-1.2.4b.min.js"></script>
+		<script type="text/javascript" src="javascripts/ui.core.min.js"></script>
+		<script type="text/javascript" src="javascripts/ui.draggable.min.js"></script>
+		<script type="text/javascript" src="javascripts/ui.droppable.min.js"></script>
+		<script type="text/javascript" src="javascripts/ui.accordion.min.js"></script>
+		<script type="text/javascript" src="javascripts/blocks.js"></script>
 	</head>
 	<body>
 		<div class="trigger">
 			<label>On event</label>
-		</div>
-		<div class="container">
-			<label>Forever</label>
-			<div class="block">
-				<label>Step one</label>
-			</div>
-			<div class="block">
-				<label>Step two</label>
-			</div>
-			<div class="block">
-				<label>Step three</label>
+			<div class="container">
+				<label>Forever</label>
+				<div class="block">
+					<label>Step one</label>
+					<div class="block">
+						<label>Step two</label>
+						<div class="block">
+							<label>Step three</label>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</body>
