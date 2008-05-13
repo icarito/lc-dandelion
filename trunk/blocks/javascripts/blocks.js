@@ -23,7 +23,7 @@ function drag_activate(e, ui){
 }
 
 function drag_helper(e, ui){
-    return $('.drop_pointer', this);
+    return this.parentNode;
 }
 
 
@@ -40,10 +40,11 @@ function add_extraneous_elements(){
     $('.block, .trigger').prepend('<div class="right"></div>');
     $('.block, .container').prepend('<div class="drop_pointer"></div>');
     $('.block, .container, .trigger').append('<div class="drop_target"></div>');
-    $('.block, .container, .trigger').draggable();
+//    $('.trigger').draggable();
+    $('.drop_pointer').draggable({handle: this.parentNode});
 //    $('.block, .trigger, .container').draggable({helper: drag_helper});
 //    $('.drop_target').droppable({activate: drag_activate});
-    $('.drop_target').droppable({accept: '.block, .container', hoverClass: 'drop_ok', out: drag_out, drop: drag_drop, over: drag_over});
+    $('.drop_target').droppable({accept: '.drop_pointer', hoverClass: 'drop_ok', out: drag_out, drop: drag_drop, over: drag_over});
 }
 
 $(add_extraneous_elements);
