@@ -1,3 +1,30 @@
+// jQuery extension
+
+$.fn.extend({
+    box: function(){
+        var pos = this.offset();
+        return {left: pos.left, top: pos.top, right: pos.left + this.width(), bottom: pos.top + this.height()};
+    },
+    contains: function(other){
+        var b1 = this.box();
+        var b2 = $(other).box();
+        if (b2.left < b1.left) return false;
+        if (b2.top < b1.top) return false;
+        if (b2.right > b1.right) return false;
+        if (b2.bottom > b1.bottom) return false;
+        return true;
+    },
+    intersects: function(other){
+        var b1 = this.box();
+        var b2 = $(other).box();
+        if (b2.left > b1.right) return false;
+        if (b2.top > b1.bottom) return false;
+        if (b2.right < b1.left) return false;
+        if (b2.bottom < b1.top) return false;
+        return true;
+    }
+});
+
 function drag_out(e, ui){
     // ui.instance = droppable
     // ui.options 
@@ -27,10 +54,8 @@ function drag_helper(e, ui){
 }
 
 function drop_accept(draggable){
-    for (var key in draggable){
-        console.log(key + ' = ' + draggable[key]);
-    }
-    return true;
+    this.each(function(){ return this.intersects($('.drop_pointer', draggable))});
+    return this;
 }
 
 
