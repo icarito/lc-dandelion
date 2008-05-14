@@ -17,11 +17,16 @@ $.fn.extend({
     intersects: function(other){
         var b1 = this.box();
         var b2 = $(other).box();
-        if (b2.left > b1.right) return false;
-        if (b2.top > b1.bottom) return false;
-        if (b2.right < b1.left) return false;
-        if (b2.bottom < b1.top) return false;
+        if (b2.left > b1.right){ this.log('other is to the right of this'); return false; }
+        if (b2.top > b1.bottom){ this.log('other is below this'); return false; }
+        if (b2.right < b1.left){ this.log('other is to the left of this'); return false; }
+        if (b2.bottom < b1.top){ this.log('other is above this'); return false; }
+        this.log('other intersects this');
         return true;
+    },
+    log: function(str){
+        console.log(str);
+        return this;
     }
 });
 
@@ -54,8 +59,7 @@ function drag_helper(e, ui){
 }
 
 function drop_accept(draggable){
-    this.each(function(){ return this.intersects($('.drop_pointer', draggable))});
-    return this;
+    return this.intersects($('.drop_pointer', draggable));
 }
 
 
