@@ -19,7 +19,7 @@ div{
     height: 6px;
 }
 
-.drop_ok{
+.drop_ok > .drop_target{
     background-color: #FFF;
 }
 
