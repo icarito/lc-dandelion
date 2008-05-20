@@ -76,7 +76,7 @@ function drop_accept(draggable){
 
 function show_structure(e, level){
     e = $(e);
-    if (e.is('.trigger,.block,.container')){
+    if (e.is('.trigger,.block,.loop')){
         var output = [];
         for (var i = 0; i < level; i++){
             output.push('    ');
@@ -87,10 +87,14 @@ function show_structure(e, level){
     e.children().each(function(){show_structure(this, level + 1);});
 }
 
+function add_grouping_classes(){
+    $('.step, .trigger, .loop').addClass('block');
+    $('.step, .loop').addClass('containable');
+    $('.loop, .trigger').addClass('container');
+}
 
-function add_extraneous_elements(){
-    show_structure(document.documentElement, 0);
-    $('.container').prepend(
+function add_extraneous_elements_for_background_images(){
+    $('.loop').prepend(
         '<div class="top_left"></div>' + 
         '<div class="top"></div>' + 
         '<div class="top_right"></div>' + 
@@ -99,14 +103,21 @@ function add_extraneous_elements(){
         '<div class="bottom"></div>' + 
         '<div class="bottom_right"></div>'
     );
-    $('.block, .trigger').prepend('<div class="right"></div>');
-    $('.block, .container').prepend('<div class="drop_pointer"></div>');
-    $('.block, .container, .trigger').append('<div class="drop_target"></div>');
-    $('.trigger').draggable();
-    $('.block, .container').draggable();
-//    $('.block, .trigger, .container').draggable({helper: drag_helper});
-//    $('.block, .container, .trigger').droppable({activate: drag_activate});
-    $('.block, .container, .trigger').droppable({accept: '.block, .container', hoverClass: 'drop_ok', out: drag_out, drop: drag_drop, over: drag_over, tolerance: 'pointer'});
+    $('.step, .trigger').prepend('<div class="right"></div>');
 }
 
-$(add_extraneous_elements);
+function setup_drag_and_drop(){
+    // elements for drag-and-drop (subject to radical change)
+    $('.containable').prepend('<div class="drop_pointer"></div>');
+    $('.block').append('<div class="drop_target"></div>');
+    $('.trigger').draggable();
+    $('.containable').draggable();
+    $('.block').droppable({accept: '.block, .loop', hoverClass: 'drop_ok', out: drag_out, drop: drag_drop, over: drag_over, tolerance: 'pointer'});
+}
+
+$(function(){
+    // initialize everything
+    add_grouping_classes()
+    add_extraneous_elements_for_background_images();
+    setup_drag_and_drop();
+});
