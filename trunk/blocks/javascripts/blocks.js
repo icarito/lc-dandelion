@@ -31,16 +31,29 @@ $.fn.extend({
     loginfo: function(){
         //debug function
         this.log('matched ' + this.length + ' elements: ');
-        this.each(function(){this.log('\t' + this.nodeName + '.' + this.className.split().join('.'))});
+        this.each(function(){console.log('\t' + this.nodeName + '#' + this.id + '.' + this.className.split().join('.'))});
+        return this;
     },
     deparent: function(){
         // remove from parent element
         this.each(document.body.appendChild(this));
+        return this;
     },
     reparent: function(){
         // add to parent element in a specific position. If parent already has a child, it gets inserted as 
         // a child of this element, and an existing child of this element is made the child of that element, and so on.
         // there's got to be a simpler way!
+    },
+    uniqify: function(){
+        if (!document.uniq_id_idx){
+            document.uniq_id_idx = 1;
+        }
+        this.each(function(){if (!this.id){this.id = 'id_' + document.uniq_id_idx++}});
+        return this;
+    },
+    subsequent: function(){
+        var id = this.get(0).id;
+        return $('#' + id + ' ~ ' + '.block');
     }
 });
 
@@ -94,7 +107,7 @@ function show_structure(e, level){
 }
 
 function add_grouping_classes(){
-    $('.step, .trigger, .loop').addClass('block');
+    $('.step, .trigger, .loop').addClass('block').uniqify();
     $('.step, .loop').addClass('containable');
     $('.loop, .trigger').addClass('container');
 }
@@ -114,16 +127,16 @@ function add_extraneous_elements_for_background_images(){
 
 function setup_drag_and_drop(){
     // elements for drag-and-drop (subject to radical change)
-    $('.containable').prepend('<div class="drop_pointer"></div>');
-    $('.block').append('<div class="drop_target"></div>');
-    $('.trigger').draggable();
-    $('.containable').draggable();
-    $('.block').droppable({accept: '.block, .loop', hoverClass: 'drop_ok', out: drag_out, drop: drag_drop, over: drag_over, tolerance: 'pointer'});
+//    $('.containable').prepend('<div class="drop_pointer"></div>');
+//    $('.block').append('<div class="drop_target"></div>');
+//    $('.trigger').draggable();
+//    $('.containable').draggable();
+//    $('.block').droppable({accept: '.block, .loop', hoverClass: 'drop_ok', out: drag_out, drop: drag_drop, over: drag_over, tolerance: 'pointer'});    
 }
 
 $(function(){
     // initialize everything
-    add_grouping_classes()
+    add_grouping_classes();
     add_extraneous_elements_for_background_images();
     setup_drag_and_drop();
 });
