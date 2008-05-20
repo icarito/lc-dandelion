@@ -28,8 +28,14 @@ $.fn.extend({
         console.log(str);
         return this;
     },
+    loginfo: function(){
+        //debug function
+        this.log('matched ' + this.length + ' elements: ');
+        this.each(function(){this.log('\t' + this.nodeName + '.' + this.className.split().join('.'))});
+    },
     deparent: function(){
         // remove from parent element
+        this.each(document.body.appendChild(this));
     },
     reparent: function(){
         // add to parent element in a specific position. If parent already has a child, it gets inserted as 
