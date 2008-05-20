@@ -1,0 +1,116 @@
+div{
+    position: relative;
+}
+
+.trigger{
+    padding-top: 31px;
+    width: 200px;
+    background: transparent url(../images/trigger.png) top left no-repeat;
+}
+
+.trigger > .right{
+    position: absolute;
+    width: 5px;
+    height: 31px;
+    right: -5px;
+    top: 0px;
+    background: transparent url(../images/trigger.png) -995px 0px no-repeat;
+}
+
+.step{
+    padding-top: 31px;
+    width: 200px;
+    background: transparent url(../images/block.png) top left no-repeat;
+}
+
+.step > .step{
+    top: -4px;
+}
+
+.step > .right{
+    position: absolute;
+    width: 5px;
+    height: 31px;
+    right: -5px;
+    top: 0px;
+    background: transparent url(../images/block.png) -995px 0px no-repeat;
+}
+
+label{
+    position: absolute;
+    top: 5px;
+    left: 20px;
+}
+
+.loop{
+    width: 200px;
+    margin-top: 22px;
+    margin-left: 44px;
+    margin-bottom: 26px;
+}
+
+.loop > label{
+    top: -22px;
+}
+.loop > .top_left{
+    position: absolute;
+    left: -44px;
+    top: -22px;
+    width: 44px;
+    height: 26px;
+    background: transparent url(../images/loop.png) top left no-repeat;
+}
+
+.loop > .top_right{
+    position: absolute;
+    right: -5px;
+    top: -22px;
+    width: 5px;
+    height: 22px;
+    background: transparent url(../images/loop.png) top right no-repeat;
+}
+.loop > .bottom_left{
+    position: absolute;
+    left: -44px;
+    bottom: -26px;
+    width: 44px;
+    height: 26px;
+    background: transparent url(../images/loop.png) bottom left no-repeat;
+}
+.loop > .bottom_right{
+    position: absolute;
+    right: -5px;
+    bottom: -26px;
+    width: 5px;
+    height: 26px;
+    background: transparent url(../images/loop.png) bottom right no-repeat;
+}
+.loop > .top{
+    position: absolute;
+    left: 0px;
+    top: -22px;
+    width: 100%;
+    height: 22px;
+    background: transparent url(../images/loop.png) -44px 0px no-repeat;
+}
+.loop > .bottom{
+    position: absolute;
+    left: 0px;
+    bottom: -26px;
+    width: 100%;
+    height: 26px;
+    background: transparent url(../images/loop.png) -44px -985px no-repeat;
+}
+.loop > .left{
+    position: absolute;
+    left: -44px;
+    top: 0px;
+    width: 22px;
+    height: 100%;
+    background: transparent url(../images/loop.png) 0px -22px no-repeat;
+}
+
+.loop > .loop, .loop > .step{
+    left: -28px;
+}
+

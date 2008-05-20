@@ -6,27 +6,27 @@
       xmlns:xlink="http://www.w3.org/1999/xlink">
 	<head>
 		<title>Experimental Blocks Support</title>
-		<link type="text/css" rel="stylesheet" href="stylesheets/blocks.css" />
+		<link type="text/css" rel="stylesheet" href="stylesheets/block_backgrounds.css" />
+		<link type="text/css" rel="stylesheet" href="stylesheets/blocks_dragging.css" />
 		<script type="text/javascript" src="javascripts/jquery-1.2.4b.min.js"></script>
 		<script type="text/javascript" src="javascripts/ui.core.min.js"></script>
 		<script type="text/javascript" src="javascripts/ui.draggable.min.js"></script>
 		<script type="text/javascript" src="javascripts/ui.droppable.min.js"></script>
-		<script type="text/javascript" src="javascripts/ui.accordion.min.js"></script>
 		<script type="text/javascript" src="javascripts/blocks.js"></script>
 	</head>
 	<body>
 		<div class="trigger">
 			<label>On event</label>
-			<div class="container">
+			<div class="loop">
 				<label>Forever</label>
-				<div class="block">
+				<div class="step">
 					<label>Step one</label>
-					<div class="block">
-						<label>Step two</label>
-						<div class="block">
-							<label>Step three</label>
-						</div>
-					</div>
+				</div>
+				<div class="step">
+					<label>Step two</label>
+				</div>
+				<div class="step">
+					<label>Step three</label>
 				</div>
 			</div>
 		</div>
