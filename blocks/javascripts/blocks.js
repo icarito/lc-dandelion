@@ -63,6 +63,15 @@ $.fn.extend({
     subsequent: function(){
         var id = this.get(0).id;
         return $('#' + id + ', #' + id + ' ~ ' + '.block');
+    },
+    // block method, turn logically structured blocks into visually structured blocks to support drag and drop
+    wrap_for_dragging: function(){
+        this.each(function(){
+            var self = $(this);
+            var id = this.id + '_drag_wrapper';
+            self.subsequent().wrapAll('<div class="drag_wrapper" id="' + id + '"></div>');
+            $('#' + id).draggable({handle: self});
+        });
     }
 });
 
@@ -138,7 +147,7 @@ function add_extraneous_elements_for_background_images(){
 }
 
 function setup_drag_and_drop(){
-    $('.block).wrap_for_dragging();
+    $('.block').wrap_for_dragging();
     // elements for drag-and-drop (subject to radical change)
 //    $('.containable').prepend('<div class="drop_pointer"></div>');
 //    $('.block').append('<div class="drop_target"></div>');
