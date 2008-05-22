@@ -70,7 +70,11 @@ $.fn.extend({
             var self = $(this);
             var id = this.id + '_drag_wrapper';
             self.subsequent().wrapAll('<div class="drag_wrapper" id="' + id + '"></div>');
-            $('#' + id).draggable({handle: self});
+            if (self.is('.loop')){
+                $('#' + id).draggable({handle: $('.top', self)});
+            }else{
+                $('#' + id).draggable({handle: self});
+            }
         });
     }
 });
