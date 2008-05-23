@@ -33,10 +33,19 @@ $.fn.extend({
         return this;
     },
     // debug helper
+    firstinfo: function(){
+        var self = this.get(0);
+        return self.nodeName + '#' + self.id + '.' + self.className.split(' ').join('.')
+    },
+    // debug helper
+    info: function(){
+        var output = ['matched ' + this.length + ' elements: '];
+        this.each(function(){output.push('\t' + $(this).firstinfo())});
+        return output.join('\n');
+    },
+    // debug helper
     loginfo: function(){
-        //debug function
-        this.log('matched ' + this.length + ' elements: ');
-        this.each(function(){console.log('\t' + this.nodeName + '#' + this.id + '.' + this.className.split().join('.'))});
+        this.log(this.info());
         return this;
     },
     // blocks method, when a block is removed from its container
@@ -73,7 +82,7 @@ $.fn.extend({
             if (self.is('.loop')){
                 $('#' + id).draggable({handle: $('.top', self)});
             }else{
-                $('#' + id).draggable({handle: self});
+                $('#' + id).draggable({handle: self, stop: function(e,ui){$.ui.ddmanager.prepareOffsets(ui.draggable, e);}});
             }
         });
     }
@@ -93,10 +102,20 @@ function drag_out(e, ui){
 }
 
 function drag_drop(e, ui){
-    console.log('drop: ' + ui.instance + ', ' + ui.draggable);
-    ui.instance.appendChild(ui.draggable);
-    ui.draggable.get(0).style.position = 'relative';
-    show_structure(document.documentElement, 0);
+    var drop_elem = ui.element.get(0);
+    var drag_elem = ui.draggable.get(0);
+    console.log('drop: ' + drop_elem + ', ' + drag_elem);
+    try{
+        ui.element.append(ui.draggable);
+    }catch(e){
+        console.log('DOM exception when adding ' + ui.element.firstinfo() + ' to ' + ui.draggable.firstinfo());
+    }
+    try{
+        ui.element.css({position: 'relative', top: '0', left: '0'});
+    }catch(e){
+        console.log('DOM exception when setting styles');
+    }
+//    show_structure(document.documentElement, 0);
 }
 
 function drag_over(e, ui){
@@ -104,7 +123,7 @@ function drag_over(e, ui){
 }
 
 function drag_activate(e, ui){
-    console.log('activate (' + this.length + ')');
+    console.log('activate (' + this.nodeName + ')');
 }
 
 function drag_helper(e, ui){
@@ -153,12 +172,16 @@ function add_extraneous_elements_for_background_images(){
 function setup_drag_and_drop(){
     $('.block').wrap_for_dragging();
     // elements for drag-and-drop (subject to radical change)
-//    $('.containable').prepend('<div class="drop_pointer"></div>');
-//    $('.block').append('<div class="drop_target"></div>');
+    $('.containable').prepend('<div class="drop_pointer"></div>');
+    $('.block').append('<div class="drop_target"></div>');
 //    $('.trigger').draggable();
 //    $('.containable').draggable();
 //    $('.block').droppable({accept: '.block, .loop', hoverClass: 'drop_ok', out: drag_out, drop: drag_drop, over: drag_over, tolerance: 'pointer'});
 //      $('.containable').mousedown(function(){console.log(this.nodeName);$(this).subsequent().wrapAll('<div></div>').draggable({handle: this});});
+//    $('.block').droppable({out: drag_out, drop: drag_drop, over: drag_over, activate: drag_activate});
+    // Note, since this keeps tripping me up:
+    // there are no callbacks fired unless there is an accept defined.  None.  And, of course, the accept has to match the actual draggable(s)
+    $('.block').droppable({over: drag_over, drop: drag_drop, accept: '.drag_wrapper', hoverClass: 'drop_ok'});
 }
 
 $(function(){
