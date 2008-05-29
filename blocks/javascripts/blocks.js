@@ -149,6 +149,7 @@ var triggers = [];
 
 function Block(){
     this.block = $('<div class="block"></div>');
+    this.next = null;
     this.block.attr('id', 'id_' + $.data(this.block.get(0)));
     this.drag_wrapper = $('<div class="drag_wrapper"></div>');
     this.drag_wrapper.append(this.block);
@@ -170,6 +171,10 @@ Block.prototype.label = function(str){
     }
 }
 
+Block.prototype.toString = function(){
+    return this.type + '(' + this.label() + ')';
+}
+
 Block.prototype.position = function(x,y){
     this.drag_wrapper.css({position: 'absolute', left: x + 'px', top: y + 'px'});
     return this;
@@ -182,12 +187,11 @@ Block.prototype.relativize = function(){
 
 Block.prototype.append = function(block){
     if (this.next){
-        this.next.drag_wrapper.before(block.drag_wrapper);
-        block.append(this.next); // move current next to next of the block for drag purposes
+        this.next.append(block);
     }else{
         this.drag_wrapper.append(block.drag_wrapper);
+        this.next = block;
     }
-    this.next = block;
     return this;
 }
 
@@ -197,13 +201,14 @@ Block.prototype.makeDraggable = function(){
 }
 
 function Step(params){
-    this.prototype = new Block(params);
+    this.type = 'Step';
     this.block.addClass('step containable');
     this.block.prepend('<div class="right"></div>');
 }
 Step.prototype = new Block();
 
 function Trigger(params){
+    this.type = 'Trigger';
     this.block.addClass('trigger container');
     this.block.prepend('<div class="right"></div>');
     triggers.push(this);
@@ -211,6 +216,8 @@ function Trigger(params){
 Trigger.prototype = new Block();
 
 function Loop(params){
+    this.type = 'Loop';
+    this.nextInLoop = null;
     this.block.addClass('loop container containable');
     this.block.prepend('<div class="top_left"></div>' + 
         '<div class="top_right"></div>' + 
@@ -226,12 +233,19 @@ Loop.prototype = new Block();
 
 Loop.prototype.appendLoop = function(block){
     if (this.nextInLoop){
-        this.block.insertBefore(block.drag_wrapper, this.nextInLoop.drag_wrapper);
-        block.append(this.nextInLoop); // move current next to next of the block for drag purposes
+        try{
+            this.nextInLoop.append(block);
+        }catch(e){
+            console.log('Here I am, trying to append a simple block: ' + e.message);
+            console.log('next in loop: ' + this.nextInLoop.toString());
+            console.log('appending block: ' + block.toString());
+        }
     }else{
         this.block.append(block.drag_wrapper);
+        this.nextInLoop = block;
+        console.log('setting next in loop: ' + block.toString());
     }
-    this.nextInLoop = block;
+    return this;
 }
 
 
@@ -379,8 +393,10 @@ function new_initialize(){
     $(document.body).append(trigger.drag_wrapper);
     var loop = new Loop().label('Forever');
     trigger.append(loop);
-    loop.appendLoop(new Step().label('Step one'));
-    loop.appendLoop(new Step().label('Step two'));
+    var child1 = new Step().label('Step one');
+    loop.appendLoop(child1);
+    var child2 = new Step().label('Step two');
+    loop.appendLoop(child2);
     loop.appendLoop(new Step().label('Step three'));
 }
 
