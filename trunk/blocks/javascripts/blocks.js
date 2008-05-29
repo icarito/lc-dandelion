@@ -137,10 +137,12 @@ $.fn.extend({
                 drag_wrapper.draggable({handle: $('.top', self), stop: stop_dragging, refreshPositions: true}); // moved to Block method
         });
     },
-    // Add methods to elements, OO-style
+    // Add methods to elements, OO-style (expando version)
     methods: function(obj){
-        this.each($.extend(this, obj));
-    }
+        this.each(function(){
+            $.extend(this, obj);
+        });
+    },
 });
 
 var blocks = [];
