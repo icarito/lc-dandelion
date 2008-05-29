@@ -158,15 +158,14 @@ Block.prototype.initialize = function(params){
     this.block.attr('id', 'id_' + $.data(this.block.get(0)));
     this.drag_wrapper = $('<div class="drag_wrapper"></div>');
     this.drag_wrapper.append(this.block);
-    this.block.prepend($('<div class="drop_pointer"></div>'));
     this._label = $('<label></label>');
     this.block.append(this._label);
-    this.drop_target = $('<div class="drop_target"></div>');
-    this.block.append(this.drop_target);
     this.drag_handle = this;
     if (params.label){
         this.label(params.label);
     }
+    this.drop_target = $('<div class="drop_target"></div>');
+    this.block.append(this.drop_target);
     this.drop_target.droppable({over: drag_over, drop: drag_drop, accept: drop_accept, hoverClass: 'drop_ok'});
     blocks.push(this);
 }
@@ -209,11 +208,17 @@ Block.prototype.makeDraggable = function(){
     return this;
 }
 
+Block.prototype.makeContainable = function(){
+    this.block.prepend($('<div class="drop_pointer"></div>'));
+}
+
 function Step(params){
     this.initialize(params);
     this.type = 'Step';
     this.block.addClass('step containable');
     this.block.prepend('<div class="right"></div>');
+    this.makeContainable();
+    this.makeDraggable();
 }
 Step.prototype = new Block();
 
@@ -223,6 +228,7 @@ function Trigger(params){
     this.block.addClass('trigger container');
     this.block.prepend('<div class="right"></div>');
     triggers.push(this);
+    this.makeDraggable();
 }
 Trigger.prototype = new Block();
 
@@ -240,6 +246,8 @@ function Loop(params){
     );    
     this.handle = $('<div class="top"></div>');
     this.block.prepend(this.handle);
+    this.makeContainable();
+    this.makeDraggable();
 }
 Loop.prototype = new Block();
 
