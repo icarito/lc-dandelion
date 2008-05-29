@@ -150,6 +150,9 @@ var triggers = [];
 
 
 function Block(){
+}
+
+Block.prototype.initialize = function(params){
     this.block = $('<div class="block"></div>');
     this.next = null;
     this.block.attr('id', 'id_' + $.data(this.block.get(0)));
@@ -157,9 +160,13 @@ function Block(){
     this.drag_wrapper.append(this.block);
     this.block.prepend($('<div class="drop_pointer"></div>'));
     this._label = $('<label></label>');
+    this.block.append(this._label);
     this.drop_target = $('<div class="drop_target"></div>');
     this.block.append(this.drop_target);
     this.drag_handle = this;
+    if (params.label){
+        this.label(params.label);
+    }
     this.drop_target.droppable({over: drag_over, drop: drag_drop, accept: drop_accept, hoverClass: 'drop_ok'});
     blocks.push(this);
 }
@@ -203,6 +210,7 @@ Block.prototype.makeDraggable = function(){
 }
 
 function Step(params){
+    this.initialize(params);
     this.type = 'Step';
     this.block.addClass('step containable');
     this.block.prepend('<div class="right"></div>');
@@ -210,6 +218,7 @@ function Step(params){
 Step.prototype = new Block();
 
 function Trigger(params){
+    this.initialize(params);
     this.type = 'Trigger';
     this.block.addClass('trigger container');
     this.block.prepend('<div class="right"></div>');
@@ -218,6 +227,7 @@ function Trigger(params){
 Trigger.prototype = new Block();
 
 function Loop(params){
+    this.initialize(params);
     this.type = 'Loop';
     this.nextInLoop = null;
     this.block.addClass('loop container containable');
@@ -391,15 +401,13 @@ function setup_drag_and_drop(){
 }
 
 function new_initialize(){
-    var trigger = new Trigger().label('On event');
+    var trigger = new Trigger({label: 'On event'});
     $(document.body).append(trigger.drag_wrapper);
-    var loop = new Loop().label('Forever');
+    var loop = new Loop({label: 'Forever'});
     trigger.append(loop);
-    var child1 = new Step().label('Step one');
-    loop.appendLoop(child1);
-    var child2 = new Step().label('Step two');
-    loop.appendLoop(child2);
-    loop.appendLoop(new Step().label('Step three'));
+    loop.appendLoop(new Step({label: 'Step one'}));
+    loop.appendLoop(new Step({label: 'Step two'}));
+    loop.appendLoop(new Step({label: 'Step three'}));
 }
 
 $(function(){
