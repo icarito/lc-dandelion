@@ -124,19 +124,6 @@ $.fn.extend({
         var id = this.get(0).id;
         return $('#' + id + ', #' + id + ' ~ ' + '.block');
     },
-    // block method, turn logically structured blocks into visually structured blocks to support drag and drop
-    wrap_for_dragging: function(){
-        this.each(function(){
-            var self = $(this);
-            var id = this.id + '_drag_wrapper';
-            self.subsequent().wrapAll('<div class="drag_wrapper" id="' + id + '"></div>'); // moved to Loop ctor
-            var handle = this;
-            if (self.is('.loop')){
-                handle = $('.top', self); // moved to Loop ctor
-            }
-                drag_wrapper.draggable({handle: $('.top', self), stop: stop_dragging, refreshPositions: true}); // moved to Block method
-        });
-    },
     // Add methods to elements, OO-style (expando version)
     methods: function(obj){
         this.each(function(){
@@ -368,47 +355,7 @@ function show_structure(e, level){
     e.children().each(function(){show_structure(this, level + 1);});
 }
 
-
-function add_grouping_classes(){
-    $('.step, .trigger, .loop').addClass('block').uniqify();
-    $('.step, .loop').addClass('containable');
-    $('.loop, .trigger').addClass('container');
-    // all moved to block ctors
-}
-
-// make this a block method?
-function add_extraneous_elements_for_background_images(){
-    $('.loop').prepend(
-        '<div class="top_left"></div>' + 
-        '<div class="top"></div>' + 
-        '<div class="top_right"></div>' + 
-        '<div class="left"></div>' + 
-        '<div class="bottom_left"></div>' + 
-        '<div class="bottom"></div>' + 
-        '<div class="bottom_right"></div>'
-    );
-    $('.step, .trigger').prepend('<div class="right"></div>');
-    // all moved to block ctors
-}
-
-function setup_drag_and_drop(){
-    $('.block').wrap_for_dragging();
-    // elements for drag-and-drop (subject to radical change)
-    $('.containable').prepend('<div class="drop_pointer"></div>');
-    $('.block').append('<div class="drop_target"></div>');
-//    $('.trigger').draggable();
-//    $('.containable').draggable();
-//    $('.block').droppable({accept: '.block, .loop', hoverClass: 'drop_ok', out: drag_out, drop: drag_drop, over: drag_over, tolerance: 'pointer'});
-//      $('.containable').mousedown(function(){console.log(this.nodeName);$(this).subsequent().wrapAll('<div></div>').draggable({handle: this});});
-//    $('.block').droppable({out: drag_out, drop: drag_drop, over: drag_over, activate: drag_activate});
-    // Note, since this keeps tripping me up:
-    // there are no callbacks fired unless there is an accept defined.  None.  And, of course, the accept has to match the actual draggable(s)
-//    $('.block .drop_target').droppable({over: drag_over, drop: drag_drop, accept: '.drag_wrapper', hoverClass: 'drop_ok'});
-    $('.block .drop_target').droppable({over: drag_over, drop: drag_drop, accept: drop_accept, hoverClass: 'drop_ok'});
-    
-}
-
-function new_initialize(){
+function initialize(){
     var trigger = new Trigger({label: 'On event'});
     $(document.body).append(trigger.drag_wrapper);
     var loop = new Loop({label: 'Forever'});
@@ -418,10 +365,4 @@ function new_initialize(){
     loop.appendLoop(new Step({label: 'Step three'}));
 }
 
-$(function(){
-    // initialize everything
-//    add_grouping_classes();
-//    add_extraneous_elements_for_background_images();
-//    setup_drag_and_drop();
-    new_initialize();
-});
+$(initialize);
