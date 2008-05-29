@@ -1,6 +1,34 @@
 // jQuery extension
+$.extend({
+    sum: function(list_of_numbers){
+        var value = 0;
+        jQuery.each(list_of_numbers, function(){value += this});
+        return value;
+    },
+    max: function(list_of_numbers){
+        var value = 0;
+        jQuery.each(list_of_numbers, function(){ if (this > value) value = this; });
+        return value;
+    },
+    keys: function(obj){
+        var k = [];
+        for (key in obj){
+            k.push(key);
+        }
+        return '[' + k.join(', ') + ']';
+    }
+});
 
+// jQuery result set extend
 $.fn.extend({
+    // set or return position
+    position: function(pos){
+        if (pos){
+            this.css({position: 'absolute', left: pos.left + 'px', top: pos.top + 'px'});
+        }else{
+            return this.offset();
+        }
+    },
     // positioning helper, returns {left, top, right, bottom}
     box: function(){
         var pos = this.offset();
@@ -35,6 +63,7 @@ $.fn.extend({
     intersects: function(other){
         return this.box().intersects(other.box());
     },
+    // go up the ancestor tree until an element matching expr is found
     up: function(expr){
         var elem = this;
 //        console.log('up from ' + this.info() + ' to ' + expr);
@@ -53,11 +82,16 @@ $.fn.extend({
         console.log(str);
         return this;
     },
+    // utility returning jQuery object containing only first matched element
     first: function(){
-        return $(this.get(0));
+        return this.eq(0);
     },
-    label: function(){
+    // blocks-specific function, return value of the block label (should be moved to block method)
+    label: function(str){
         var e = $('label', this);
+        if (str){
+            e.text(str);
+        }
         if (!e.length){
             e = $('label', this.parent());
         }
@@ -85,20 +119,6 @@ $.fn.extend({
         this.each(document.body.appendChild(this));
         return this;
     },
-    // block method, when a block is added to a container
-    reparent: function(){
-        // add to parent element in a specific position. If parent already has a child, it gets inserted as 
-        // a child of this element, and an existing child of this element is made the child of that element, and so on.
-        // there's got to be a simpler way!
-    },
-    // utility, add a unique id to each element
-    uniqify: function(){
-        if (!document.uniq_id_idx){
-            document.uniq_id_idx = 1;
-        }
-        this.each(function(){if (!this.id){this.id = 'id_' + document.uniq_id_idx++}});
-        return this;
-    },
     // utility, return this node and all siblings that come after it
     subsequent: function(){
         var id = this.get(0).id;
@@ -109,15 +129,110 @@ $.fn.extend({
         this.each(function(){
             var self = $(this);
             var id = this.id + '_drag_wrapper';
-            self.subsequent().wrapAll('<div class="drag_wrapper" id="' + id + '"></div>');
+            self.subsequent().wrapAll('<div class="drag_wrapper" id="' + id + '"></div>'); // moved to Loop ctor
+            var handle = this;
             if (self.is('.loop')){
-                $('#' + id).draggable({handle: $('.top', self), stop: stop_dragging, refreshPositions: true});
-            }else{
-                $('#' + id).draggable({stop: stop_dragging, refreshPositions: true});
+                handle = $('.top', self); // moved to Loop ctor
             }
+                drag_wrapper.draggable({handle: $('.top', self), stop: stop_dragging, refreshPositions: true}); // moved to Block method
         });
+    },
+    // Add methods to elements, OO-style
+    methods: function(obj){
+        this.each($.extend(this, obj));
     }
 });
+
+var blocks = [];
+var triggers = [];
+
+
+function Block(){
+    this.block = $('<div class="block"></div>');
+    this.block.attr('id', 'id_' + $.data(this.block.get(0)));
+    this.drag_wrapper = $('<div class="drag_wrapper"></div>');
+    this.drag_wrapper.append(this.block);
+    this.block.prepend($('<div class="drop_pointer"></div>'));
+    this._label = $('<label></label>');
+    this.drop_target = $('<div class="drop_target"></div>');
+    this.block.append(this.drop_target);
+    this.drag_handle = this;
+    this.drop_target.droppable({over: drag_over, drop: drag_drop, accept: drop_accept, hoverClass: 'drop_ok'});
+    blocks.push(this);
+}
+
+Block.prototype.label = function(str){
+    if (str){
+        this._label.text(str);
+        return this;
+    }else{
+        return this._label.text();
+    }
+}
+
+Block.prototype.position = function(x,y){
+    this.drag_wrapper.css({position: 'absolute', left: x + 'px', top: y + 'px'});
+    return this;
+}
+
+Block.prototype.relativize = function(){
+    this.drag_wrapper.css({position: 'relative', left: '0px', top: '0px'});
+    return this;
+}
+
+Block.prototype.append = function(block){
+    if (this.next){
+        this.next.drag_wrapper.before(block.drag_wrapper);
+        block.append(this.next); // move current next to next of the block for drag purposes
+    }else{
+        this.drag_wrapper.append(block.drag_wrapper);
+    }
+    this.next = block;
+    return this;
+}
+
+Block.prototype.makeDraggable = function(){
+    this.drag_wrapper.draggable({handle: this.handle, stop: stop_dragging, refreshPositions: true});
+    return this;
+}
+
+function Step(params){
+    this.prototype = new Block(params);
+    this.block.addClass('step containable');
+    this.block.prepend('<div class="right"></div>');
+}
+Step.prototype = new Block();
+
+function Trigger(params){
+    this.block.addClass('trigger container');
+    this.block.prepend('<div class="right"></div>');
+    triggers.push(this);
+}
+Trigger.prototype = new Block();
+
+function Loop(params){
+    this.block.addClass('loop container containable');
+    this.block.prepend('<div class="top_left"></div>' + 
+        '<div class="top_right"></div>' + 
+        '<div class="left"></div>' + 
+        '<div class="bottom_left"></div>' + 
+        '<div class="bottom"></div>' + 
+        '<div class="bottom_right"></div>'
+    );    
+    this.handle = $('<div class="top"></div>');
+    this.block.prepend(this.handle);
+}
+Loop.prototype = new Block();
+
+Loop.prototype.appendLoop = function(block){
+    if (this.nextInLoop){
+        this.block.insertBefore(block.drag_wrapper, this.nextInLoop.drag_wrapper);
+        block.append(this.nextInLoop); // move current next to next of the block for drag purposes
+    }else{
+        this.block.append(block.drag_wrapper);
+    }
+    this.nextInLoop = block;
+}
 
 
 //  Structure of a block
@@ -224,6 +339,7 @@ function add_grouping_classes(){
     $('.step, .trigger, .loop').addClass('block').uniqify();
     $('.step, .loop').addClass('containable');
     $('.loop, .trigger').addClass('container');
+    // all moved to block ctors
 }
 
 // make this a block method?
@@ -238,6 +354,7 @@ function add_extraneous_elements_for_background_images(){
         '<div class="bottom_right"></div>'
     );
     $('.step, .trigger').prepend('<div class="right"></div>');
+    // all moved to block ctors
 }
 
 function setup_drag_and_drop(){
@@ -257,9 +374,20 @@ function setup_drag_and_drop(){
     
 }
 
+function new_initialize(){
+    var trigger = new Trigger().label('On event');
+    $(document.body).append(trigger.drag_wrapper);
+    var loop = new Loop().label('Forever');
+    trigger.append(loop);
+    loop.appendLoop(new Step().label('Step one'));
+    loop.appendLoop(new Step().label('Step two'));
+    loop.appendLoop(new Step().label('Step three'));
+}
+
 $(function(){
     // initialize everything
-    add_grouping_classes();
-    add_extraneous_elements_for_background_images();
-    setup_drag_and_drop();
+//    add_grouping_classes();
+//    add_extraneous_elements_for_background_images();
+//    setup_drag_and_drop();
+    new_initialize();
 });

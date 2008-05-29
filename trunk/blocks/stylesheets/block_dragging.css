@@ -1,10 +1,14 @@
+.drag_wrapper{
+/*    border: 1px solid red; */
+}
+
 .drop_pointer{
     position: absolute;
     left: 14px;
     top: 0px;
     width: 11px;
     height: 6px;
-    border: 1px solid red;
+    border: 1px solid red; 
 }
 
 .drop_target{
@@ -15,13 +19,12 @@
     height: 6px;
 }
 
-.drop_ok > .drop_target{
-    background-color: #FFF;
+.ui-droppable{
+    background-color: yellow;
 }
 
-.show_target{
-    background-color: white;
-    border: 1px solid red;
+.loop{
+    min-height: 50px;
 }
 
 
@@ -33,3 +36,9 @@
     top: -2px;
     left: -30px;
 }
+
+.loop > .drag_wrapper{
+    position: relative;
+    left: -28px;
+}
+
