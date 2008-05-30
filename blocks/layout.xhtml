@@ -1,0 +1,57 @@
+<!DOCTYPE html 
+      PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:svg="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink">
+	<head>
+		<title>Experimental Blocks Layout</title>
+		<link type="text/css" rel="stylesheet" href="stylesheets/block_layout.css" />
+		<script type="text/javascript" src="javascripts/jquery-1.2.4b.min.js"></script>
+		<script type="text/javascript" src="javascripts/ui.core.min.js"></script>
+		<script type="text/javascript" src="javascripts/layout.js"></script>
+	</head>
+	<body>
+		<div id="top_button_bar">
+			<h1>Scratch Blocks</h1>
+			<button id="button_new" onclick="new_project()">New</button>
+			<button id="button_open" onclick="open_project()">Open</button>
+			<button id="button_save" onclick="save_project()">Save</button>
+			<button id="button_saveas" onclick="saveas_project()">Save As</button>
+		</div>
+		<div id="blocks_column">
+			<div id="blocks_menu">
+				<button id="button_motion" onclick="select_motion()">Motion</button>
+				<button id="button_control" onclick="select_control()">Control</button>
+				<button id="button_looks" onclick="select_looks()">Looks</button>
+				<button id="button_sound" onclick="select_sound()">Sound</button>
+				<button id="button_numbers" onclick="select_numbers()">Numbers</button>
+				<button id="button_pen" onclick="select_pen()">Pen</button>
+			</div>
+			<div id="blocks_factories">
+			</div>
+		</div>
+		<div id="scripts_column">
+			<div id="scripts_controlpanel">
+			</div>
+			<div id="scripts_container">
+				<div id="scripts_view">
+				</div>
+				<div id="costumes_view" style="display: none;">
+				</div>
+				<div id="sounds_view" style="display: none;">
+				</div>
+			</div>
+		</div>
+		<div id="stage_column">
+			<div id="stage_tools">
+			</div>
+			<div id="stage_canvas">
+			</div>
+			<div id="stage_buttons">
+			</div>
+			<div id="stage_sprites">
+			</div>
+		</div>
+	</body>
+</html>
