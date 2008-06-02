@@ -29,13 +29,14 @@ $.fn.extend({
         this.css('-moz-border-radius-bottomleft', bottomleft);
         this.css('-border-bottom-left-radius', bottomleft);
         this.css('border', '3px inset ' + bordercolor);
+        this.css('overflow-x', 'auto');
         return this;
     },
     block_menu_button: function(color, choice){
-        this.round(5,5,5,5,md_grey);
+        this.round(10,10,10,10,md_grey);
         this.css({backgroundColor: dk_grey, color: color, width: 75, display: 'block', float: 'left', marginLeft: 10, borderStyle: 'outset'});
         this.click(function(){
-            //scratch.show_block_factory(choice);
+            scratch.show_block_palette(choice);
             $(scratch.current_button).trigger('unselect');
             scratch.current_button = this;
             $(this).css({backgroundColor: color, color: white});
@@ -67,19 +68,86 @@ Scratch.prototype.blocks_column = function(){
     $('#blocks_menu').place({x: left, y: top, w: width, h: height, c: md_grey}).round(15,15,5,5, dk_grey);
     top = top + height + PAD;
     height = COLUMN_HEIGHT - top - PAD;
-    $('#blocks_factories').place({x: left, y: top, w: width, h: height, c: dk_grey}).round(5,5,15,15, md_grey);
+    $('#blocks_palette').place({x: left, y: top, w: width, h: height, c: dk_grey}).round(5,5,15,15, md_grey);
+    this.blocks_palettes();
     this.blocks_buttons();
 }
 
 Scratch.prototype.blocks_buttons = function(){
-    $('#button_motion').block_menu_button('blue', 'motion_factory');
-    $('#button_looks').block_menu_button('purple', 'looks_factory');
-    $('#button_sound').block_menu_button('violet', 'sound_factory');
-    $('#button_pen').block_menu_button('turquoise', 'pen_factory');
-    $('#button_control').block_menu_button('orange', 'control_factory').click();
-    $('#button_sensing').block_menu_button('blue', 'sensing_factory');
-    $('#button_numbers').block_menu_button('green', 'numbers_factory');
-    $('#button_variables').block_menu_button('red', 'variables_factory');
+    $('#button_motion').block_menu_button('blue', 'motion');
+    $('#button_looks').block_menu_button('purple', 'looks');
+    $('#button_sound').block_menu_button('violet', 'sound');
+    $('#button_pen').block_menu_button('turquoise', 'pen');
+    $('#button_control').block_menu_button('orange', 'control').click();
+    $('#button_sensing').block_menu_button('blue', 'sensing');
+    $('#button_numbers').block_menu_button('green', 'numbers');
+    $('#button_variables').block_menu_button('red', 'variables');
+}
+
+Scratch.prototype.blocks_palettes = function(){
+    //this.motion_palette();
+    // this.looks_palette();
+    // this.sound_palette();
+    // this.pen_palette();
+    this.control_palette();
+    // this.sensing_palette();
+    // this.numbers_palette();
+    // this.variables_palette();
+}
+
+Scratch.prototype.show_block_palette = function(palette_name){
+    if(this._current_palette){
+        this._current_palette.hide();
+    }
+    this._current_palette = this['_' + palette_name + '_palette'];
+    this._current_palette.show();
+}
+
+Scratch.prototype.control_palette = function(){
+    var cp = $('<div></div>');
+    this._control_palette = cp;
+    $('#blocks_palette').append(cp);
+    cp.append(new Trigger({label: 'When [flag] clicked', x: 2, y: 5, color: 'gold'}).drag_wrapper);
+    cp.append(new Trigger({label: 'When [key] pressed', x: 2, y: 50, color: 'gold'}).drag_wrapper);
+    cp.append(new Trigger({label: 'When [Sprite1] clicked', x: 2, y: 95, color: 'gold'}).drag_wrapper);
+    cp.append(new Step({label: 'Wait [1] secs', x: 2, y: 140, color: 'gold'}).drag_wrapper);
+    cp.append(new Loop({label: 'forever', x: 2, y: 180, color: 'gold'}).drag_wrapper);
+    cp.append(new Loop({label: 'repeat [10]', x: 2, y: 290, color: 'gold'}).drag_wrapper);
+    cp.append(new Step({label: 'broadcast [message]', x: 2, y: 400, color: 'gold'}).drag_wrapper);
+    cp.append(new Step({label: 'broadcast [message] and wait', x: 2, y: 440, color: 'gold'}).drag_wrapper);
+    cp.append(new Trigger({label: 'When I receive [message]', x: 2, y: 480, color: 'gold'}).drag_wrapper);
+    cp.append(new Loop({label: 'forever if [condition]', x: 2, y: 525, color: 'gold'}).drag_wrapper);
+    cp.append(new Loop({label: 'if [condition]', x: 2, y: 635, color: 'gold'}).drag_wrapper);
+    cp.append(new Loop({label: 'if [condition] else', x: 2, y: 745, color: 'gold'}).drag_wrapper);
+    cp.append(new Step({label: 'wait until [condition]',x: 2, y: 855, color: 'gold'}).drag_wrapper);
+    cp.append(new Loop({label: 'repeat until [condition]', x: 2, y: 895, color: 'gold'}).drag_wrapper);
+    cp.append(new Step({label: 'stop script', x: 2, y: 1005, color: 'gold'}).drag_wrapper);
+    cp.append(new Step({label: 'stop all [sign]', x: 2, y: 1045, color: 'gold'}).drag_wrapper);
+    cp.css('display', 'none');
+    return this;
+}
+
+Scratch.prototype.motion_palette = function(){
+    var mp = $('<div></div>').hide();
+    this._motion_palette = mp;
+    $('#blocks_palette').append(mp);
+    mp.append(new Step({label: 'Move [10] steps', x: 2, y: 5, color: 'blue'}).drag_wrapper);
+    mp.append(new Step({label: 'Turn [Clockwise] [10] degrees', x: 2, y: 45, color: 'blue'}).drag_wrapper);
+    mp.append(new Step({label: 'Turn [Counter] [10] degrees', x: 2, y: 85, color: 'blue'}).drag_wrapper);
+    mp.append(new Step({label: 'point in direction [90]', x: 2, y: 130, color: 'blue'}).drag_wrapper);
+    mp.append(new Step({label: 'point towards [sprite]', x: 2, y: 170, color: 'blue'}).drag_wrapper);
+    mp.append(new Step({label: 'go to x: [-200] y: [-150]', x: 2, y: 215, color: 'blue'}).drag_wrapper);
+    mp.append(new Step({label: 'go to [sprite]', x: 2, y: 255, color: 'blue'}).drag_wrapper);
+    mp.append(new Step({label: 'glide [1] secs to x: [-200] y: [-150]', x: 2, y: 295, color: 'blue'}).drag_wrapper);
+    mp.append(new Step({label: 'change x by [10]', x: 2, y: 340, color: 'blue'}).drag_wrapper);
+    mp.append(new Step({label: 'set x to [0]', x: 2, y: 380, color: 'blue'}).drag_wrapper);
+    mp.append(new Step({label: 'change y by [10]', x: 2, y: 420, color: 'blue'}).drag_wrapper);
+    mp.append(new Step({label: 'set y to [0]', x: 2, y: 420, color: 'blue'}).drag_wrapper);
+    mp.append(new Step({label: 'if on edge, bounce', x: 2, y: 465, color: 'blue'}).drag_wrapper);
+    mp.append(new Step({label: '[check] x position', x: 2, y: 510, color: 'blue'}).drag_wrapper);
+    mp.append(new Step({label: '[check] y position', x: 2, y: 550, color: 'blue'}).drag_wrapper);
+    mp.append(new Step({label: '[check] direction', x: 2, y: 590, color: 'blue'}).drag_wrapper);
+    return this;
 }
 
 Scratch.prototype.scripts_column = function(){
