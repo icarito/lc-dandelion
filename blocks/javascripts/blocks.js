@@ -147,7 +147,11 @@ Block.prototype.initialize = function(params){
     this.drag_wrapper.append(this.block);
     this._label = $('<label></label>');
     this.block.append(this._label);
+    this.block.addClass(params.color);
     this.drag_handle = this;
+    if (params.x && params.y){
+        this.position(params.x, params.y);
+    }
     if (params.label){
         this.label(params.label);
     }
@@ -335,7 +339,7 @@ function drop_accept(draggable){
         this.css('background-color', 'red');
         $.ui.ddmanager.last_droppable = this;
     }else{
-        this.css('background-color', 'yellow');
+        this.css('background-color', 'transparent');
 //        $.ui.ddmanager.last_droppable = null;
     }
     return val;
@@ -355,14 +359,19 @@ function show_structure(e, level){
     e.children().each(function(){show_structure(this, level + 1);});
 }
 
-function initialize(){
-    var trigger = new Trigger({label: 'On event'});
+function initialize_test(){
+    var trigger = new Trigger({label: 'On event', color: 'gold'});
     $(document.body).append(trigger.drag_wrapper);
-    var loop = new Loop({label: 'Forever'});
+    var loop = new Loop({label: 'Forever', color: 'blueviolet'});
     trigger.append(loop);
-    loop.appendLoop(new Step({label: 'Step one'}));
-    loop.appendLoop(new Step({label: 'Step two'}));
-    loop.appendLoop(new Step({label: 'Step three'}));
+    loop.appendLoop(new Step({label: 'Step one', color: 'lawngreen'}));
+    loop.appendLoop(new Step({label: 'Step two', color: 'magenta'}));
+    var loop2 = new Loop({label: 'While true', color: 'orangered'});
+    loop.appendLoop(loop2);
+    loop2.appendLoop(new Step({label: 'Step A', color: 'blue'}));
+    loop2.appendLoop(new Step({label: 'Step B', color: 'cyan'}));
+    loop.appendLoop(new Step({label: 'Step three', color: 'seagreen'}));
+    trigger.append(new Step({label: 'Step i', color: 'green'}));
+    trigger.append(new Step({label: 'Step ii', color: 'mediumblue'}));
 }
 
-$(initialize);

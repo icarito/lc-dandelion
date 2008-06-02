@@ -8,7 +8,7 @@
     top: 0px;
     width: 11px;
     height: 6px;
-    border: 1px solid red; 
+/*    border: 1px solid red;  */
 }
 
 .drop_target{
@@ -20,7 +20,7 @@
 }
 
 .ui-droppable{
-    background-color: yellow;
+/*    background-color: yellow; */
 }
 
 .loop{
