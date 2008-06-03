@@ -5,6 +5,8 @@ Progress:
 * Basic blocks drawn
 * Dragging
 * Detecting drop-pointer over drop-target
+* More color blocks
+* Expression blocks (numeric and boolean)
 
 Next steps:
 
@@ -13,9 +15,7 @@ Next steps:
 
 TODO:
 
-* More color blocks
 * If/else blocks
-* Expression blocks (numeric and boolean)
 * Expression slots
 * Drop-down menus in blocks
 * Variables
