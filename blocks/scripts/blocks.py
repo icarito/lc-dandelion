@@ -74,6 +74,11 @@ class Block(object):
             self.last_y = y
         return 'L %d,%d' % (self.last_x,self.last_y)
         
+    def lineby(self, dx, dy):
+        self.last_x = self.last_x + dx
+        self.last_y = self.last_y + dy
+        return 'L %d,%d' % (self.last_x, self.last_y)
+        
     def hlineto(self, x):
         return self.lineto(x=x)
         
@@ -237,9 +242,16 @@ class Block(object):
         subprocess.check_call([bin, '--without-gui', '--file=%s' % svgfile, '--export-id=%s' % self.type, '--export-id-only',
             '--export-png=%s' % pngfile])
             
+    def cleanup(self):
+        import os
+        cwd = os.path.join(os.getcwd(), 'images')
+        svgfile = os.path.join(cwd, self.type + '_' + self.color + '.svg')
+        os.remove(svgfile)
+            
     def update(self):
         self.save()
         self.convert()
+        self.cleanup()
         
     def fileout(self):
         return output_template % self
@@ -280,6 +292,40 @@ class Trigger(Block):
         type = self.type
         return self.template % locals()
         
+class IntExpr(Block):
+
+    def __init__(self, **kws):
+        super(IntExpr, self).__init__(**kws)
+        if 'type' not in kws:
+            self.type = 'intexpr'
+        if 'radius' not in kws:
+            self.radius = 12;
+        
+    def __str__(self):
+        radius = self.radius
+        path = ' '.join([self.moveto(0,radius), self.hlineto(self.width - radius), self.tr_arc_cw(), self.vlineby(1), 
+            self.br_arc_cw(), self.hlineto(radius), self.bl_arc_cw(), self.vlineby(-1), self.tl_arc_cw()])
+        color = self.color
+        type = self.type
+        return self.template % locals()
+        
+class BoolExpr(Block):
+
+    def __init__(self, **kws):
+        super(BoolExpr, self).__init__(**kws)
+        if 'type' not in kws:
+            self.type = 'boolexpr'
+        if 'radius' not in kws:
+            self.radius = 12;
+    
+    def __str__(self):
+        radius = self.radius
+        path = ' '.join([self.moveto(0,radius), self.hlineto(self.width - radius), self.lineby(radius,radius), self.vlineby(1), 
+            self.lineby(-radius,radius), self.hlineto(self.radius), self.lineby(-radius,-radius), self.vlineby(-1), self.lineby(radius,-radius)])
+        color = self.color
+        type = self.type
+        return self.template % locals()
+        
 
 def demo():
     return '''<svg x="10" y="20">%s</svg>
@@ -288,10 +334,6 @@ def demo():
 
 
 if __name__ == '__main__':
-    import sys
-    if sys.argv > 1:
-        color = sys.argv[1]
-    else:
-        color = 'blue'
-    for C in [Block, Container, Trigger]:
-        C(color=color).update()
+    for color in ['blue', 'blueviolet', 'cyan', 'gold', 'green', 'lawngreen', 'magenta', 'mediumblue', 'mediumslateblue', 'orange', 'orangered', 'seagreen']:
+        for Shape in [Block, Container, Trigger, IntExpr, BoolExpr]:
+            Shape(color=color).update()

@@ -16,6 +16,9 @@ $.extend({
             k.push(key);
         }
         return '[' + k.join(', ') + ']';
+    },
+    upcap: function(str){
+        return str[0].toUpperCase() + str.slice(1);
     }
 });
 
@@ -134,7 +137,7 @@ $.fn.extend({
 
 var blocks = [];
 var triggers = [];
-
+var expressions = [];
 
 function Block(){
 }
@@ -148,7 +151,7 @@ Block.prototype.initialize = function(params){
     this._label = $('<label></label>');
     this.block.append(this._label);
     this.block.addClass(params.color);
-    this.drag_handle = this;
+    this.drag_handle = this.block;
     if (params.x && params.y){
         this.position(params.x, params.y);
     }
@@ -157,7 +160,7 @@ Block.prototype.initialize = function(params){
     }
     this.drop_target = $('<div class="drop_target"></div>');
     this.block.append(this.drop_target);
-    this.drop_target.droppable({over: drag_over, drop: drag_drop, accept: drop_accept, hoverClass: 'drop_ok'});
+    this.drop_target.droppable({accept: drop_accept});
     blocks.push(this);
 }
 
@@ -203,6 +206,29 @@ Block.prototype.makeContainable = function(){
     this.block.prepend($('<div class="drop_pointer"></div>'));
 }
 
+function Expression(){
+}
+Expression.prototype = new Block();
+
+Expression.prototype.initialize = function(params){
+    this.block = $('<div class="expression"></div>');
+    this.block.attr('id', 'id_' + $.data(this.block.get(0)));
+    this._label = $('<label></label>');
+    this.block.append(this._label);
+    this.block.prepend('<div class="right"></div>');
+    this.block.addClass(params.color);
+    this.drag_handle = this.block;
+    this.drag_wrapper = this.block;
+    if (params.x && params.y){
+        this.position(params.x, params.y);
+    }
+    if (params.label){
+        this.label(params.label);
+    }
+    this.makeDraggable();
+    expressions.push(this);
+}
+
 function Step(params){
     this.initialize(params);
     this.type = 'Step';
@@ -212,6 +238,42 @@ function Step(params){
     this.makeDraggable();
 }
 Step.prototype = new Block();
+
+function IntExpr(params){
+    this.initialize(params);
+    this.type = 'IntExpr';
+    this.block.addClass('intexpr');
+}
+IntExpr.prototype = new Expression();
+
+function IntValue(params){
+    this.initialize(params);
+    this.block.addClass('intexpr');
+    this.block.css('margin-left', '20px');
+    this.type = 'IntValue';
+    this._checkbox = $('<input type="checkbox" />');
+    this.block.prepend(this._checkbox);
+    this._checkbox.css({position: 'absolute', top: '3px', left: '-20px'});
+}
+IntValue.prototype = new Expression();
+
+function BoolExpr(params){
+    this.initialize(params);
+    this.type = 'BoolExpr';
+    this.block.addClass('boolexpr');
+}
+BoolExpr.prototype = new Expression();
+
+function BoolValue(params){
+    this.initialize(params);
+    this.block.addClass('boolexpr');
+    this.block.css('margin-left', '20px');
+    this.type = 'BoolValue';
+    this._checkbox = $('<input type="checkbox" />');
+    this.block.prepend(this._checkbox);
+    this._checkbox.css({position: 'absolute', top: '3px', left: '-20px'});
+}
+BoolValue.prototype = new Expression();
 
 function Trigger(params){
     this.initialize(params);
@@ -254,7 +316,7 @@ Loop.prototype.appendLoop = function(block){
     }else{
         this.block.append(block.drag_wrapper);
         this.nextInLoop = block;
-        console.log('setting next in loop: ' + block.toString());
+        //console.log('setting next in loop: ' + block.toString());
     }
     return this;
 }
@@ -273,7 +335,7 @@ Loop.prototype.appendLoop = function(block){
 //
 
 function stop_dragging(e, ui){
-    console.log('stop dragging helper: ' + ui.helper.info());
+//    console.log('stop dragging helper: ' + ui.helper.info());
     var drop = $.ui.ddmanager.last_droppable;
     if (drop){
         console.log('stop dragging drop: ' + drop.up('.block').info());
@@ -284,22 +346,9 @@ function stop_dragging(e, ui){
         drop.up('.drag_wrapper').append(ui.helper);
     }else{
         console.log('appending ' + $('.block', ui.helper).info() + ' to document body');
-        $.ui.ddmanager.prepareOffsets(ui.helper, e);
+    //    $.ui.ddmanager.prepareOffsets(ui.helper, e);
         $(document.body).append(ui.helper);
     }
-}
-
-function drag_out(e, ui){
-    // ui.instance = droppable
-    // ui.options 
-    // ui.position
-    // ui.absolute_position
-    // ui.draggable
-    // ui.helper
-    
-    // use to disconnect blocks
-    document.body.appendChild(ui.draggable.get(0));
-    console.log('out');
 }
 
 function drag_drop(e, ui){
@@ -320,7 +369,13 @@ function drag_drop(e, ui){
 }
 
 function drag_over(e, ui){
-    console.log(ui.draggable.info() + ' is over ' + ui.element.info());
+//    console.log(ui.draggable.info() + ' is over ' + ui.element.info());
+    this.css('background-color', 'red');
+}
+
+function drag_out(e, ui){
+//    console.log('out');
+    this.css('background-color', 'transparent');
 }
 
 function drag_activate(e, ui){
@@ -340,7 +395,7 @@ function drop_accept(draggable){
         $.ui.ddmanager.last_droppable = this;
     }else{
         this.css('background-color', 'transparent');
-//        $.ui.ddmanager.last_droppable = null;
+        $.ui.ddmanager.last_droppable = null;
     }
     return val;
 }
