@@ -1,3 +1,9 @@
+.block, .expression{
+    font-family: Palatino;
+    font-size: 10px;
+    color: #000;
+}
+
 .trigger{
     position: relative;
     padding-left: 25px;
@@ -76,8 +82,15 @@
 
 
 
-label{
+.label{
     position: relative;
+    top: 4px;
+    left: -10px;
+}
+
+.step > .label{
+    top: 6px;
+    left: -15px;
 }
 
 .loop{
@@ -88,8 +101,8 @@ label{
     margin-bottom: 26px;
 }
 
-.loop > label{
-    top: -22px;
+.loop > .label{
+    top: -17px;
 }
 .loop > .top_left{
     position: absolute;
@@ -156,43 +169,43 @@ label{
 .step.seagreen, .step.seagreen .right{background-image: url(../images/block_seagreen.png);}
 .trigger.seagreen, .trigger.seagreen .right{background-image: url(../images/trigger_seagreen.png);}
 .intexpr.seagreen, .intexpr.seagreen .right{background-image: url(../images/intexpr_seagreen.png);}
-.boolexpr.seagreen, .boolexpr.seagreen .right{background-image: url(../images/intexpr_seagreen.png);}
+.boolexpr.seagreen, .boolexpr.seagreen .right{background-image: url(../images/boolexpr_seagreen.png);}
 .loop.seagreen .top_left, .loop.seagreen .top, .loop.seagreen .top_right, .loop.seagreen .left, .loop.seagreen .bottom_left, .loop.seagreen .bottom, .loop.seagreen .bottom_right{background-image: url(../images/container_seagreen.png);}
 
 .step.seagreenviolet, .step.seagreenviolet .right{background-image: url(../images/block_seagreenviolet.png);}
 .trigger.seagreenviolet, .trigger.seagreenviolet .right{background-image: url(../images/trigger_seagreenviolet.png);}
 .intexpr.seagreenviolet, .intexpr.seagreenviolet .right{background-image: url(../images/intexpr_seagreenviolet.png);}
-.boolexpr.seagreenviolet, .boolexpr.seagreenviolet .right{background-image: url(../images/intexpr_seagreenviolet.png);}
+.boolexpr.seagreenviolet, .boolexpr.seagreenviolet .right{background-image: url(../images/boolexpr_seagreenviolet.png);}
 .loop.seagreenviolet .top_left, .loop.seagreenviolet .top, .loop.seagreenviolet .top_right, .loop.seagreenviolet .left, .loop.seagreenviolet .bottom_left, .loop.seagreenviolet .bottom, .loop.seagreenviolet .bottom_right{background-image: url(../images/container_seagreenviolet.png);}
 
 .step.cyan, .step.cyan .right{background-image: url(../images/block_cyan.png);}
 .trigger.cyan, .trigger.cyan .right{background-image: url(../images/trigger_cyan.png);}
 .intexpr.cyan, .intexpr.cyan .right{background-image: url(../images/intexpr_cyan.png);}
-.boolexpr.cyan, .boolexpr.cyan .right{background-image: url(../images/intexpr_cyan.png);}
+.boolexpr.cyan, .boolexpr.cyan .right{background-image: url(../images/boolexpr_cyan.png);}
 .loop.cyan .top_left, .loop.cyan .top, .loop.cyan .top_right, .loop.cyan .left, .loop.cyan .bottom_left, .loop.cyan .bottom, .loop.cyan .bottom_right{background-image: url(../images/container_cyan.png);}
 
 .step.gold, .step.gold .right{background-image: url(../images/block_gold.png);}
 .trigger.gold, .trigger.gold .right{background-image: url(../images/trigger_gold.png);}
 .intexpr.gold, .intexpr.gold .right{background-image: url(../images/intexpr_gold.png);}
-.boolexpr.gold, .boolexpr.gold .right{background-image: url(../images/intexpr_gold.png);}
+.boolexpr.gold, .boolexpr.gold .right{background-image: url(../images/boolexpr_gold.png);}
 .loop.gold .top_left, .loop.gold .top, .loop.gold .top_right, .loop.gold .left, .loop.gold .bottom_left, .loop.gold .bottom, .loop.gold .bottom_right{background-image: url(../images/container_gold.png);}
 
 .step.green, .step.green .right{background-image: url(../images/block_green.png);}
 .trigger.green, .trigger.green .right{background-image: url(../images/trigger_green.png);}
 .intexpr.green, .intexpr.green .right{background-image: url(../images/intexpr_green.png);}
-.boolexpr.green, .boolexpr.green .right{background-image: url(../images/intexpr_green.png);}
+.boolexpr.green, .boolexpr.green .right{background-image: url(../images/boolexpr_green.png);}
 .loop.green .top_left, .loop.green .top, .loop.green .top_right, .loop.green .left, .loop.green .bottom_left, .loop.green .bottom, .loop.green .bottom_right{background-image: url(../images/container_green.png);}
 
 .step.lawngreen, .step.lawngreen .right{background-image: url(../images/block_lawngreen.png);}
 .trigger.lawngreen, .trigger.lawngreen .right{background-image: url(../images/trigger_lawngreen.png);}
 .intexpr.lawngreen, .intexpr.lawngreen .right{background-image: url(../images/intexpr_lawngreen.png);}
-.boolexpr.lawngreen, .boolexpr.lawngreen .right{background-image: url(../images/intexpr_lawngreen.png);}
+.boolexpr.lawngreen, .boolexpr.lawngreen .right{background-image: url(../images/boolexpr_lawngreen.png);}
 .loop.lawngreen .top_left, .loop.lawngreen .top, .loop.lawngreen .top_right, .loop.lawngreen .left, .loop.lawngreen .bottom_left, .loop.lawngreen .bottom, .loop.lawngreen .bottom_right{background-image: url(../images/container_lawngreen.png);}
 
 .step.magenta, .step.magenta .right{background-image: url(../images/block_magenta.png);}
 .trigger.magenta, .trigger.magenta .right{background-image: url(../images/trigger_magenta.png);}
 .intexpr.magenta, .intexpr.magenta .right{background-image: url(../images/intexpr_magenta.png);}
-.boolexpr.magenta, .boolexpr.magenta .right{background-image: url(../images/intexpr_magenta.png);}
+.boolexpr.magenta, .boolexpr.magenta .right{background-image: url(../images/boolexpr_magenta.png);}
 .loop.magenta .top_left, .loop.magenta .top, .loop.magenta .top_right, .loop.magenta .left, .loop.magenta .bottom_left, .loop.magenta .bottom, .loop.magenta .bottom_right{background-image: url(../images/container_magenta.png);}
 
 .step.mediumseagreen, .step.mediumseagreen .right{background-image: url(../images/block_mediumseagreen.png);}
@@ -204,13 +217,13 @@ label{
 .step.orangered, .step.orangered .right{background-image: url(../images/block_orangered.png);}
 .trigger.orangered, .trigger.orangered .right{background-image: url(../images/trigger_orangered.png);}
 .intexpr.orangered, .intexpr.orangered .right{background-image: url(../images/intexpr_orangered.png);}
-.boolexpr.orangered, .boolexpr.orangered .right{background-image: url(../images/intexpr_orangered.png);}
+.boolexpr.orangered, .boolexpr.orangered .right{background-image: url(../images/boolexpr_orangered.png);}
 .loop.orangered .top_left, .loop.orangered .top, .loop.orangered .top_right, .loop.orangered .left, .loop.orangered .bottom_left, .loop.orangered .bottom, .loop.orangered .bottom_right{background-image: url(../images/container_orangered.png);}
 
 .step.seagreen, .step.seagreen .right{background-image: url(../images/block_seagreen.png);}
 .trigger.seagreen, .trigger.seagreen .right{background-image: url(../images/trigger_seagreen.png);}
 .intexpr.seagreen, .intexpr.seagreen .right{background-image: url(../images/intexpr_seagreen.png);}
-.boolexpr.seagreen, .boolexpr.seagreen .right{background-image: url(../images/intexpr_seagreen.png);}
+.boolexpr.seagreen, .boolexpr.seagreen .right{background-image: url(../images/boolexpr_seagreen.png);}
 .loop.seagreen .top_left, .loop.seagreen .top, .loop.seagreen .top_right, .loop.seagreen .left, .loop.seagreen .bottom_left, .loop.seagreen .bottom, .loop.seagreen .bottom_right{background-image: url(../images/container_seagreen.png);}
 
 

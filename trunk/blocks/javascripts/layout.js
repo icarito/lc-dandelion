@@ -44,9 +44,9 @@ $.fn.extend({
             button.round(10,10,10,10,md_grey);
             button.css({backgroundColor: dk_grey, color: spec.color, width: 75, display: 'block', textAlign: 'center', 'float': 'left', marginLeft: 10, borderStyle: 'outset'});
             button.click(function(){
-                scratch.show_block_palette(spec.name);
-                $(scratch.current_button).trigger('unselect');
-                scratch.current_button = this;
+                application.show_block_palette(spec.name);
+                $(application.current_button).trigger('unselect');
+                application.current_button = this;
                 $(this).css({backgroundColor: spec.color, color: white});
             });
             button.bind('unselect', function(){
@@ -60,7 +60,7 @@ $.fn.extend({
     },
     add_palette: function(name, color, block_spec){
         var palette = $('<div></div>');
-        scratch['_' + name + '_palette'] = palette;
+        application['_' + name + '_palette'] = palette;
         this.append(palette);
         $.each(block_spec, function(){
             palette.append( new this.type({label: this.label, x: 2, y: this.y, color: color}).drag_wrapper);
@@ -110,6 +110,7 @@ Scratch.prototype.blocks_buttons = function(){
 }
 
 Scratch.prototype.blocks_palettes = function(){
+    this.load_images();
     this.motion_palette();
     this.control_palette();
     this.looks_palette();
@@ -119,6 +120,16 @@ Scratch.prototype.blocks_palettes = function(){
     this.pen_palette();
     this.variables_palette();
 }
+
+Scratch.prototype.load_images = function(){
+    this.images = {
+        flag: $('<img class="block_icon" width="18" height="18" src="images/flag.png" />'),
+        stopsign: $('<img class="block_icon" width="18" height="18" src="images/stopsign.png" />'),
+        clockwise: $('<img class="block_icon" width="18" height="18" src="images/clockwise.png" />'),
+        counterclockwise: $('<img class="block_icon" width="18" height="18" src="images/counterclockwise.png" />')
+    };
+}
+
 
 Scratch.prototype.show_block_palette = function(palette_name){
     if(this._current_palette){
@@ -130,30 +141,30 @@ Scratch.prototype.show_block_palette = function(palette_name){
 
 Scratch.prototype.control_palette = function(){
     return $('#blocks_palette').add_palette('control', 'gold', [
-        {type: Trigger, label: 'When [flag] clicked', y: 5},
+        {type: Trigger, label: 'When [{flag}] clicked', y: 5},
         {type: Trigger, label: 'When [key] pressed', y: 50},
-        {type: Trigger, label: 'When [Sprite1] clicked', y: 95},
+        {type: Trigger, label: 'When [sprite] clicked', y: 95},
         {type: Step, label: 'Wait [1] secs', y: 140},
         {type: Loop, label: 'forever', y: 180},
         {type: Loop, label: 'repeat [10]', y: 290},
         {type: Step, label: 'broadcast [message]', y: 400},
         {type: Step, label: 'broadcast [message] and wait', y: 440},
         {type: Trigger, label: 'When I receive [message]', y: 480},
-        {type: Loop, label: 'forever if [condition]', y: 525},
-        {type: Loop, label: 'if [condition]', y: 635},
-        {type: Loop, label: 'if [condition] else', y: 745},
-        {type: Step, label: 'wait until [condition]',x: 2, y: 855},
-        {type: Loop, label: 'repeat until [condition]', y: 895},
+        {type: Loop, label: 'forever if [bool]', y: 525},
+        {type: Loop, label: 'if [bool]', y: 635},
+        {type: Loop, label: 'if [bool] else', y: 745},
+        {type: Step, label: 'wait until [bool]',x: 2, y: 855},
+        {type: Loop, label: 'repeat until [bool]', y: 895},
         {type: Step, label: 'stop script', y: 1005},
-        {type: Step, label: 'stop all [sign]', y: 1045},
+        {type: Step, label: 'stop all [{stopsign}]', y: 1045},
     ]);
 }
 
 Scratch.prototype.motion_palette = function(){
     return $('#blocks_palette').add_palette('motion', 'blue', [
         {type: Step, label: 'Move [10] steps', y: 5},
-        {type: Step, label: 'Turn [Clockwise] [10] degrees', y: 45},
-        {type: Step, label: 'Turn [Counter] [10] degrees', y: 85},
+        {type: Step, label: 'Turn [{clockwise}] [10] degrees', y: 45},
+        {type: Step, label: 'Turn [{counterclockwise}] [10] degrees', y: 85},
         {type: Step, label: 'point in direction [90]', y: 130},
         {type: Step, label: 'point towards [sprite]', y: 170},
         {type: Step, label: 'go to x: [-200] y: [-150]', y: 215},
@@ -174,12 +185,12 @@ Scratch.prototype.looks_palette = function(){
     return $('#blocks_palette').add_palette('looks', 'blueviolet', [
         {type: Step, label: 'switch to costume [costume]', y: 5},
         {type: Step, label: 'next costume', y: 45},
-        {type: Step, label: 'say [Hello] for [2] secs', y: 90},
-        {type: Step, label: 'say [Hello]', y: 130},
-        {type: Step, label: 'think [Hmmm...] for [2] secs', y: 170},
-        {type: Step, label: 'think [Hmmm...]', y: 210},
-        {type: Step, label: 'change [color] effect by [25]', y: 255},
-        {type: Step, label: 'set [color] effect to [2]', y: 295},
+        {type: Step, label: 'say ["Hello"] for [2] secs', y: 90},
+        {type: Step, label: 'say ["Hello"]', y: 130},
+        {type: Step, label: 'think ["Hmmm..."] for [2] secs', y: 170},
+        {type: Step, label: 'think ["Hmmm..."]', y: 210},
+        {type: Step, label: 'change [effect] effect by [25]', y: 255},
+        {type: Step, label: 'set [effect] effect to [2]', y: 295},
         {type: Step, label: 'clear graphic effects', y: 335},
         {type: Step, label: 'change size by [10]', y: 380},
         {type: Step, label: 'set size to [40]', y: 420},
@@ -196,7 +207,7 @@ Scratch.prototype.sensing_palette = function(){
         {type: IntExpr, label: 'mouse x', y: 5},
         {type: IntExpr, label: 'mouse y', y: 45},
         {type: BoolExpr, label: 'mouse down?', y: 85},
-        {type: BoolExpr, label: 'key [space] pressed?', y: 130},
+        {type: BoolExpr, label: 'key [key] pressed?', y: 130},
         {type: BoolExpr, label: 'touching [sprite]?', y: 175},
         {type: BoolExpr, label: 'touching [color]?', y: 215},
         {type: BoolExpr, label: 'color [color] is over [color]?', y: 255},
@@ -211,8 +222,8 @@ Scratch.prototype.sensing_palette = function(){
 
 Scratch.prototype.sound_palette = function(){
     return $('#blocks_palette').add_palette('sound', 'magenta', [
-        {type: Step, label: 'play sound [pop]', y: 5},
-        {type: Step, label: 'play sound [pop] and wait', y: 45},
+        {type: Step, label: 'play sound [sound]', y: 5},
+        {type: Step, label: 'play sound [sound] and wait', y: 45},
         {type: Step, label: 'stop all sounds', y: 85}
         // Not implemented: midi notes and instruments
     ]);
@@ -220,20 +231,20 @@ Scratch.prototype.sound_palette = function(){
 
 Scratch.prototype.numbers_palette = function(){
     return $('#blocks_palette').add_palette('numbers', 'seagreen', [
-        {type: IntExpr, label: '[intexpr] + [intexpr]', y: 5},
-        {type: IntExpr, label: '[intexpr] - [intexpr]', y: 45},
-        {type: IntExpr, label: '[intexpr] * [intexpr]', y: 85},
-        {type: IntExpr, label: '[intexpr] / [intexpr]', y: 125},
-        {type: IntExpr, label: 'pick random [intexpr] to [intexpr]', y: 170},
-        {type: BoolExpr, label: '[intexpr] < [intexpr]', y: 215},
-        {type: BoolExpr, label: '[intexpr] = [intexpr]', y: 255},
-        {type: BoolExpr, label: '[intexpr] > [intexpr]', y: 295},
-        {type: BoolExpr, label: '[boolexpr] and [boolexpr]', y: 340},
-        {type: BoolExpr, label: '[boolexpr] or [boolexpr]', y: 380},
-        {type: BoolExpr, label: 'not [boolexpr]', y: 420},
-        {type: IntExpr, label: '[intexpr] mod [intexpr]', y: 465},
-        {type: IntExpr, label: 'abs [intexpr]', y: 505},
-        {type: IntExpr, label: 'round [intexpr]', y: 545}
+        {type: IntExpr, label: '[int] + [int]', y: 5},
+        {type: IntExpr, label: '[int] - [int]', y: 45},
+        {type: IntExpr, label: '[int] * [int]', y: 85},
+        {type: IntExpr, label: '[int] / [int]', y: 125},
+        {type: IntExpr, label: 'pick random [int] to [int]', y: 170},
+        {type: BoolExpr, label: '[int] < [int]', y: 215},
+        {type: BoolExpr, label: '[int] = [int]', y: 255},
+        {type: BoolExpr, label: '[int] > [int]', y: 295},
+        {type: BoolExpr, label: '[bool] and [bool]', y: 340},
+        {type: BoolExpr, label: '[bool] or [bool]', y: 380},
+        {type: BoolExpr, label: 'not [bool]', y: 420},
+        {type: IntExpr, label: '[int] mod [int]', y: 465},
+        {type: IntExpr, label: 'abs [int]', y: 505},
+        {type: IntExpr, label: 'round [int]', y: 545}
     ]);
 }
 
@@ -297,6 +308,6 @@ Scratch.prototype.stage_column = function(){
 
 
 $(function(){
-    window.scratch = new Scratch();
-    scratch.initialize();
+    window.application = new Scratch();
+    application.initialize();
 });
