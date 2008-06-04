@@ -1,5 +1,16 @@
 // jQuery extension
 $.extend({
+    contains: function(obj, array){
+        var i;
+        var len = array.length;
+        for (i = 0; i < len; i++){
+            if (array[i] === obj) return true;
+        }
+        return false;
+    },
+    isInteger: function(str){
+        return (str.toString().search(/^-?[0-9]+$/) == 0);
+    },
     sum: function(list_of_numbers){
         var value = 0;
         jQuery.each(list_of_numbers, function(){value += this});
@@ -19,6 +30,66 @@ $.extend({
     },
     upcap: function(str){
         return str[0].toUpperCase() + str.slice(1);
+    },
+    parseSpec: function(str){
+        // Handle label strings with embedded content notation
+        // [] is used for element content
+        // [#] where # is some numeral: create an IntExpr hole with a default value of #
+        // [{flag}] double brackets insert a named graphic
+        // [true] or [false]: create a BoolExpr hold with a default value
+        // [int]: create an IntExpr hole with no default value
+        // [bool]: create a BoolExpr hole with no default value
+        // [color]: create a color picker control
+        // [key]: create a keypress drop-down list
+        // [sprite]: create a list of sprites (besides the current sprite)
+        // [sound]: create a list of available sounds (default + added)
+        // [check]: make a checkbox, [checked] make a checkbox that defaults to selected
+        // ["Hello"] or ["Hmm..."]: make a string control from quoted content (type "string")
+        // [message] add a list of available messages
+        // [costume] adds a list available costumes
+        // [effect] list of graphic effects
+        // the remaining content of the label is type "text"
+        var parts = str.split(/\]|\[/g);
+        var part = null;
+        for (var i = 0; i< parts.length; i++){
+            part = parts[i];
+            if ($.isInteger(part)){ 
+                parts[i] = $('<input type="text" class="int" value="'  + part + '" />');
+            }else if (part[0] === '{'){
+                parts[i] = application.images[part.slice(1,-1)];
+            }else if (part == 'true' || part == 'false'){
+                parts[i] = $('<input type="text" class="bool" value="' + part + '" />');
+//            }else if ($.contains(part, ['bool', 'int', 'color', 'key', 'sprite', 'sound', 'message', 'costume', 'effect'])){
+//                parts[i] = {type: part, value: ''}; 
+            }else if(part == 'bool'){
+                parts[i] = $('<input type="text" class="bool" value="" />');
+            }else if(part == 'int'){
+                parts[i] = $('<input type="text" class="int" value="" />');
+            }else if(part == 'color'){
+                parts[i] = $('<span class="color_picker" style="background-color: green; border: 1px solid black">&nbsp;</span>').click(function(){alert('show color picker');})
+            }else if(part == 'key'){
+                parts[i] = $('<select>' + $.map(['up arrow', 'down arrow', 'right arrow', 'left arrow', 'space', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], function(item){return '<option value="' + item + '">' + item + '</item>';}).join('') + '</select>');
+            }else if(part == 'sprite'){
+                parts[i] = $('<select><option value="Sprite 1">Sprite 1</option></select>');
+            }else if(part == 'sound'){
+                parts[i] = $('<select><option value="pop">pop</option></select>');
+            }else if(part == 'message'){
+                parts[i] = $('<select><option value="new message">new message&hellip;</option></select>');
+            }else if(part == 'costume'){
+                parts[i] = $('<select><option value="costume 1">costume 1</option></select>');
+            }else if(part == 'effect'){
+                parts[i] = $('<select><option value="fisheye">fisheye</option></select>');
+            }else if (part[0] == '"'){
+                parts[i] = $('<input type="text" class="string_input" value="' + part.slice(1,-1) + '" />'); 
+            }else if (part == 'check'){ 
+                parts[i] = $('<input type="checkbox" />');
+            }else if (part == 'checked'){ 
+                parts[i] = $('<input type="checkbox" checked="checked" />');
+            }else{ 
+                parts[i] = $('<span>' + part * '</span>');
+            }
+        }
+        return parts.join('');
     }
 });
 
@@ -91,12 +162,12 @@ $.fn.extend({
     },
     // blocks-specific function, return value of the block label (should be moved to block method)
     label: function(str){
-        var e = $('label', this);
+        var e = $('.label', this);
         if (str){
             e.text(str);
         }
         if (!e.length){
-            e = $('label', this.parent());
+            e = $('.label', this.parent());
         }
         return $.trim(e.first().text());
     },
@@ -148,7 +219,7 @@ Block.prototype.initialize = function(params){
     this.block.attr('id', 'id_' + $.data(this.block.get(0)));
     this.drag_wrapper = $('<div class="drag_wrapper"></div>');
     this.drag_wrapper.append(this.block);
-    this._label = $('<label></label>');
+    this._label = $('<span class="label"></span>');
     this.block.append(this._label);
     this.block.addClass(params.color);
     this.drag_handle = this.block;
@@ -166,6 +237,10 @@ Block.prototype.initialize = function(params){
 
 Block.prototype.label = function(str){
     if (str){
+//        this._label remove children ???
+//        this._label.text($.parseSpec(str));
+         console.log('spec: ' + str + ' parsed becomes: ' + $.parseSpec(str).html());
+//          this._label.append($.parseSpec(str));
         this._label.text(str);
         return this;
     }else{
