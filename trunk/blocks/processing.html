@@ -1,0 +1,198 @@
+<!DOCTYPE html 
+      PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:svg="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink">
+	<head>
+		<title>Processing Playground</title>
+		<script type="text/javascript" src="processing.js"></script>
+		<script type="text/javascript">
+		function run(){
+			var canvas = document.getElementById('canvas');
+			var script = document.getElementById('script').value;
+			Processing(canvas, script);
+		}
+		function demo(select){
+			try{
+				var chosen_id = select.options[select.selectedIndex].value;
+				var script = document.getElementById(chosen_id).value;
+				document.getElementById('script').value = script;
+			}catch(e){
+				console.log('Error setting script: ' + e.description);
+			}
+		}
+		</script>
+	</head>
+	<body style="padding:0px;margin:0px;">
+		<textarea id="script" style="width:50%;height:90%;position:absolute;top:0px;left:0px;font-family:fixed;font-size:12px;"></textarea>
+		<div id="toolbar" style="width:50%;height: 40px;position:absolute;bottom:0px;left:0px;">
+			<button onclick="run()">Run Script</button>
+			<select onchange="demo(this)">
+				<option value="==">Choose a demo</option>
+				<optgroup label="Structure">
+					<option value="statements_and_comments">Statements and Comments</option>
+					<option value="coordinates">Coordinates</option>
+					<option value="width_and_height">Width and Height</option>
+					<option value="setup_and_draw">Setup and Draw</option>
+					<option value="no_loop">No Loop</option>
+					<option value="loop">Loop</option>
+				</optgroup>
+			</select>
+		</div>
+		<canvas id="canvas" style="width:50%;height:60%;position:absolute;top:0px;right:0px;"></canvas>
+		<textarea id="output" readonly="readonly" style="width:50%;height:40%;position:absolute;bottom:0px;right:0px;"></textarea>
+		<div style="display:none">
+			<textarea id="statements_and_comments">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+// The size function is a statement that tells the computer 
+// how large to make the window.
+// Each function statement has zero or more parameters. 
+// Parameters are data passed into the function
+// and used as values for specifying what the computer will do.
+size(200, 200);
+
+// The background function is a statement that tells the computer
+// which color to make the background of the window 
+background(102);
+			</textarea>
+			<textarea id="coordinates">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+// Sets the screen to be 200, 200, so the width of the window is 200 pixels
+// and the height of the window is 200 pixels
+size(200, 200);
+background(0);
+noFill();
+stroke(255);
+
+// The two parameters of the point() method each specify coordinates.
+// This call to point() draws at the position [100, 100]
+point(width/2, height/2);
+
+// Draws to the position [100, 50]
+point(width/2, height/4); 
+
+// It is also possible to specify a point with any parameter, 
+// but only coordinates on the screen are visible
+point(60, 30);
+point(60, 134);
+point(160, 50);
+point(280, -800);
+point(201, 100);
+
+// Coordinates are used for drawing all shapes, not just points.
+// Parameters for different methods are used for different purposes.
+// For example, the first two parameters to line() specify the coordinates of the 
+// first point and the second two parameters specify the second point
+stroke(204);
+line(0, 73, width, 73);
+
+// The first two parameters to rect() are coordinates
+// and the second two are the width and height
+rect(110, 55, 40, 36);
+			</textarea>
+			<textarea id="width_and_height">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+size(200, 200);
+background(127);
+noStroke();
+for(int i=0; i<height; i+=20) {
+	 fill(0);
+	 rect(0, i, width, 10);
+	 fill(255);
+	 rect(i, 0, 10, height);
+}
+			</textarea>
+			<textarea id="setup_and_draw">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+// The statements in the setup() function 
+// execute once when the program begins
+void setup() 
+{
+  size(200, 200);  // Size should be the first statement
+  stroke(255);     // Set line drawing color to white
+  frameRate(30);
+}
+
+float y = 100;
+
+// The statements in draw() are executed until the 
+// program is stopped. Each statement is executed in 
+// sequence and after the last line is read, the first 
+// line is executed again.
+void draw() 
+{ 
+  background(0);   // Set the background to black
+  y = y - 1; 
+  if (y < 0) { y = height; } 
+  line(0, y, width, y);  
+}
+			</textarea>
+			<textarea id="no_loop">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+// The statements in the setup() function 
+// execute once when the program begins
+void setup() 
+{
+  size(200, 200);  // Size should be the first statement
+  stroke(255);     // Set line drawing color to white
+  frameRate(30);
+  noLoop();
+}
+
+float y = 100;
+
+// The statements in draw() are executed until the 
+// program is stopped. Each statement is executed in 
+// sequence and after the last line is read, the first 
+// line is executed again.
+void draw() 
+{ 
+  background(0);   // Set the background to black
+  y = y - 1; 
+  if (y < 0) { y = height; } 
+  line(0, y, width, y);  
+}
+			</textarea>
+			<textarea id="loop">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+// The statements in the setup() function 
+// execute once when the program begins
+void setup() 
+{
+  size(200, 200);  // Size should be the first statement
+  stroke(255);     // Set stroke color to white
+  noLoop();
+}
+
+float y = 100;
+
+// The statements in draw() are run until the 
+// program is stopped. Each statement is run in 
+// sequence and after the last line is read, the first 
+// line is run again.
+void draw() 
+{ 
+  background(0);   // Set the background to black
+  line(0, y, width, y);  
+
+  y = y - 1; 
+  if (y < 0) { 
+    y = height; 
+  } 
+} 
+
+void mousePressed() 
+{
+  loop();
+}
+			</textarea>
+		</div>
+	</body>
+</html>
