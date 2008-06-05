@@ -51,45 +51,61 @@ $.extend({
         // the remaining content of the label is type "text"
         var parts = str.split(/\]|\[/g);
         var part = null;
+        console.log('parseSpec found ' + parts.length + ' parts: "' + parts.join(", ") + '"');
         for (var i = 0; i< parts.length; i++){
             part = parts[i];
-            if ($.isInteger(part)){ 
+            if ($.isInteger(part)){
+                console.log(part + ' is an integer');
                 parts[i] = $('<input type="text" class="int" value="'  + part + '" />');
             }else if (part[0] === '{'){
+                console.log(part + ' is an image');
                 parts[i] = application.images[part.slice(1,-1)];
             }else if (part == 'true' || part == 'false'){
+                console.log(part + ' is a boolean');
                 parts[i] = $('<input type="text" class="bool" value="' + part + '" />');
-//            }else if ($.contains(part, ['bool', 'int', 'color', 'key', 'sprite', 'sound', 'message', 'costume', 'effect'])){
-//                parts[i] = {type: part, value: ''}; 
             }else if(part == 'bool'){
+                console.log(part + ' is a boolean');
                 parts[i] = $('<input type="text" class="bool" value="" />');
             }else if(part == 'int'){
+                console.log(part + ' is an integer');
                 parts[i] = $('<input type="text" class="int" value="" />');
             }else if(part == 'color'){
+                console.log(part + ' is a color');
                 parts[i] = $('<span class="color_picker" style="background-color: green; border: 1px solid black">&nbsp;</span>').click(function(){alert('show color picker');})
             }else if(part == 'key'){
+                console.log(part + ' is a key');
                 parts[i] = $('<select>' + $.map(['up arrow', 'down arrow', 'right arrow', 'left arrow', 'space', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], function(item){return '<option value="' + item + '">' + item + '</item>';}).join('') + '</select>');
             }else if(part == 'sprite'){
+                console.log(part + ' is a sprite');
                 parts[i] = $('<select><option value="Sprite 1">Sprite 1</option></select>');
             }else if(part == 'sound'){
+                console.log(part + ' is a sound');
                 parts[i] = $('<select><option value="pop">pop</option></select>');
             }else if(part == 'message'){
+                console.log(part + ' is a message');
                 parts[i] = $('<select><option value="new message">new message&hellip;</option></select>');
             }else if(part == 'costume'){
+                console.log(part + ' is a costume');
                 parts[i] = $('<select><option value="costume 1">costume 1</option></select>');
             }else if(part == 'effect'){
+                console.log(part + ' is an effect');
                 parts[i] = $('<select><option value="fisheye">fisheye</option></select>');
             }else if (part[0] == '"'){
+                console.log(part + ' is a string');
                 parts[i] = $('<input type="text" class="string_input" value="' + part.slice(1,-1) + '" />'); 
             }else if (part == 'check'){ 
+                console.log(part + ' is a checkbox');
                 parts[i] = $('<input type="checkbox" />');
             }else if (part == 'checked'){ 
+                console.log(part + ' is a checkbox');
                 parts[i] = $('<input type="checkbox" checked="checked" />');
             }else{ 
-                parts[i] = $('<span>' + part * '</span>');
+                console.log(part + ' is a run of text');
+                parts[i] = $('<span>' + part + '</span>');
             }
         }
-        return parts.join('');
+        console.log('parseSpec built ' + parts.length + ' parts: "' + $.map(parts, function(e){return e.get(0).nodeName}).join(", ") + '"');
+        return parts;
     }
 });
 
@@ -239,9 +255,16 @@ Block.prototype.label = function(str){
     if (str){
 //        this._label remove children ???
 //        this._label.text($.parseSpec(str));
-         console.log('spec: ' + str + ' parsed becomes: ' + $.parseSpec(str).html());
-//          this._label.append($.parseSpec(str));
-        this._label.text(str);
+//        try{
+//            console.log('spec: "' + str + '" parsed becomes: ' + $.parseSpec(str));
+//        }catch(e){
+//            console.log('parseSpec failed for ' + str + ' with error ' + e.description);
+//        }
+        var label_elements = $.parseSpec(str);
+        for (var i = 0; i < label_elements.length; i++){
+            this._label.append(label_elements[i]);
+        }
+//        this._label.text(str);
         return this;
     }else{
         return this._label.text();
@@ -416,7 +439,7 @@ function stop_dragging(e, ui){
         console.log('stop dragging drop: ' + drop.up('.block').info());
     }
     if (drop && drop.intersects($('.drop_pointer', ui.helper))){
-        console.log('appending ' + $('.block', ui.helper).info() + ' to ' + drop.up('.block').info());
+//        console.log('appending ' + $('.block', ui.helper).info() + ' to ' + drop.up('.block').info());
         ui.helper.css({position: 'relative', left: '0px', top: '0px'});
         drop.up('.drag_wrapper').append(ui.helper);
     }else{
