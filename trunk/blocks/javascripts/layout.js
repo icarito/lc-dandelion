@@ -236,7 +236,7 @@ Scratch.prototype.numbers_palette = function(){
         {type: IntExpr, label: '[int] * [int]', y: 85},
         {type: IntExpr, label: '[int] / [int]', y: 125},
         {type: IntExpr, label: 'pick random [int] to [int]', y: 170},
-        {type: BoolExpr, label: '[int] < [int]', y: 215},
+        {type: BoolExpr, label: '[int] &lt; [int]', y: 215},
         {type: BoolExpr, label: '[int] = [int]', y: 255},
         {type: BoolExpr, label: '[int] > [int]', y: 295},
         {type: BoolExpr, label: '[bool] and [bool]', y: 340},
