@@ -31,6 +31,21 @@ $.extend({
     upcap: function(str){
         return str[0].toUpperCase() + str.slice(1);
     },
+    makeSelect: function(list){
+        var sel = ['<select>'];
+        $.each(list, function(){
+            sel.push('<option value="' + this + '">' + this + '</option>');
+        });
+        sel.push('</select>');
+        return $(sel.join(''));
+    },
+    keyList: function(str){
+        var keys = ['up arrow', 'down arrow', 'right arrow', 'left arrow', 'space'].concat('abcdefghijklmnopqrstuvwxyz0123456789'.split(''));
+        return $.makeSelect(keys);
+    },
+    colorPicker: function(str){
+        return $('<span></span>').addClass('color_picker').css({backgroundColor: 'green', border: '1px solid black'}).click(function(){alert('show color picker')});
+    },
     parseSpec: function(str){
         // Handle label strings with embedded content notation
         // [] is used for element content
@@ -71,25 +86,25 @@ $.extend({
                 parts[i] = $('<input type="text" class="int" value="" />');
             }else if(part == 'color'){
                 console.log(part + ' is a color');
-                parts[i] = $('<span class="color_picker" style="background-color: green; border: 1px solid black">&nbsp;</span>').click(function(){alert('show color picker');})
+                parts[i] = $.colorPicker();
             }else if(part == 'key'){
                 console.log(part + ' is a key');
-                parts[i] = $('<select>' + $.map(['up arrow', 'down arrow', 'right arrow', 'left arrow', 'space', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], function(item){return '<option value="' + item + '">' + item + '</item>';}).join('') + '</select>');
+                parts[i] = $.keyList();
             }else if(part == 'sprite'){
                 console.log(part + ' is a sprite');
-                parts[i] = $('<select><option value="Sprite 1">Sprite 1</option></select>');
+                parts[i] = $.makeSelect(['Sprite 1']);
             }else if(part == 'sound'){
                 console.log(part + ' is a sound');
-                parts[i] = $('<select><option value="pop">pop</option></select>');
+                parts[i] = $.makeSelect(['pop']);
             }else if(part == 'message'){
                 console.log(part + ' is a message');
-                parts[i] = $('<select><option value="new message">new message&hellip;</option></select>');
+                parts[i] = $.makeSelect(['Add a new message...']);
             }else if(part == 'costume'){
                 console.log(part + ' is a costume');
-                parts[i] = $('<select><option value="costume 1">costume 1</option></select>');
+                parts[i] = $.makeSelect(['Costume 1']);
             }else if(part == 'effect'){
                 console.log(part + ' is an effect');
-                parts[i] = $('<select><option value="fisheye">fisheye</option></select>');
+               parts[i] = $.makeSelect(['fisheye']);
             }else if (part[0] == '"'){
                 console.log(part + ' is a string');
                 parts[i] = $('<input type="text" class="string_input" value="' + part.slice(1,-1) + '" />'); 
@@ -262,7 +277,11 @@ Block.prototype.label = function(str){
 //        }
         var label_elements = $.parseSpec(str);
         for (var i = 0; i < label_elements.length; i++){
-            this._label.append(label_elements[i]);
+            try{
+                this._label.append(label_elements[i]);
+            }catch(e){
+                console.log('problem adding element ' + label_elements[i].get(0).nodeName + ' to block label');
+            }
         }
 //        this._label.text(str);
         return this;
