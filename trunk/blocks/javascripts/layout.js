@@ -173,11 +173,11 @@ Scratch.prototype.motion_palette = function(){
         {type: Step, label: 'change x by [10]', y: 340},
         {type: Step, label: 'set x to [0]', y: 380},
         {type: Step, label: 'change y by [10]', y: 420},
-        {type: Step, label: 'set y to [0]', y: 420},
-        {type: Step, label: 'if on edge, bounce', y: 465},
-        {type: Step, label: '[check] x position', y: 510},
-        {type: Step, label: '[check] y position', y: 550},
-        {type: Step, label: '[check] direction', y: 590}
+        {type: Step, label: 'set y to [0]', y: 460},
+        {type: Step, label: 'if on edge, bounce', y: 505},
+        {type: Step, label: '[check] x position', y: 550},
+        {type: Step, label: '[check] y position', y: 590},
+        {type: Step, label: '[check] direction', y: 630}
     ]);
 }
 

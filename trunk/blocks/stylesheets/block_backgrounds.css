@@ -93,6 +93,27 @@
     left: -15px;
 }
 
+input.int, input.bool{
+    position: relative;
+    text-align: center;
+    top: -4px;
+    width: 25px;
+    height: 10px;
+    font-family: fixed;
+    font-size: 10px;
+}
+
+input.int{
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+select.blocks_menu{
+    -webkit-appearance: none;
+    text-align: center;
+}
+    
 .loop{
     position: relative;
     width: 120px;
