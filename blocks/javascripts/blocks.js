@@ -32,7 +32,7 @@ $.extend({
         return str[0].toUpperCase() + str.slice(1);
     },
     makeSelect: function(list){
-        var sel = ['<select>'];
+        var sel = ['<select class="blocks_menu">'];
         $.each(list, function(){
             sel.push('<option value="' + this + '">' + this + '</option>');
         });
@@ -66,60 +66,46 @@ $.extend({
         // the remaining content of the label is type "text"
         var parts = str.split(/\]|\[/g);
         var part = null;
-        console.log('parseSpec found ' + parts.length + ' parts: "' + parts.join(", ") + '"');
         for (var i = 0; i< parts.length; i++){
             part = parts[i];
             if ($.isInteger(part)){
-                console.log(part + ' is an integer');
                 parts[i] = $('<input type="text" class="int" value="'  + part + '" />');
             }else if (part[0] === '{'){
-                console.log(part + ' is an image');
-                parts[i] = application.images[part.slice(1,-1)];
+                parts[i] = application.images[part.slice(1,-1)].css('vertical-align','middle');
             }else if (part == 'true' || part == 'false'){
-                console.log(part + ' is a boolean');
                 parts[i] = $('<input type="text" class="bool" value="' + part + '" />');
             }else if(part == 'bool'){
-                console.log(part + ' is a boolean');
-                parts[i] = $('<input type="text" class="bool" value="" />');
+                parts[i] = $('<input type="text" class="bool" value="" readonly="readonly" />');
             }else if(part == 'int'){
-                console.log(part + ' is an integer');
                 parts[i] = $('<input type="text" class="int" value="" />');
             }else if(part == 'color'){
-                console.log(part + ' is a color');
                 parts[i] = $.colorPicker();
             }else if(part == 'key'){
-                console.log(part + ' is a key');
                 parts[i] = $.keyList();
             }else if(part == 'sprite'){
-                console.log(part + ' is a sprite');
                 parts[i] = $.makeSelect(['Sprite 1']);
             }else if(part == 'sound'){
-                console.log(part + ' is a sound');
                 parts[i] = $.makeSelect(['pop']);
             }else if(part == 'message'){
-                console.log(part + ' is a message');
                 parts[i] = $.makeSelect(['Add a new message...']);
             }else if(part == 'costume'){
-                console.log(part + ' is a costume');
                 parts[i] = $.makeSelect(['Costume 1']);
             }else if(part == 'effect'){
-                console.log(part + ' is an effect');
                parts[i] = $.makeSelect(['fisheye']);
             }else if (part[0] == '"'){
-                console.log(part + ' is a string');
                 parts[i] = $('<input type="text" class="string_input" value="' + part.slice(1,-1) + '" />'); 
             }else if (part == 'check'){ 
-                console.log(part + ' is a checkbox');
                 parts[i] = $('<input type="checkbox" />');
             }else if (part == 'checked'){ 
-                console.log(part + ' is a checkbox');
                 parts[i] = $('<input type="checkbox" checked="checked" />');
             }else{ 
-                console.log(part + ' is a run of text');
-                parts[i] = $('<span>' + part + '</span>');
+                if (part){
+                    parts[i] = $('<span>' + part + '</span>');
+                }else{
+                    parts[i] = null; // no need to wrap empty strings
+                }
             }
         }
-        console.log('parseSpec built ' + parts.length + ' parts: "' + $.map(parts, function(e){return e.get(0).nodeName}).join(", ") + '"');
         return parts;
     }
 });
@@ -268,22 +254,16 @@ Block.prototype.initialize = function(params){
 
 Block.prototype.label = function(str){
     if (str){
-//        this._label remove children ???
-//        this._label.text($.parseSpec(str));
-//        try{
-//            console.log('spec: "' + str + '" parsed becomes: ' + $.parseSpec(str));
-//        }catch(e){
-//            console.log('parseSpec failed for ' + str + ' with error ' + e.description);
-//        }
         var label_elements = $.parseSpec(str);
         for (var i = 0; i < label_elements.length; i++){
-            try{
-                this._label.append(label_elements[i]);
-            }catch(e){
-                console.log('problem adding element ' + label_elements[i].get(0).nodeName + ' to block label');
+            if (label_elements[i]){ // don't try to append nulls
+                try{
+                    this._label.append(label_elements[i]);
+                }catch(e){
+                    console.log('problem adding element ' + label_elements[i].get(0).nodeName + ' to block label');
+                }
             }
         }
-//        this._label.text(str);
         return this;
     }else{
         return this._label.text();
