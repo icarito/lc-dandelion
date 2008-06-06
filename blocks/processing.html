@@ -6,7 +6,7 @@
       xmlns:xlink="http://www.w3.org/1999/xlink">
 	<head>
 		<title>Processing Playground</title>
-		<script type="text/javascript" src="processing.js"></script>
+		<script type="text/javascript" src="javascripts/processing.js"></script>
 		<script type="text/javascript">
 		function run(){
 			var canvas = document.getElementById('canvas');
@@ -25,8 +25,9 @@
 		</script>
 	</head>
 	<body style="padding:0px;margin:0px;">
-		<textarea id="script" style="width:50%;height:90%;position:absolute;top:0px;left:0px;font-family:fixed;font-size:12px;"></textarea>
-		<div id="toolbar" style="width:50%;height: 40px;position:absolute;bottom:0px;left:0px;">
+		<h3 style="position:absolute; width: 400px; right: 55%; top: 10px;">Script</h3>
+		<textarea id="script" style="width: 400px; height: 500px; position:absolute; top:50px; right:55%;font-family:fixed;font-size:12px;"></textarea>
+		<div id="toolbar" style="width:400px;height: 40px;position:absolute;top:575px;right: 55%;">
 			<button onclick="run()">Run Script</button>
 			<select onchange="demo(this)">
 				<option value="==">Choose a demo</option>
@@ -37,11 +38,22 @@
 					<option value="setup_and_draw">Setup and Draw</option>
 					<option value="no_loop">No Loop</option>
 					<option value="loop">Loop</option>
+					<option value="redraw">Redraw</option>
+					<option value="functions">Functions</option>
+					<option value="recursion">Recursion</option>
+					<option value="recursion_2">Recursion 2</option>
+					<option value="create_graphics">Create Graphics</option>
+				</optgroup>
+				<optgroup label="Form">
+					<option value="points_and_lines">Points and Lines</option>
+					<option value="shape_primitives">Shape Primitives</option>
 				</optgroup>
 			</select>
 		</div>
-		<canvas id="canvas" style="width:50%;height:60%;position:absolute;top:0px;right:0px;"></canvas>
-		<textarea id="output" readonly="readonly" style="width:50%;height:40%;position:absolute;bottom:0px;right:0px;"></textarea>
+		<h3 style="position:absolute; width: 400px; left: 55%; top: 10px;">Result</h3>
+		<canvas id="canvas" style="width:400px;height:300px;position:absolute;top:50px;left:55%; border: 1px solid black;"></canvas>
+		<h3 style="position:absolute; width: 400px; left: 55%; top: 360px;">Output</h3>
+		<textarea id="output" readonly="readonly" style="width:400px;height:200px;position:absolute;top:400px;left: 55%; overflow:auto;"></textarea>
 		<div style="display:none">
 			<textarea id="statements_and_comments">
 // All Examples Written by Casey Reas and Ben Fry
@@ -75,7 +87,7 @@ point(width/2, height/2);
 point(width/2, height/4); 
 
 // It is also possible to specify a point with any parameter, 
-// but only coordinates on the screen are visible
+// but only 	 on the screen are visible
 point(60, 30);
 point(60, 134);
 point(160, 50);
@@ -192,6 +204,191 @@ void mousePressed()
 {
   loop();
 }
+			</textarea>
+			<textarea id="redraw">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+// The statements in the setup() function 
+// execute once when the program begins
+void setup() 
+{
+  size(200, 200);  // Size should be the first statement
+  stroke(255);     // Set line drawing color to white
+  noLoop();
+}
+
+float y = 100;
+
+// The statements in draw() are executed until the 
+// program is stopped. Each statement is executed in 
+// sequence and after the last line is read, the first 
+// line is executed again.
+void draw() 
+{ 
+  background(0);   // Set the background to black
+  y = y - 1; 
+  if (y < 0) { y = height; } 
+  line(0, y, width, y);  
+} 
+
+void mousePressed() 
+{
+  redraw();
+}			
+			</textarea>
+			<textarea id="functions">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+void setup() 
+{
+  size(200, 200);
+  background(51);
+  noStroke();
+  smooth();
+  noLoop();
+}
+
+void draw() 
+{
+  draw_target(68, 34, 200, 10);
+  draw_target(152, 16, 100, 3);
+  draw_target(100, 144, 80, 5);
+}
+
+void draw_target(int xloc, int yloc, int size, int num) 
+{
+  float grayvalues = 255/num;
+  float steps = size/num;
+  for(int i=0; i<num; i++) {
+    fill(i*grayvalues);
+    ellipse(xloc, yloc, size-i*steps, size-i*steps);
+  }
+}
+			</textarea>
+			<textarea id="recursion">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+void setup() 
+{
+  size(200, 200);
+  noStroke();
+  smooth();
+  noLoop();
+}
+
+void draw() 
+{
+  drawCircle(126, 170, 6);
+}
+
+void drawCircle(int x, int radius, int level) 
+{                    
+  float tt = 126 * level/4.0;
+  fill(tt);
+  ellipse(x, 100, radius*2, radius*2);      
+  if(level > 1) {
+    level = level - 1;
+    drawCircle(x - radius/2, radius/2, level);
+    drawCircle(x + radius/2, radius/2, level);
+  }
+}
+			</textarea>
+			<textarea id="recursion_2">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+void setup() 
+{
+  size(200, 200);
+  noStroke();
+  smooth();
+  drawCircle(100, 100, 80, 8);
+}
+
+void drawCircle(float x, float y, int radius, int level) 
+{                    
+  float tt = 126 * level/6.0;
+  fill(tt, 153);
+  ellipse(x, y, radius*2, radius*2);      
+  if(level > 1) {
+    level = level - 1;
+    int num = int(random(2, 6));
+    for(int i=0; i<num; i++) {
+      float a = random(0, TWO_PI);
+      float nx = x + cos(a) * 6.0 * level;
+      float ny = y + sin(a) * 6.0 * level;
+      drawCircle(nx, ny, radius/2, level);
+    }
+  }
+}				
+			</textarea>
+			<textarea id="create_graphics">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+PGraphics pg;
+
+void setup() {
+  size(200, 200);
+  pg = createGraphics(80, 80, P3D);
+}
+
+void draw() {
+  fill(0, 12);
+  rect(0, 0, width, height);
+  fill(255);
+  noStroke();
+  ellipse(mouseX, mouseY, 60, 60);
+
+  pg.beginDraw();
+  pg.background(102);
+  pg.noFill();
+  pg.stroke(255);
+  pg.ellipse(mouseX-60, mouseY-60, 60, 60);
+  pg.endDraw();
+
+  image(pg, 60, 60); 
+}
+			</textarea>
+			<textarea id="points_and_lines">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int d = 40;
+int p1 = d;
+int p2 = p1+d;
+int p3 = p2+d;
+int p4 = p3+d;
+
+size(200, 200);
+background(0);
+
+// Draw gray box
+stroke(153);
+line(p3, p3, p2, p3);
+line(p2, p3, p2, p2);
+line(p2, p2, p3, p2);
+line(p3, p2, p3, p3);
+
+// Draw white points
+stroke(255);
+point(p1, p1);
+point(p1, p3); 
+point(p2, p4);
+point(p3, p1); 
+point(p4, p2);
+point(p4, p4);				
+			</textarea>
+			<textarea id="shape_primitives">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+size(200, 200);
+smooth(); 
+background(0);
+noStroke();
+fill(226);
+triangle(10, 10, 10, 200, 45, 200);
+rect(45, 45, 35, 35);
+quad(105, 10, 120, 10, 120, 200, 80, 200);
+ellipse(140, 80, 40, 40);
+triangle(160, 10, 195, 200, 160, 200);				
 			</textarea>
 		</div>
 	</body>
