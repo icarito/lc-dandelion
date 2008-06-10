@@ -6,6 +6,11 @@
       xmlns:xlink="http://www.w3.org/1999/xlink">
 	<head>
 		<title>Processing Playground</title>
+		<style type="text/css">
+			p{font-family: Palatino,serif; font-size: 10pt;}
+			h3{font-family: Helvetica,sans-serif; font-size: 12pt;}
+			textarea{font-family: Monaco,"Courier New", Courier, fixed; font-size: 10pt; }
+		</style>
 		<script type="text/javascript" src="javascripts/processing.js"></script>
 		<script type="text/javascript">
 		function Playground(){
@@ -36,7 +41,8 @@
 			this.demo = function(select){
 				var chosen_id = select.options[select.selectedIndex].value;
 				window.location.hash = '#' + chosen_id;
-				this.show_script(chosen_id);
+				window.location.reload();
+//				this.show_script(chosen_id);
 			};
 			this.show_script = function(id){
 				try{
@@ -52,7 +58,7 @@
 	</head>
 	<body style="padding:0px;margin:0px;" onload="$p.on_load()">
 		<h3 style="position:absolute; width: 400px; right: 55%; top: 10px;">Script</h3>
-		<textarea id="script" style="width: 400px; height: 500px; position:absolute; top:50px; right:55%;font-family:fixed;font-size:12px;"></textarea>
+		<textarea id="script" style="width: 400px; height: 500px; position:absolute; top:50px; right:55%"></textarea>
 		<div id="toolbar" style="width:400px;height: 40px;position:absolute;top:575px;right: 55%;">
 			<button onclick="$p.run_script()">Run Script</button>
 			<select onchange="$p.demo(this)">
@@ -178,8 +184,12 @@
 		</div>
 		<h3 style="position:absolute; width: 400px; left: 55%; top: 10px;">Result</h3>
 		<canvas id="canvas" style="width:400px;height:300px;position:absolute;top:50px;left:55%; border: 1px solid black;"></canvas>
-		<h3 style="position:absolute; width: 400px; left: 55%; top: 360px;">Output</h3>
-		<textarea id="output" readonly="readonly" style="width:400px;height:200px;position:absolute;top:400px;left: 55%; overflow:auto;"></textarea>
+		<div id="credits" style="position: absolute; width: 400px; left: 55%; top: 360px;">
+			<h3 >Processing Playground</h3>
+			<p>This is a playground for experimenting with <a href="http://ejohn.org/blog/processingjs/">Processing.js</a>, written by John Resig, inspired by the original, Java-based <a href="http://processing.org/">Processing</a> initiated by Ben Fry and Casey Reas</p>
+			<p>All embedded demos taken from the Processing.js <a href="http://ejohn.org/apps/processing.js/examples/basic/">basic demos</a> page (see individual demos from that page for notes), and are intended to run in Firefox 3, although most will also run in WebKit nightlies, Opera 9.5, and many work with Safari 3. Don't expect anything to work in IE. There is lots more documentation on the <a href="http://processing.org/reference/index.html">Processing site.</a></p>
+			<p>Processing Playground created by <a href="http://livingcode.org/">Dethe Elza</a> so my kids can experiment with Processing, while having ready examples to work from. Please take it in the spirit it is intended.</p>
+		</div>
 		<div style="display:none">
 			<textarea id="statements_and_comments">
 // All Examples Written by Casey Reas and Ben Fry
