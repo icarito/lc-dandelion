@@ -38,9 +38,10 @@ $.extend({
 
 $.fn.extend({
     // set or return position
-    position: function(pos){
+    positionRelative: function(pos){
         if (pos){
             this.css({position: 'absolute', left: pos.left + 'px', top: pos.top + 'px'});
+            return this;
         }else{
             return this.offset();
         }
