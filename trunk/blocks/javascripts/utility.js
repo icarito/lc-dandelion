@@ -78,6 +78,9 @@ $.fn.extend({
     },
     // positioning helper, returns boolean
     intersects: function(other){
+        if (other.length < 1){
+            return false;
+        }
         return this.box().intersects(other.box());
     },
     // go up the ancestor tree until an element matching expr is found
