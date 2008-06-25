@@ -176,7 +176,7 @@ Block.prototype.makeDraggable = function(){
     var get_helper = function(){
         if (!factory.current_helper){
             factory.current_helper = factory.drag_wrapper.clone(true);
-            $(document.body).prepend(factory.current_helper);
+            $(document.body).append(factory.current_helper);
         }
         return factory.current_helper;
     };
@@ -184,12 +184,6 @@ Block.prototype.makeDraggable = function(){
         
     };
     var start_fun = function(e, ui){
-        var pos = ui.helper.offset();
-        console.log(ui.helper.info() + ' offset: ' + ui.helper.offset().left + ', ' + ui.helper.offset().top);
-        console.log(ui.helper.info() + ' position: ' + pos.left + ', ' + pos.top);
-        console.log('mouse position: ' + e.pageX + ', ' + e.pageY);
-        $(document.body).append(ui.helper);
-        ui.helper.positionRelative({left: pos.left, top: pos.top});
     };
     this.drag_wrapper.draggable({start: start_fun, drag: drag_fun, helper: get_helper, handle: this.handle, stop: stop_dragging, refreshPositions: true});
     return this;
