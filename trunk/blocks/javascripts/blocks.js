@@ -172,6 +172,14 @@ Block.prototype.append = function(block){
 }
 
 Block.prototype.makeDraggable = function(){
+    var factory = this;
+    var get_helper = function(){
+        if (!factory.current_helper){
+            factory.current_helper = factory.drag_wrapper.clone(true);
+            $(document.body).prepend(factory.current_helper);
+        }
+        return factory.current_helper;
+    };
     var drag_fun = function(e, ui){
         
     };
@@ -183,7 +191,7 @@ Block.prototype.makeDraggable = function(){
         $(document.body).append(ui.helper);
         ui.helper.positionRelative({left: pos.left, top: pos.top});
     };
-    this.drag_wrapper.draggable({start: start_fun, drag: drag_fun, helper: 'clone', handle: this.handle, stop: stop_dragging, refreshPositions: true});
+    this.drag_wrapper.draggable({start: start_fun, drag: drag_fun, helper: get_helper, handle: this.handle, stop: stop_dragging, refreshPositions: true});
     return this;
 }
 
