@@ -49,6 +49,7 @@ $.fn.extend({
     // positioning helper, returns {left, top, right, bottom}
     box: function(){
         var pos = this.offset();
+//        console.log(this.info() + '.box() called.  offset == ' + pos);
         return {left: pos.left, 
                 top: pos.top, 
                 right: pos.left + this.width(), 
@@ -109,6 +110,10 @@ $.fn.extend({
     // debug helper
     info: function(){
         var self = this.get(0);
+        if (!self){
+            console.log('trying to get info on an empty list?');
+            return 'nil object';
+        }
         return self.nodeName + '#' + self.id + '.' + self.className.split(' ').join('.') + ' (' + this.label() + ')';
     },
     // debug helper

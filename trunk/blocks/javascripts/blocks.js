@@ -185,7 +185,14 @@ Block.prototype.makeDraggable = function(){
     };
     var start_fun = function(e, ui){
     };
-    this.drag_wrapper.draggable({start: start_fun, drag: drag_fun, helper: get_helper, handle: this.handle, stop: stop_dragging, refreshPositions: true});
+    var stop_fun = function(e, ui){
+        stop_dragging(e, ui, factory);
+        if (factory.current_helper){
+            factory.current_helper.remove();
+            factory.current_helper = null;
+        }
+    };
+    this.drag_wrapper.draggable({start: start_fun, drag: drag_fun, helper: get_helper, handle: this.handle, stop: stop_fun, refreshPositions: true});
     return this;
 }
 
@@ -321,7 +328,7 @@ Loop.prototype.appendLoop = function(block){
 //      .drag_wrapper for next block(s)
 //
 
-function stop_dragging(e, ui){
+function stop_dragging(e, ui, factory){
 //    console.log('stop dragging helper: ' + ui.helper.info());
     var drop = $.ui.ddmanager.last_droppable;
     if (drop){
@@ -332,9 +339,26 @@ function stop_dragging(e, ui){
         ui.helper.css({position: 'relative', left: '0px', top: '0px'});
         drop.up('.drag_wrapper').append(ui.helper);
     }else{
-        console.log('appending ' + $('.block', ui.helper).info() + ' to document body');
-    //    $.ui.ddmanager.prepareOffsets(ui.helper, e);
-        $(document.body).append(ui.helper);
+        var script_canvas = $('#scripts_container');
+        var pointer = $('.drop_pointer', ui.helper);
+        if (pointer.length < 1){
+            console.log('no drop pointer for ' + ui.helper.info() + ', using block');
+            pointer = $('.block', ui.helper);
+        }
+        if (script_canvas.intersects(pointer)){
+            console.log('appending ' + $('.block', ui.helper).info() + ' to script block body');
+            //    $.ui.ddmanager.prepareOffsets(ui.helper, e);
+            var offset = script_canvas.offset();
+            console.log('script canvas offset: ' + offset.left + ', ' + offset.top);
+            var new_block = factory.drag_wrapper.clone(true);
+            var x = parseInt(ui.helper.css('left')) - offset.left;
+            var y = parseInt(ui.helper.css('top')) - offset.top;
+            console.log('new block: ' + x + ', ' + y);
+            new_block.css({left: x, top: y});
+            script_canvas.append(new_block);
+        }else{
+            console.log('no match for dragging: ' + factory.drag_wrapper.info());
+        }
     }
 }
 
