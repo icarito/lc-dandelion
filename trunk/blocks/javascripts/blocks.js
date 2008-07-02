@@ -40,7 +40,7 @@ $.extend({
             if ($.isInteger(part)){
                 parts[i] = $('<input type="text" class="int" value="'  + part + '" />');
             }else if (part[0] === '{'){
-                parts[i] = application.images[part.slice(1,-1)].css('vertical-align','middle');
+                parts[i] = application.images[part.slice(1,-1)].clone().css('vertical-align','middle');
             }else if (part == 'true' || part == 'false'){
                 parts[i] = $('<input type="text" class="bool" value="' + part + '" />');
             }else if(part == 'bool'){
@@ -108,6 +108,7 @@ function Block(){
 }
 
 Block.prototype.initialize = function(params){
+    this.initial_params = params;
     this.block = $('<div class="block"></div>');
     this.next = null;
     this.block.attr('id', 'id_' + $.data(this.block.get(0)));
@@ -127,6 +128,13 @@ Block.prototype.initialize = function(params){
     this.block.append(this.drop_target);
     this.drop_target.droppable({accept: drop_accept});
     blocks.push(this);
+    this.initial_params['instance'] = true;
+}
+
+Block.prototype.clone = function(){
+    // This is very experimental and a work in progress!
+    var instance =  new this.constructor(this.initial_params);
+    return instance;
 }
 
 Block.prototype.label = function(str){
@@ -171,7 +179,7 @@ Block.prototype.append = function(block){
     return this;
 }
 
-Block.prototype.makeDraggable = function(){
+Block.prototype.makeDraggableFactory = function(){
     var factory = this;
     var get_helper = function(){
         if (!factory.current_helper){
@@ -194,6 +202,10 @@ Block.prototype.makeDraggable = function(){
     };
     this.drag_wrapper.draggable({start: start_fun, drag: drag_fun, helper: get_helper, handle: this.handle, stop: stop_fun, refreshPositions: true});
     return this;
+}
+
+Block.prototype.makeDraggableInstance = function(){
+    this.drag_wrapper.draggable({handle: this.handle, stop: stop_dragging_instance, refresh_positions: true});
 }
 
 Block.prototype.makeContainable = function(){
@@ -219,7 +231,7 @@ Expression.prototype.initialize = function(params){
     if (params.label){
         this.label(params.label);
     }
-    this.makeDraggable();
+    this.makeDraggableFactory();
     expressions.push(this);
 }
 
@@ -229,7 +241,7 @@ function Step(params){
     this.block.addClass('step containable');
     this.block.prepend('<div class="right"></div>');
     this.makeContainable();
-    this.makeDraggable();
+    this.makeDraggableFactory();
 }
 Step.prototype = new Block();
 
@@ -275,9 +287,10 @@ function Trigger(params){
     this.block.addClass('trigger container');
     this.block.prepend('<div class="right"></div>');
     triggers.push(this);
-    this.makeDraggable();
+    this.makeDraggableFactory();
 }
 Trigger.prototype = new Block();
+Trigger.prototype.constructor = Trigger;
 
 function Loop(params){
     this.initialize(params);
@@ -294,7 +307,7 @@ function Loop(params){
     this.handle = $('<div class="top"></div>');
     this.block.prepend(this.handle);
     this.makeContainable();
-    this.makeDraggable();
+    this.makeDraggableFactory();
 }
 Loop.prototype = new Block();
 
@@ -332,35 +345,78 @@ function stop_dragging(e, ui, factory){
 //    console.log('stop dragging helper: ' + ui.helper.info());
     var drop = $.ui.ddmanager.last_droppable;
     if (drop){
-        console.log('stop dragging drop: ' + drop.up('.block').info());
+        //console.log('stop dragging drop: ' + drop.up('.block').info());
     }
     if (drop && drop.intersects($('.drop_pointer', ui.helper))){
-//        console.log('appending ' + $('.block', ui.helper).info() + ' to ' + drop.up('.block').info());
+        //console.log('appending ' + $('.block', ui.helper).info() + ' to ' + drop.up('.block').info());
         ui.helper.css({position: 'relative', left: '0px', top: '0px'});
         drop.up('.drag_wrapper').append(ui.helper);
     }else{
         var script_canvas = $('#scripts_container');
         var pointer = $('.drop_pointer', ui.helper);
         if (pointer.length < 1){
-            console.log('no drop pointer for ' + ui.helper.info() + ', using block');
+            //console.log('no drop pointer for ' + ui.helper.info() + ', using block');
             pointer = $('.block', ui.helper);
+            if (pointer.length < 1){
+                pointer = ui.helper;
+            }
         }
         if (script_canvas.intersects(pointer)){
-            console.log('appending ' + $('.block', ui.helper).info() + ' to script block body');
-            //    $.ui.ddmanager.prepareOffsets(ui.helper, e);
+            //console.log('appending ' + $('.block', ui.helper).info() + ' to script block body');
             var offset = script_canvas.offset();
-            console.log('script canvas offset: ' + offset.left + ', ' + offset.top);
-            var new_block = factory.drag_wrapper.clone(true);
+            //console.log('script canvas offset: ' + offset.left + ', ' + offset.top);
+            var instance = factory.clone();
+            console.log(instance);
             var x = parseInt(ui.helper.css('left')) - offset.left;
             var y = parseInt(ui.helper.css('top')) - offset.top;
-            console.log('new block: ' + x + ', ' + y);
-            new_block.css({left: x, top: y});
-            script_canvas.append(new_block);
+            //console.log('new block: ' + x + ', ' + y);
+            instance.drag_wrapper.css({left: x, top: y});
+            script_canvas.append(instance.drag_wrapper);
+            instance.makeDraggableInstance();
         }else{
-            console.log('no match for dragging: ' + factory.drag_wrapper.info());
+            //console.log('no match for dragging: ' + factory.drag_wrapper.info());
         }
     }
 }
+
+function stop_dragging_instance(e, ui, factory){
+//    console.log('stop dragging helper: ' + ui.helper.info());
+    var drop = $.ui.ddmanager.last_droppable;
+    if (drop){
+        //console.log('stop dragging drop: ' + drop.up('.block').info());
+    }
+    if (drop && drop.intersects($('.drop_pointer', ui.helper))){
+        //console.log('appending ' + $('.block', ui.helper).info() + ' to ' + drop.up('.block').info());
+        ui.helper.css({position: 'relative', left: '0px', top: '0px'});
+        drop.up('.drag_wrapper').append(ui.helper);
+    }else{
+        var script_canvas = $('#scripts_container');
+        var pointer = $('.drop_pointer', ui.helper);
+        if (pointer.length < 1){
+            //console.log('no drop pointer for ' + ui.helper.info() + ', using block');
+            pointer = $('.block', ui.helper);
+            if (pointer.length < 1){
+                pointer = ui.helper;
+            }
+        }
+        if (script_canvas.intersects(pointer)){
+            //console.log('appending ' + $('.block', ui.helper).info() + ' to script block body');
+            var offset = script_canvas.offset();
+            //console.log('script canvas offset: ' + offset.left + ', ' + offset.top);
+            var instance = factory.clone();
+            console.log(instance);
+            var x = parseInt(ui.helper.css('left')) - offset.left;
+            var y = parseInt(ui.helper.css('top')) - offset.top;
+            //console.log('new block: ' + x + ', ' + y);
+            instance.drag_wrapper.css({left: x, top: y});
+            script_canvas.append(instance.drag_wrapper);
+            instance.makeDraggableInstance();
+        }else{
+            //console.log('no match for dragging: ' + factory.drag_wrapper.info());
+        }
+    }
+}
+
 
 function drag_drop(e, ui){
     var drop_elem = ui.element.get(0);
