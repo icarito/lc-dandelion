@@ -111,7 +111,7 @@ Block.prototype.initialize = function(params){
     this.initial_params = params;
     this.block = $('<div class="block"></div>');
     this.next = null;
-    this.block.attr('id', 'id_' + $.data(this.block.get(0)));
+    this.block.attr('id', 'id_' + this.uniq());
     this.drag_wrapper = $('<div class="drag_wrapper"></div>');
     this.drag_wrapper.append(this.block);
     this._label = $('<span class="label"></span>');
@@ -133,8 +133,7 @@ Block.prototype.initialize = function(params){
 
 Block.prototype.clone = function(){
     // This is very experimental and a work in progress!
-    var instance =  new this.constructor(this.initial_params);
-    return instance;
+    return new this.constructor(this.initial_params);
 }
 
 Block.prototype.label = function(str){
@@ -212,13 +211,24 @@ Block.prototype.makeContainable = function(){
     this.block.prepend($('<div class="drop_pointer"></div>'));
 }
 
+Block._last_uniq = 0;
+
+Block.prototype.uniq = function(){
+    if (! this._uniq){
+        Block._last_uniq++;
+        this._uniq = Block._last_uniq;
+    }
+    return this._uniq;
+}
+
 function Expression(){
 }
 Expression.prototype = new Block();
 
 Expression.prototype.initialize = function(params){
+    this.initial_params = params;
     this.block = $('<div class="expression"></div>');
-    this.block.attr('id', 'id_' + $.data(this.block.get(0)));
+    this.block.attr('id', 'id_' + this.uniq());
     this._label = $('<label></label>');
     this.block.append(this._label);
     this.block.prepend('<div class="right"></div>');
@@ -231,6 +241,7 @@ Expression.prototype.initialize = function(params){
     if (params.label){
         this.label(params.label);
     }
+    this.initial_params['instance'] = true;
     this.makeDraggableFactory();
     expressions.push(this);
 }
@@ -244,6 +255,7 @@ function Step(params){
     this.makeDraggableFactory();
 }
 Step.prototype = new Block();
+Step.prototype.constructor = Step;
 
 function IntExpr(params){
     this.initialize(params);
@@ -251,6 +263,7 @@ function IntExpr(params){
     this.block.addClass('intexpr');
 }
 IntExpr.prototype = new Expression();
+IntExpr.prototype.constructor = IntExpr;
 
 function IntValue(params){
     this.initialize(params);
@@ -262,6 +275,7 @@ function IntValue(params){
     this._checkbox.css({position: 'absolute', top: '3px', left: '-20px'});
 }
 IntValue.prototype = new Expression();
+IntValue.prototype.constructor = IntValue;
 
 function BoolExpr(params){
     this.initialize(params);
@@ -269,6 +283,7 @@ function BoolExpr(params){
     this.block.addClass('boolexpr');
 }
 BoolExpr.prototype = new Expression();
+BoolExpr.prototype.constructor = BoolExpr;
 
 function BoolValue(params){
     this.initialize(params);
@@ -280,6 +295,7 @@ function BoolValue(params){
     this._checkbox.css({position: 'absolute', top: '3px', left: '-20px'});
 }
 BoolValue.prototype = new Expression();
+BoolValue.prototype.constructor = BoolValue;
 
 function Trigger(params){
     this.initialize(params);
@@ -310,6 +326,7 @@ function Loop(params){
     this.makeDraggableFactory();
 }
 Loop.prototype = new Block();
+Loop.prototype.constructor = Loop;
 
 Loop.prototype.appendLoop = function(block){
     if (this.nextInLoop){
