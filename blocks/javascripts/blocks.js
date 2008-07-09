@@ -109,36 +109,9 @@ $.fn.extend({
     }
 });
 
-var blocks = [];
 var triggers = [];
-var expressions = [];
 
 function Block(){
-}
-
-Block.prototype.initialize = function(params){
-    this.initial_params = params;
-    this.isInstance = params.instance || false;
-    this.block = $('<div class="block"></div>');
-    this.next = null;
-    this.block.attr('id', 'id_' + this.uniq());
-    this.drag_wrapper = $('<div class="drag_wrapper"></div>');
-    this.drag_wrapper.append(this.block);
-    this._label = $('<span class="label"></span>');
-    this.block.append(this._label);
-    this.block.addClass(params.color);
-    this.drag_handle = this.block;
-    if (params.x && params.y){
-        this.position(params.x, params.y);
-    }
-    if (params.label){
-        this.label(params.label);
-    }
-    this.drop_target = $('<div class="drop_target"></div>');
-    this.block.append(this.drop_target);
-    this.drop_target.droppable({accept: drop_accept});
-    blocks.push(this);
-    this.initial_params.instance = true;
 }
 
 Block.prototype.clone = function(){
@@ -243,13 +216,72 @@ Block.prototype.uniq = function(){
     return this._uniq;
 }
 
+Block.prototype.block_init = function(params){
+    // all blocks inherit this
+    this.initial_params = params;
+    this.isInstance = params.instance || false;
+    this.initial_params.instance = true;
+    this.register();
+}
+
+Block.blocks = [];
+
+Block.prototype.register = function(){
+    Block.blocks.push(this);
+}
+
+Block.prototype.dom_init = function(params){
+    //customize for each type of block
+}
+
+Block.prototype.initialize = function(params){
+    /// 1. Eliminate duplication between Expressions and Blocks
+    this.block_init(params);
+    /// 2. Move DOM initialization to own method
+    /// 3. Move DOM properties to jq_propertyname for code clarity
+    this.block_dom_init(params);
+    this.dom_init(params);
+}
+
+Block.prototype.initialize = function(params){
+}
+
+Block.prototype.block_dom_init = function(params){
+    // all blocks inherit this, except Expressions
+    this.next = null;
+    this.block = $('<div class="block"></div>');
+    this.block.attr('id', 'id_' + this.uniq());
+    this.drag_wrapper = $('<div class="drag_wrapper"></div>');
+    this.drag_wrapper.append(this.block);
+    this._label = $('<span class="label"></span>');
+    this.block.append(this._label);
+    this.block.addClass(params.color);
+    this.drag_handle = this.block;
+    if (params.x && params.y){
+        this.position(params.x, params.y);
+    }
+    if (params.label){
+        this.label(params.label);
+    }
+    this.drop_target = $('<div class="drop_target"></div>');
+    this.block.append(this.drop_target);
+    this.drop_target.droppable({accept: drop_accept});
+}
+
 function Expression(){
 }
 Expression.prototype = new Block();
 
+Expression.expresssions = [];
+Expression.prototype.register = function(){
+    Expression.expressions.push(this);
+}
+
+Expression.prototype.block_init = function(params){
+    this.block.addClass('expression').removeClass('block');
+}
+
 Expression.prototype.initialize = function(params){
-    this.initial_params = params;
-    this.isInstance = params.instance || false;
     this.block = $('<div class="expression"></div>');
     this.block.attr('id', 'id_' + this.uniq());
     this._label = $('<label></label>');
