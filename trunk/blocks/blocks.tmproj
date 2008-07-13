@@ -40,14 +40,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>38</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>354</integer>
+				<integer>261</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>320</integer>
+			<integer>252</integer>
 		</dict>
 		<key>javascripts/layout.js</key>
 		<dict>
@@ -68,9 +68,9 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>2</integer>
+				<integer>5</integer>
 				<key>line</key>
-				<integer>51</integer>
+				<integer>139</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>

@@ -106,12 +106,22 @@ $.fn.extend({
         }
         //console.log('intersection of a wrapped Trigger: ' + this.info());
         return this.find('.block'); // it is wrapped, but not droppable (a Trigger, for instance)
+    },
+    block: function(){
+        if (this.is('.block') || this.is('.expression')){
+            return this;
+        }
+        return this.find('.block');
     }
 });
 
 var triggers = [];
 
 function Block(){
+}
+
+Block.prototype.blocktype = function(){
+    return this.constructor.name;
 }
 
 Block.prototype.clone = function(){
@@ -138,7 +148,7 @@ Block.prototype.label = function(str){
 }
 
 Block.prototype.toString = function(){
-    return this.type + '(' + this.label() + ')';
+    return this.blocktype() + '(' + this.label() + ')';
 }
 
 Block.prototype.position = function(x,y){
@@ -176,11 +186,11 @@ Block.prototype.makeDraggableFactory = function(){
     var start_fun = function(e, ui){
     };
     var stop_fun = function(e, ui){
-        console.log('starting drag in factory');
+        // console.log('starting drag in factory');
         stop_dragging_factory(e, ui, factory);
         if (factory.current_helper){
-            factory.current_helper.remove();
-            factory.current_helper = null;
+            factory.current_helper.hide();
+            // factory.current_helper = null;
         }
     };
     this.drag_wrapper.draggable({start: start_fun, drag: drag_fun, helper: get_helper, handle: this.handle, stop: stop_fun, refreshPositions: true});
@@ -214,7 +224,7 @@ Block.prototype.uniq = function(){
         this._uniq = Block._last_uniq;
     }
     return this._uniq;
-}
+};
 
 Block.prototype.block_init = function(params){
     // all blocks inherit this
@@ -222,128 +232,124 @@ Block.prototype.block_init = function(params){
     this.isInstance = params.instance || false;
     this.initial_params.instance = true;
     this.register();
-}
+};
 
 Block.blocks = [];
 
 Block.prototype.register = function(){
     Block.blocks.push(this);
-}
+};
 
 Block.prototype.dom_init = function(params){
     //customize for each type of block
-}
+};
+
+Block.prototype.init = function(params){
+};
 
 Block.prototype.initialize = function(params){
-    /// 1. Eliminate duplication between Expressions and Blocks
-    this.block_init(params);
-    /// 2. Move DOM initialization to own method
+    // Block-level initialialization, all blocks
+    //console.log('name: ' + this.constructor.name);
+    this.block_init(params); // block-level, do not over-ride
+    this.block_dom_init(params); // DOM initialization to own method
     /// 3. Move DOM properties to jq_propertyname for code clarity
-    this.block_dom_init(params);
+    // Individual initialiation, over-ride for each type of block
+    this.init(params); // class-specific initialization, customize for each class
     this.dom_init(params);
-}
-
-Block.prototype.initialize = function(params){
-}
+    this.makeDraggable();
+};
 
 Block.prototype.block_dom_init = function(params){
     // all blocks inherit this, except Expressions
     this.next = null;
     this.block = $('<div class="block"></div>');
     this.block.attr('id', 'id_' + this.uniq());
-    this.drag_wrapper = $('<div class="drag_wrapper"></div>');
-    this.drag_wrapper.append(this.block);
     this._label = $('<span class="label"></span>');
     this.block.append(this._label);
     this.block.addClass(params.color);
+    this.block.addClass(this.blocktype().toLowerCase());
     this.drag_handle = this.block;
+    this.makeNestable();
     if (params.x && params.y){
         this.position(params.x, params.y);
     }
     if (params.label){
         this.label(params.label);
     }
+};
+
+Block.prototype.makeNestable = function(params){
+    this.drag_wrapper = $('<div class="drag_wrapper"></div>');
+    this.drag_wrapper.append(this.block);
+};
+
+Block.prototype.make_droppable = function(){
     this.drop_target = $('<div class="drop_target"></div>');
     this.block.append(this.drop_target);
     this.drop_target.droppable({accept: drop_accept});
-}
+};
 
 function Expression(){
 }
 Expression.prototype = new Block();
 
-Expression.expresssions = [];
+Expression.expressions = [];
 Expression.prototype.register = function(){
     Expression.expressions.push(this);
-}
+};
 
-Expression.prototype.block_init = function(params){
+Expression.prototype.init = function(params){
     this.block.addClass('expression').removeClass('block');
 }
 
-Expression.prototype.initialize = function(params){
-    this.block = $('<div class="expression"></div>');
-    this.block.attr('id', 'id_' + this.uniq());
-    this._label = $('<label></label>');
-    this.block.append(this._label);
+Expression.prototype.dom_init = function(params){
     this.block.prepend('<div class="right"></div>');
-    this.block.addClass(params.color);
-    this.drag_handle = this.block;
-    this.drag_wrapper = this.block;
-    if (params.x && params.y){
-        this.position(params.x, params.y);
-    }
-    if (params.label){
-        this.label(params.label);
-    }
-    this.initial_params['instance'] = true;
-    this.makeDraggable();
-    expressions.push(this);
 }
+
+Expression.prototype.makeNestable = function(params){
+    this.drag_wrapper = this.block;
+};
 
 function Step(params){
     this.initialize(params);
-    this.type = 'Step';
-    this.block.addClass('step containable');
-    this.block.prepend('<div class="right"></div>');
     this.makeContainable();
-    this.makeDraggable();
 }
 Step.prototype = new Block();
 Step.prototype.constructor = Step;
 
+Step.prototype.dom_init = function(params){
+    this.block.addClass('step containable');
+    this.block.prepend('<div class="right"></div>');
+};
+
 function IntExpr(params){
-    this.type = 'IntExpr';
     this.initialize(params);
-    this.block.addClass('intexpr');
 }
 IntExpr.prototype = new Expression();
 IntExpr.prototype.constructor = IntExpr;
 
 function IntValue(params){
-    this.type = 'IntValue';
     this.initialize(params);
-    this.block.addClass('intexpr');
+}
+IntValue.prototype = new Expression();
+IntValue.prototype.constructor = IntValue;
+
+IntValue.prototype.dom_init = function(params){
+    this.block.prepend('<div class="right"></div>');
     this.block.css('margin-left', '20px');
     this._checkbox = $('<input type="checkbox" />');
     this.block.prepend(this._checkbox);
     this._checkbox.css({position: 'absolute', top: '3px', left: '-20px'});
 }
-IntValue.prototype = new Expression();
-IntValue.prototype.constructor = IntValue;
 
 function BoolExpr(params){
-    this.type = 'BoolExpr';
     this.initialize(params);
-    this.block.addClass('boolexpr');
 }
 BoolExpr.prototype = new Expression();
 BoolExpr.prototype.constructor = BoolExpr;
 
 function BoolValue(params){
-    this.type = 'BoolValue';
     this.initialize(params);
-    this.block.addClass('boolexpr');
     this.block.css('margin-left', '20px');
     this._checkbox = $('<input type="checkbox" />');
     this.block.prepend(this._checkbox);
@@ -354,18 +360,15 @@ BoolValue.prototype.constructor = BoolValue;
 
 function Trigger(params){
     this.initialize(params);
-    this.type = 'Trigger';
     this.block.addClass('trigger container');
     this.block.prepend('<div class="right"></div>');
     triggers.push(this);
-    this.makeDraggable();
 }
 Trigger.prototype = new Block();
 Trigger.prototype.constructor = Trigger;
 
 function Loop(params){
     this.initialize(params);
-    this.type = 'Loop';
     this.nextInLoop = null;
     this.block.addClass('loop container containable');
     this.block.prepend('<div class="top_left"></div>' + 
@@ -378,7 +381,6 @@ function Loop(params){
     this.handle = $('<div class="top"></div>');
     this.block.prepend(this.handle);
     this.makeContainable();
-    this.makeDraggable();
 }
 Loop.prototype = new Block();
 Loop.prototype.constructor = Loop;
@@ -414,7 +416,9 @@ Loop.prototype.appendLoop = function(block){
 //
 
 function stop_dragging_factory(e, ui, factory){
-//    console.log('stop dragging helper: ' + ui.helper.info());
+    //console.log('stop dragging factory: ' + factory.constructor.name);
+    //console.log('stop dragging factory helper: ' + ui.helper.block().info());
+    //console.log(ui.helper);
     var drop = $.ui.ddmanager.last_droppable;
     if (drop){
         //console.log('stop dragging drop: ' + drop.up('.block').info());
@@ -426,7 +430,7 @@ function stop_dragging_factory(e, ui, factory){
     }else{
         var script_canvas = $('#scripts_container');
         if (script_canvas.intersects(ui.helper.intersection_shape())){
-            //console.log('appending ' + $('.block', ui.helper).info() + ' to script block body');
+            //console.log('appending ' + ui.helper.block().info() + ' to script block body');
             var offset = script_canvas.offset();
             //console.log('script canvas offset: ' + offset.left + ', ' + offset.top);
             var instance = factory.clone();
@@ -437,7 +441,7 @@ function stop_dragging_factory(e, ui, factory){
             instance.drag_wrapper.css({left: x, top: y});
             script_canvas.append(instance.drag_wrapper);
         }else{
-            //console.log('no match for dragging: ' + factory.drag_wrapper.info());
+            console.log('no match for dragging: ' + factory.drag_wrapper.info());
         }
     }
 }
