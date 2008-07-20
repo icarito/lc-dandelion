@@ -171,7 +171,7 @@ Block.prototype.append = function(block){
     return this;
 }
 
-Block.prototype.makeDraggableFactory = function(){
+Block.prototype.make_draggable_factory = function(){
     var factory = this;
     var get_helper = function(){
         if (!factory.current_helper){
@@ -186,33 +186,34 @@ Block.prototype.makeDraggableFactory = function(){
     var start_fun = function(e, ui){
     };
     var stop_fun = function(e, ui){
-        // console.log('starting drag in factory');
         stop_dragging_factory(e, ui, factory);
         if (factory.current_helper){
             factory.current_helper.hide();
-            // factory.current_helper = null;
         }
     };
     this.drag_wrapper.draggable({start: start_fun, drag: drag_fun, helper: get_helper, handle: this.handle, stop: stop_fun, refreshPositions: true});
     return this;
 }
 
-Block.prototype.makeDraggableInstance = function(){
+Block.prototype.make_draggable_instance = function(){
+    var factory = this;
     var start_fun = function(e, ui){
-        console.log('starting drag in instance');
     };
-    this.drag_wrapper.draggable({start: start_fun, handle: this.handle, stop: stop_dragging_instance, refresh_positions: true});
+    var stop_fun = function(e, ui){
+        stop_dragging_instance(e, ui, factory);
+    }
+    this.drag_wrapper.draggable({start: start_fun, handle: this.handle, stop: stop_fun, refresh_positions: true});
 }
 
-Block.prototype.makeDraggable = function(){
+Block.prototype.make_draggable = function(){
     if (this.isInstance){
-        this.makeDraggableInstance();
+        this.make_draggable_instance();
     }else{
-        this.makeDraggableFactory();
+        this.make_draggable_factory();
     }
 }
 
-Block.prototype.makeContainable = function(){
+Block.prototype.make_containable = function(){
     this.block.prepend($('<div class="drop_pointer"></div>'));
 }
 
@@ -256,7 +257,8 @@ Block.prototype.initialize = function(params){
     // Individual initialiation, over-ride for each type of block
     this.init(params); // class-specific initialization, customize for each class
     this.dom_init(params);
-    this.makeDraggable();
+    this.make_draggable();
+    this.make_droppable();
 };
 
 Block.prototype.block_dom_init = function(params){
@@ -269,7 +271,7 @@ Block.prototype.block_dom_init = function(params){
     this.block.addClass(params.color);
     this.block.addClass(this.blocktype().toLowerCase());
     this.drag_handle = this.block;
-    this.makeNestable();
+    this.make_nestable();
     if (params.x && params.y){
         this.position(params.x, params.y);
     }
@@ -278,8 +280,12 @@ Block.prototype.block_dom_init = function(params){
     }
 };
 
-Block.prototype.makeNestable = function(params){
+Block.prototype.make_nestable = function(params){
     this.drag_wrapper = $('<div class="drag_wrapper"></div>');
+    var width = this.block.css('width');
+    var left = this.block.css('left');
+    var top = this.block.css('top');
+    this.drag_wrapper.css({position: 'absolute', width: width, left: left, top: top});
     this.drag_wrapper.append(this.block);
 };
 
@@ -306,13 +312,13 @@ Expression.prototype.dom_init = function(params){
     this.block.prepend('<div class="right"></div>');
 }
 
-Expression.prototype.makeNestable = function(params){
+Expression.prototype.make_nestable = function(params){
     this.drag_wrapper = this.block;
 };
 
 function Step(params){
     this.initialize(params);
-    this.makeContainable();
+    this.make_containable();
 }
 Step.prototype = new Block();
 Step.prototype.constructor = Step;
@@ -369,7 +375,7 @@ Trigger.prototype.constructor = Trigger;
 
 function Loop(params){
     this.initialize(params);
-    this.nextInLoop = null;
+    this.next_in_loop = null;
     this.block.addClass('loop container containable');
     this.block.prepend('<div class="top_left"></div>' + 
         '<div class="top_right"></div>' + 
@@ -380,23 +386,23 @@ function Loop(params){
     );    
     this.handle = $('<div class="top"></div>');
     this.block.prepend(this.handle);
-    this.makeContainable();
+    this.make_containable();
 }
 Loop.prototype = new Block();
 Loop.prototype.constructor = Loop;
 
 Loop.prototype.appendLoop = function(block){
-    if (this.nextInLoop){
+    if (this.next_in_loop){
         try{
-            this.nextInLoop.append(block);
+            this.next_in_loop.append(block);
         }catch(e){
             console.log('Here I am, trying to append a simple block: ' + e.message);
-            console.log('next in loop: ' + this.nextInLoop.toString());
+            console.log('next in loop: ' + this.next_in_loop.toString());
             console.log('appending block: ' + block.toString());
         }
     }else{
         this.block.append(block.drag_wrapper);
-        this.nextInLoop = block;
+        this.next_in_loop = block;
         //console.log('setting next in loop: ' + block.toString());
     }
     return this;
@@ -450,13 +456,16 @@ function stop_dragging_instance(e, ui, instance){
 //    console.log('stop dragging helper: ' + ui.helper.info());
     var script_canvas = $('#scripts_container');
     if (! script_canvas.intersects(ui.helper.intersection_shape())){
+        console.log('outside of canvas, delete');
         instance.remove();
     }
     var drop = $.ui.ddmanager.last_droppable;
     if (drop && drop.intersects($('.drop_pointer', ui.helper))){
-        //console.log('appending ' + $('.block', ui.helper).info() + ' to ' + drop.up('.block').info());
+        console.log('appending ' + $('.block', ui.helper).info() + ' to ' + drop.up('.block').info());
         ui.helper.css({position: 'relative', left: '0px', top: '0px'});
         drop.up('.drag_wrapper').append(ui.helper);
+    }else{
+        console.log('positioning in canvas (remove from parent?)');
     }
 }
 
