@@ -40,14 +40,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>14</integer>
+				<integer>9</integer>
 				<key>line</key>
-				<integer>432</integer>
+				<integer>449</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>395</integer>
+			<integer>431</integer>
 		</dict>
 		<key>javascripts/layout.js</key>
 		<dict>
@@ -126,14 +126,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>31</integer>
+				<integer>1</integer>
 				<key>line</key>
-				<integer>262</integer>
+				<integer>4</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>220</integer>
+			<integer>0</integer>
 		</dict>
 		<key>stylesheets/block_dragging.css</key>
 		<dict>
