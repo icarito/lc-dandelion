@@ -1,9 +1,14 @@
+var DEBUG = true;
 // jQuery extension
 $.extend({
     makeSelect: function(list){
         var sel = ['<select class="blocks_menu">'];
-        $.each(list, function(){
-            sel.push('<option value="' + this + '">' + this + '</option>');
+        $.each(list, function(idx){
+            if (idx == 0){
+                sel.push('<option value="' + this + '" selected="selected">' + this + '</option>');
+            }else{
+                sel.push('<option value="' + this + '">' + this + '</option>');
+            }
         });
         sel.push('</select>');
         return $(sel.join(''));
@@ -181,11 +186,21 @@ Block.prototype.make_draggable_factory = function(){
         return factory.current_helper;
     };
     var drag_fun = function(e, ui){
-        
+        if (!Block.blocks.length) return;
+        var previous_block = Block.blocks[0];
+        factory.highlight_drop_target(true);
+        $.each(Block.blocks, function(idx, block){
+            previous_block.highlight_drop_pointer(false);
+            block.highlight_drop_pointer(true);
+            previous_block = block;
+        });
+        previous_block.highlight_drop_pointer(false);
+        factory.highlight_drop_target(false);
     };
     var start_fun = function(e, ui){
     };
     var stop_fun = function(e, ui){
+        factory.highlight_drop_target(false);
         stop_dragging_factory(e, ui, factory);
         if (factory.current_helper){
             factory.current_helper.hide();
@@ -199,10 +214,23 @@ Block.prototype.make_draggable_instance = function(){
     var factory = this;
     var start_fun = function(e, ui){
     };
+    var drag_fun = function(e, ui){
+        if (!Block.blocks.length) return;
+        var previous_block = Block.blocks[0];
+        factory.highlight_drop_target(true);
+        $.each(Block.blocks, function(idx, block){
+            previous_block.highlight_drop_pointer(false);
+            block.highlight_drop_pointer(true);
+            previous_block = block;
+        });
+        previous_block.highlight_drop_pointer(false);
+        factory.highlight_drop_target(false);
+    };
     var stop_fun = function(e, ui){
+        factory.highlight_drop_target(false);
         stop_dragging_instance(e, ui, factory);
     }
-    this.drag_wrapper.draggable({start: start_fun, handle: this.handle, stop: stop_fun, refresh_positions: true});
+    this.drag_wrapper.draggable({start: start_fun, drag: drag_fun, handle: this.handle, stop: stop_fun, refresh_positions: true});
 }
 
 Block.prototype.make_draggable = function(){
@@ -214,7 +242,8 @@ Block.prototype.make_draggable = function(){
 }
 
 Block.prototype.make_containable = function(){
-    this.block.prepend($('<div class="drop_pointer"></div>'));
+    this.drop_pointer = $('<div class="drop_pointer"></div>');
+    this.block.prepend(this.drop_pointer);
 }
 
 Block._last_uniq = 0;
@@ -238,7 +267,9 @@ Block.prototype.block_init = function(params){
 Block.blocks = [];
 
 Block.prototype.register = function(){
-    Block.blocks.push(this);
+    if (this.isInstance){
+        Block.blocks.push(this);
+    }
 };
 
 Block.prototype.dom_init = function(params){
@@ -271,6 +302,8 @@ Block.prototype.block_dom_init = function(params){
     this.block.addClass(params.color);
     this.block.addClass(this.blocktype().toLowerCase());
     this.drag_handle = this.block;
+    this.drop_pointer = null;
+    this.drop_target = null;
     this.make_nestable();
     if (params.x && params.y){
         this.position(params.x, params.y);
@@ -279,6 +312,53 @@ Block.prototype.block_dom_init = function(params){
         this.label(params.label);
     }
 };
+
+Block.prototype.highlight_drop_target = function(flag, other){
+    if (!DEBUG) return;
+    if (this.drop_target){
+        if (flag){
+            this.drop_target.css('border', '1px solid blue');
+        }else{
+            this.drop_target.css('border-width', '0px');
+        }
+    }else{
+        if (flag){
+            this.block.css('border', '1px solid yellow');
+        }else{
+            this.block.css('border-width', '0px');
+        }
+    }
+    if (other){
+        other.highlight_drop_pointer(flag);
+    }
+};
+
+Block.prototype.highlight_drop_pointer = function(flag, other){
+    if (!DEBUG) return;
+    if (this.drop_pointer){
+        if (flag){
+            this.drop_pointer.css('border', '1px solid red'); 
+        }else{
+            this.drop_pointer.css('border-width', '0px');
+        }
+    }else{
+        if (flag){
+            this.block.css('border', '1px solid green');
+        }else{
+            this.block.css('border-width', '0px');
+        }
+    }
+    if (other){
+        other.highlight_drop_target(flag);
+    }
+}
+
+Block.prototype.drop_intersect = function(other){
+    if (other === this) false;
+    if (!this.drop_pointer) return false;
+    if (!other.drop_target) return false;
+    return this.drop_pointer.intersects(other.drop_target);
+}
 
 Block.prototype.make_nestable = function(params){
     this.drag_wrapper = $('<div class="drag_wrapper"></div>');
@@ -301,7 +381,9 @@ Expression.prototype = new Block();
 
 Expression.expressions = [];
 Expression.prototype.register = function(){
-    Expression.expressions.push(this);
+    if (this.isInstance){
+        Expression.expressions.push(this);
+    }
 };
 
 Expression.prototype.init = function(params){
