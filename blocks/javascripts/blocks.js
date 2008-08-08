@@ -181,21 +181,33 @@ Block.prototype.make_draggable_factory = function(){
     var get_helper = function(){
         if (!factory.current_helper){
             factory.current_helper = factory.drag_wrapper.clone(true);
-            $(document.body).append(factory.current_helper);
+            factory.drop_target = factory.current_helper.find('.drop_target');
+            factory.drop_pointer = factory.current_helper.find('.drop_pointer');
+        }else{
+            factory.current_helper.css('display', 'block');
         }
+        $(document.body).append(factory.current_helper);
         return factory.current_helper;
     };
     var drag_fun = function(e, ui){
         if (!Block.blocks.length) return;
-        var previous_block = Block.blocks[0];
-        factory.highlight_drop_target(true);
+        var matched = false;
         $.each(Block.blocks, function(idx, block){
-            previous_block.highlight_drop_pointer(false);
-            block.highlight_drop_pointer(true);
-            previous_block = block;
+            if (factory.drop_intersects(block)){
+                factory.highlight_drop_target(true, block);
+                matched = true;
+                return false; // stop the iteration
+            }else if(block.drop_intersects(factory)){
+                block.highlight_drop_target(true, factory);
+                matched = true;
+                return false;
+            }else{
+                block.highlight_drop_target(false, block);
+            }
         });
-        previous_block.highlight_drop_pointer(false);
-        factory.highlight_drop_target(false);
+        if (!matched){
+            factory.highlight_drop_target(false, factory);
+        }
     };
     var start_fun = function(e, ui){
     };
@@ -216,15 +228,23 @@ Block.prototype.make_draggable_instance = function(){
     };
     var drag_fun = function(e, ui){
         if (!Block.blocks.length) return;
-        var previous_block = Block.blocks[0];
-        factory.highlight_drop_target(true);
+        var matched = false;
         $.each(Block.blocks, function(idx, block){
-            previous_block.highlight_drop_pointer(false);
-            block.highlight_drop_pointer(true);
-            previous_block = block;
+            if (factory.drop_intersects(block)){
+                factory.highlight_drop_target(true, block);
+                matched = true;
+                return false; // stop the iteration
+            }else if(block.drop_intersects(factory)){
+                block.highlight_drop_target(true, factory);
+                matched = true;
+                return false;
+            }else{
+                block.highlight_drop_target(false, block);
+            }
         });
-        previous_block.highlight_drop_pointer(false);
-        factory.highlight_drop_target(false);
+        if (!matched){
+            factory.highlight_drop_target(false, factory);
+        }
     };
     var stop_fun = function(e, ui){
         factory.highlight_drop_target(false);
@@ -353,11 +373,11 @@ Block.prototype.highlight_drop_pointer = function(flag, other){
     }
 }
 
-Block.prototype.drop_intersect = function(other){
+Block.prototype.drop_intersects = function(other){
     if (other === this) false;
-    if (!this.drop_pointer) return false;
-    if (!other.drop_target) return false;
-    return this.drop_pointer.intersects(other.drop_target);
+    if (!other.drop_pointer) return false;
+    if (!this.drop_target) return false;
+    return this.drop_target.intersects(other.drop_pointer);
 }
 
 Block.prototype.make_nestable = function(params){
@@ -372,7 +392,7 @@ Block.prototype.make_nestable = function(params){
 Block.prototype.make_droppable = function(){
     this.drop_target = $('<div class="drop_target"></div>');
     this.block.append(this.drop_target);
-    this.drop_target.droppable({accept: drop_accept});
+//    this.drop_target.droppable({accept: drop_accept});
 };
 
 function Expression(){
