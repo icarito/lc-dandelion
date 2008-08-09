@@ -1,10 +1,5 @@
 var DEBUG = true;
 
-function print(str){
-    if (console && console.log){
-        console.log(str);
-    }
-}
 // jQuery extension
 $.extend({
     makeSelect: function(list){
@@ -168,23 +163,19 @@ Block.prototype.toString = function(){
 Block.prototype.position = function(x,y){
     this.drag_wrapper.css({position: 'absolute', left: x + 'px', top: y + 'px'});
     return this;
-}
-
-Block.prototype.relativize = function(){
-    this.drag_wrapper.css({position: 'relative', left: '0px', top: '0px'});
-    return this;
-}
+};
 
 Block.prototype.append = function(block){
-    block.drag_wrapper.css({left: 0, top: 0});
+    this.drag_wrapper.css('border', '1px solid red');
+    block.drag_wrapper.css({left: 0, top: 0, position: 'relative'});
+    print(block.drag_wrapper);
     if (this.next){
-        this.next.append(block);
-    }else{
-        this.drag_wrapper.append(block.drag_wrapper);
-        this.next = block;
+        block.append(this.next);
     }
+    this.drag_wrapper.append(block.drag_wrapper);
+    this.next = block;
     return this;
-}
+};
 
 Block.prototype.test_snapping = function(other){
     if (this.drop_intersects(other)){
@@ -197,74 +188,74 @@ Block.prototype.test_snapping = function(other){
         other.highlight_drop_target(false, other);
         return false;
     }
-}
+};
+
+Block.prototype.ondrag = function(){
+    var self = this;
+    if (!Block.blocks.length) return;
+    var matched = false
+    $.each(Block.blocks, function(idx, block){
+        matched = self.test_snapping(block);
+        if (matched){
+            self.snap_target = block;
+            return false // stop the iteration
+        }
+    });
+    if (!matched){
+        self.highlight_drop_target(false, self);
+    }
+};
+
+Block.prototype.get_helper = function(){
+    if (this.isInstance){
+        return self;
+    }else{
+        if (!this.current_helper){
+            this.current_helper = this.drag_wrapper.clone(true);
+            this.drop_target = this.current_helper.find('.drop_target');
+            this.drop_pointer = this.current_helper.find('.drop_pointer');
+        }else{
+            this.current_helper.css('display', 'block');
+        }
+        $(document.body).append(this.current_helper);
+        return this.current_helper;        
+    }
+};
 
 Block.prototype.make_draggable_factory = function(){
-    var factory = this;
-    var get_helper = function(){
-        if (!factory.current_helper){
-            factory.current_helper = factory.drag_wrapper.clone(true);
-            factory.drop_target = factory.current_helper.find('.drop_target');
-            factory.drop_pointer = factory.current_helper.find('.drop_pointer');
-        }else{
-            factory.current_helper.css('display', 'block');
-        }
-        $(document.body).append(factory.current_helper);
-        return factory.current_helper;
-    };
-    var drag_fun = function(e, ui){
-        if (!Block.blocks.length) return;
-        var matched = false
-        $.each(Block.blocks, function(idx, block){
-            matched = factory.test_snapping(block);
-            if (matched){
-                factory.snap_target = block;
-                return false // stop the iteration
-            }
-        });
-        if (!matched){
-            factory.highlight_drop_target(false, factory);
-        }
-    };
-    var start_fun = function(e, ui){
-    };
+    var self = this;
+    // var get_helper = function(){
+    //     if (!self.current_helper){
+    //         self.current_helper = self.drag_wrapper.clone(true);
+    //         self.drop_target = self.current_helper.find('.drop_target');
+    //         self.drop_pointer = self.current_helper.find('.drop_pointer');
+    //     }else{
+    //         self.current_helper.css('display', 'block');
+    //     }
+    //     $(document.body).append(self.current_helper);
+    //     return self.current_helper;
+    // };
     var stop_fun = function(e, ui){
-        factory.highlight_drop_pointer(false, factory);
-        if (factory.snap_target){
-            factory.snap_target.highlight_drop_pointer(false, factory.snap_target);
+        self.highlight_drop_pointer(false, self);
+        if (self.snap_target){
+            self.snap_target.highlight_drop_pointer(false, self.snap_target);
         }
-        stop_dragging_factory(e, ui, factory);
-        if (factory.current_helper){
-            factory.current_helper.hide();
+        stop_dragging_factory(e, ui, self);
+        if (self.current_helper){
+            self.current_helper.hide();
         }
     };
-    this.drag_wrapper.draggable({start: start_fun, drag: drag_fun, helper: get_helper, handle: this.handle, stop: stop_fun, refreshPositions: true});
+    this.drag_wrapper.draggable({drag: function(){self.ondrag()}, helper: function(){return self.get_helper()}, handle: this.handle, stop: stop_fun, refreshPositions: true});
     return this;
 }
 
 Block.prototype.make_draggable_instance = function(){
-    var factory = this;
-    var start_fun = function(e, ui){
-    };
-    var drag_fun = function(e, ui){
-        if (!Block.blocks.length) return;
-        var matched = false
-        $.each(Block.blocks, function(idx, block){
-            matched = factory.test_snapping(block);
-            if (matched){
-                factory.snap_target = block;
-                return false // stop the iteration
-            }
-        });
-        if (!matched){
-            factory.highlight_drop_target(false, factory);
-        }
-    };
+    var self = this;
     var stop_fun = function(e, ui){
-        factory.highlight_drop_target(false);
-        stop_dragging_instance(e, ui, factory);
+        self.highlight_drop_target(false);
+        stop_dragging_instance(e, ui, self);
     }
-    this.drag_wrapper.draggable({start: start_fun, drag: drag_fun, handle: this.handle, stop: stop_fun, refresh_positions: true});
+    this.drag_wrapper.draggable({drag: function(){self.ondrag()}, handle: this.handle, stop: stop_fun, refresh_positions: true});
 }
 
 Block.prototype.make_draggable = function(){
@@ -551,12 +542,14 @@ function stop_dragging_factory(e, ui, factory){
     var instance = factory.clone();
     script_canvas.append(instance.drag_wrapper);
     instance.drag_wrapper.repositionInFrame(script_canvas);
-    if (factory.snap_target && instance.drop_intersects(factory.snap_target)){
-        print('snapping new block to existing block');
-        factory.snap_target.append(instance);
-    }else if(factory.snap_target && factory.snap_target.drop_intersects(instance)){
-        print('snapping existing block to new block');
-        instance.append(factory.snap_target);
+    if (factory.snap_target){
+        if (instance.drop_intersects(factory.snap_target)){
+            print('snapping new block to existing block');
+            factory.snap_target.append(instance);
+        }else if(factory.snap_target.drop_intersects(instance)){
+            print('snapping existing block to new block');
+            instance.append(factory.snap_target);
+        }
     }
 }
 
