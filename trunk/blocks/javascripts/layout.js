@@ -98,8 +98,8 @@ Scratch.prototype.blocks_column = function(){
 
 Scratch.prototype.blocks_buttons = function(){
     $('#blocks_menu').block_menu_buttons([
-        {color: 'blue', name: 'motion'},
-        {color: 'orange', name: 'control', 'default': true},
+        {color: 'blue', name: 'motion', 'default': true},
+        {color: 'orange', name: 'control'},
         {color: 'purple', name: 'looks'},
         {color: 'blue', name: 'sensing'},
         {color: 'violet', name: 'sound'},
