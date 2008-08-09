@@ -1,4 +1,11 @@
+function print(str){
+    if (console && console.log){
+        console.log(str);
+    }
+}
+
 // Additions to the global object
+
 
 $.extend({
     contains: function(obj, array){
