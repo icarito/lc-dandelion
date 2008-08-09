@@ -1,4 +1,10 @@
 var DEBUG = true;
+
+function print(str){
+    if (console && console.log){
+        console.log(str);
+    }
+}
 // jQuery extension
 $.extend({
     makeSelect: function(list){
@@ -117,7 +123,7 @@ $.fn.extend({
             return this;
         }
         return this.find('.block');
-    }
+    },
 });
 
 var triggers = [];
@@ -131,7 +137,10 @@ Block.prototype.blocktype = function(){
 
 Block.prototype.clone = function(){
     // This is very experimental and a work in progress!
-    return new this.constructor(this.initial_params);
+    var instance = new this.constructor(this.initial_params);
+    instance.drag_wrapper.css('left', this.current_helper.css('left'));
+    instance.drag_wrapper.css('top', this.current_helper.css('top'));
+    return instance;
 }
 
 Block.prototype.label = function(str){
@@ -167,6 +176,7 @@ Block.prototype.relativize = function(){
 }
 
 Block.prototype.append = function(block){
+    block.drag_wrapper.css({left: 0, top: 0});
     if (this.next){
         this.next.append(block);
     }else{
@@ -174,6 +184,19 @@ Block.prototype.append = function(block){
         this.next = block;
     }
     return this;
+}
+
+Block.prototype.test_snapping = function(other){
+    if (this.drop_intersects(other)){
+        this.highlight_drop_pointer(true, other);
+        return true;
+    }else if(other.drop_intersects(this)){
+        other.highlight_drop_pointer(true, this);
+        return true;
+    }else{
+        other.highlight_drop_target(false, other);
+        return false;
+    }
 }
 
 Block.prototype.make_draggable_factory = function(){
@@ -191,18 +214,12 @@ Block.prototype.make_draggable_factory = function(){
     };
     var drag_fun = function(e, ui){
         if (!Block.blocks.length) return;
-        var matched = false;
+        var matched = false
         $.each(Block.blocks, function(idx, block){
-            if (factory.drop_intersects(block)){
-                factory.highlight_drop_target(true, block);
-                matched = true;
-                return false; // stop the iteration
-            }else if(block.drop_intersects(factory)){
-                block.highlight_drop_target(true, factory);
-                matched = true;
-                return false;
-            }else{
-                block.highlight_drop_target(false, block);
+            matched = factory.test_snapping(block);
+            if (matched){
+                factory.snap_target = block;
+                return false // stop the iteration
             }
         });
         if (!matched){
@@ -212,7 +229,10 @@ Block.prototype.make_draggable_factory = function(){
     var start_fun = function(e, ui){
     };
     var stop_fun = function(e, ui){
-        factory.highlight_drop_target(false);
+        factory.highlight_drop_pointer(false, factory);
+        if (factory.snap_target){
+            factory.snap_target.highlight_drop_pointer(false, factory.snap_target);
+        }
         stop_dragging_factory(e, ui, factory);
         if (factory.current_helper){
             factory.current_helper.hide();
@@ -228,18 +248,12 @@ Block.prototype.make_draggable_instance = function(){
     };
     var drag_fun = function(e, ui){
         if (!Block.blocks.length) return;
-        var matched = false;
+        var matched = false
         $.each(Block.blocks, function(idx, block){
-            if (factory.drop_intersects(block)){
-                factory.highlight_drop_target(true, block);
-                matched = true;
-                return false; // stop the iteration
-            }else if(block.drop_intersects(factory)){
-                block.highlight_drop_target(true, factory);
-                matched = true;
-                return false;
-            }else{
-                block.highlight_drop_target(false, block);
+            matched = factory.test_snapping(block);
+            if (matched){
+                factory.snap_target = block;
+                return false // stop the iteration
             }
         });
         if (!matched){
@@ -374,10 +388,10 @@ Block.prototype.highlight_drop_pointer = function(flag, other){
 }
 
 Block.prototype.drop_intersects = function(other){
-    if (other === this) false;
-    if (!other.drop_pointer) return false;
-    if (!this.drop_target) return false;
-    return this.drop_target.intersects(other.drop_pointer);
+    if (other === this) return false;
+    if (!this.drop_pointer) return false;
+    if (!other.drop_target) return false;
+    return this.drop_pointer.intersects(other.drop_target);
 }
 
 Block.prototype.make_nestable = function(params){
@@ -527,30 +541,22 @@ function stop_dragging_factory(e, ui, factory){
     //console.log('stop dragging factory: ' + factory.constructor.name);
     //console.log('stop dragging factory helper: ' + ui.helper.block().info());
     //console.log(ui.helper);
-    var drop = $.ui.ddmanager.last_droppable;
-    if (drop){
-        //console.log('stop dragging drop: ' + drop.up('.block').info());
+    // Check to see if we're in the script canvas at all
+    var script_canvas = $('#scripts_container');
+    if (!(factory.snap_target || script_canvas.intersects(ui.helper.intersection_shape()))){
+        print(script_canvas.intersects(ui.helper.intersection_shape()));
+        print('Not in script canvas, bailing');
+        return;
     }
-    if (drop && drop.intersects($('.drop_pointer', ui.helper))){
-        //console.log('appending ' + $('.block', ui.helper).info() + ' to ' + drop.up('.block').info());
-        ui.helper.css({position: 'relative', left: '0px', top: '0px'});
-        drop.up('.drag_wrapper').append(ui.helper);
-    }else{
-        var script_canvas = $('#scripts_container');
-        if (script_canvas.intersects(ui.helper.intersection_shape())){
-            //console.log('appending ' + ui.helper.block().info() + ' to script block body');
-            var offset = script_canvas.offset();
-            //console.log('script canvas offset: ' + offset.left + ', ' + offset.top);
-            var instance = factory.clone();
-//            console.log(instance);
-            var x = parseInt(ui.helper.css('left')) - offset.left;
-            var y = parseInt(ui.helper.css('top')) - offset.top;
-            //console.log('new block: ' + x + ', ' + y);
-            instance.drag_wrapper.css({left: x, top: y});
-            script_canvas.append(instance.drag_wrapper);
-        }else{
-            console.log('no match for dragging: ' + factory.drag_wrapper.info());
-        }
+    var instance = factory.clone();
+    script_canvas.append(instance.drag_wrapper);
+    instance.drag_wrapper.repositionInFrame(script_canvas);
+    if (factory.snap_target && instance.drop_intersects(factory.snap_target)){
+        print('snapping new block to existing block');
+        factory.snap_target.append(instance);
+    }else if(factory.snap_target && factory.snap_target.drop_intersects(instance)){
+        print('snapping existing block to new block');
+        instance.append(factory.snap_target);
     }
 }
 

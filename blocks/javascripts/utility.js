@@ -46,9 +46,22 @@ $.fn.extend({
             return this.offset();
         }
     },
+    repositionInFrame: function(frame){
+        var pos = frame.offset();
+        this.each(function(){
+            this.style.left = (parseInt(this.style.left) - pos.left) + 'px';
+            this.style.top = (parseInt(this.style.top) - pos.top) + 'px';
+        });
+        return this;
+    },
     // positioning helper, returns {left, top, right, bottom}
     box: function(){
         var pos = this.offset();
+        if (!pos){
+            print('warning: trying to get offset failed (is object not visible?)');
+            print(this);
+            pos = {left: 0, top: 0};
+        }
 //        console.log(this.info() + '.box() called.  offset == ' + pos);
         return {left: pos.left, 
                 top: pos.top, 
