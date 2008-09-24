@@ -4,6 +4,20 @@ function print(str){
     }
 }
 
+// Make this a utility method
+function show_structure(e, level){
+    e = $(e);
+    if (e.is('.block')){
+        var output = [];
+        for (var i = 0; i < level; i++){
+            output.push('    ');
+        }
+        output.push(e.get(0).className);
+        console.log(output.join(''));
+    }
+    e.children().each(function(){show_structure(this, level + 1);});
+}
+
 // Additions to the global object
 
 
@@ -56,8 +70,12 @@ $.fn.extend({
     repositionInFrame: function(frame){
         var pos = frame.offset();
         this.each(function(){
-            this.style.left = (parseInt(this.style.left) - pos.left) + 'px';
-            this.style.top = (parseInt(this.style.top) - pos.top) + 'px';
+            this.style.position = 'absolute';
+            if (this.parentNode.id != frame.id){
+                print('positioning in new frame');
+                this.style.left = (parseInt(this.style.left) - pos.left) + 'px';
+                this.style.top = (parseInt(this.style.top) - pos.top) + 'px';
+            }
         });
         return this;
     },

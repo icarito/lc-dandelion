@@ -121,7 +121,17 @@ $.fn.extend({
     },
 });
 
-var triggers = [];
+//  Structure of a block
+//
+//  .drag_wrapper
+//      .block (drag handle, if not a loop)
+//          .drop_pointer (if not a trigger)
+//          label
+//          [style holders] (drag handle is in here if a loop)
+//          [contained block .drag_wrappers]
+//          .drop_target
+//      .drag_wrapper for next block(s)
+//
 
 function Block(){
 }
@@ -206,9 +216,39 @@ Block.prototype.ondrag = function(){
     }
 };
 
+Block.prototype.ondragend = function(){
+    var script_canvas = $('#scripts_container');
+    // Check to see if we're in the script canvas at all
+    if (!(this.snap_target || script_canvas.intersects(this.get_helper().intersection_shape()))){
+        return;
+    }
+    this.highlight_drop_pointer(false, this);
+    if (this.snap_target){
+        this.snap_target.highlight_drop_pointer(false, this.snap_target);
+    }
+    var instance = this;
+    if (!this.isInstance){
+        instance = this.clone();
+    }
+    script_canvas.append(instance.drag_wrapper);
+    if (!instance.isInstance){
+        instance.drag_wrapper.repositionInFrame(script_canvas);
+    }
+    if (this.snap_target){
+        if (instance.drop_intersects(this.snap_target)){
+            this.snap_target.append(instance);
+        }else if(this.snap_target.drop_intersects(instance)){
+            instance.append(this.snap_target);
+        }
+    }
+    if (!this.isInstance && this.current_helper){
+        this.current_helper.hide();
+    }
+}
+
 Block.prototype.get_helper = function(){
     if (this.isInstance){
-        return self;
+        return this.drag_wrapper;
     }else{
         if (!this.current_helper){
             this.current_helper = this.drag_wrapper.clone(true);
@@ -222,48 +262,10 @@ Block.prototype.get_helper = function(){
     }
 };
 
-Block.prototype.make_draggable_factory = function(){
-    var self = this;
-    // var get_helper = function(){
-    //     if (!self.current_helper){
-    //         self.current_helper = self.drag_wrapper.clone(true);
-    //         self.drop_target = self.current_helper.find('.drop_target');
-    //         self.drop_pointer = self.current_helper.find('.drop_pointer');
-    //     }else{
-    //         self.current_helper.css('display', 'block');
-    //     }
-    //     $(document.body).append(self.current_helper);
-    //     return self.current_helper;
-    // };
-    var stop_fun = function(e, ui){
-        self.highlight_drop_pointer(false, self);
-        if (self.snap_target){
-            self.snap_target.highlight_drop_pointer(false, self.snap_target);
-        }
-        stop_dragging_factory(e, ui, self);
-        if (self.current_helper){
-            self.current_helper.hide();
-        }
-    };
-    this.drag_wrapper.draggable({drag: function(){self.ondrag()}, helper: function(){return self.get_helper()}, handle: this.handle, stop: stop_fun, refreshPositions: true});
-    return this;
-}
-
-Block.prototype.make_draggable_instance = function(){
-    var self = this;
-    var stop_fun = function(e, ui){
-        self.highlight_drop_target(false);
-        stop_dragging_instance(e, ui, self);
-    }
-    this.drag_wrapper.draggable({drag: function(){self.ondrag()}, handle: this.handle, stop: stop_fun, refresh_positions: true});
-}
-
 Block.prototype.make_draggable = function(){
-    if (this.isInstance){
-        this.make_draggable_instance();
-    }else{
-        this.make_draggable_factory();
-    }
+    var self = this;
+    this.drag_wrapper.draggable({drag: function(){self.ondrag()}, helper: function(){return self.get_helper()}, handle: this.handle, stop: function(){self.ondragend()}, refreshPositions: true});
+    return this;
 }
 
 Block.prototype.make_containable = function(){
@@ -397,7 +399,6 @@ Block.prototype.make_nestable = function(params){
 Block.prototype.make_droppable = function(){
     this.drop_target = $('<div class="drop_target"></div>');
     this.block.append(this.drop_target);
-//    this.drop_target.droppable({accept: drop_accept});
 };
 
 function Expression(){
@@ -475,10 +476,12 @@ function Trigger(params){
     this.initialize(params);
     this.block.addClass('trigger container');
     this.block.prepend('<div class="right"></div>');
-    triggers.push(this);
+    Trigger.triggers.push(this);
 }
 Trigger.prototype = new Block();
 Trigger.prototype.constructor = Trigger;
+Trigger.triggers = [];
+
 
 function Loop(params){
     this.initialize(params);
@@ -516,137 +519,4 @@ Loop.prototype.appendLoop = function(block){
 }
 
 
-//  Structure of a block
-//
-//  .drag_wrapper
-//      .block (drag handle, if not a loop)
-//          .drop_pointer (if not a trigger)
-//          label
-//          [style holders] (drag handle is in here if a loop)
-//          [contained block .drag_wrappers]
-//          .drop_target
-//      .drag_wrapper for next block(s)
-//
-
-function stop_dragging_factory(e, ui, factory){
-    //console.log('stop dragging factory: ' + factory.constructor.name);
-    //console.log('stop dragging factory helper: ' + ui.helper.block().info());
-    //console.log(ui.helper);
-    // Check to see if we're in the script canvas at all
-    var script_canvas = $('#scripts_container');
-    if (!(factory.snap_target || script_canvas.intersects(ui.helper.intersection_shape()))){
-        print(script_canvas.intersects(ui.helper.intersection_shape()));
-        print('Not in script canvas, bailing');
-        return;
-    }
-    var instance = factory.clone();
-    script_canvas.append(instance.drag_wrapper);
-    instance.drag_wrapper.repositionInFrame(script_canvas);
-    if (factory.snap_target){
-        if (instance.drop_intersects(factory.snap_target)){
-            print('snapping new block to existing block');
-            factory.snap_target.append(instance);
-        }else if(factory.snap_target.drop_intersects(instance)){
-            print('snapping existing block to new block');
-            instance.append(factory.snap_target);
-        }
-    }
-}
-
-function stop_dragging_instance(e, ui, instance){
-//    console.log('stop dragging helper: ' + ui.helper.info());
-    var script_canvas = $('#scripts_container');
-    if (! script_canvas.intersects(ui.helper.intersection_shape())){
-        console.log('outside of canvas, delete');
-        instance.remove();
-    }
-    var drop = $.ui.ddmanager.last_droppable;
-    if (drop && drop.intersects($('.drop_pointer', ui.helper))){
-        console.log('appending ' + $('.block', ui.helper).info() + ' to ' + drop.up('.block').info());
-        ui.helper.css({position: 'relative', left: '0px', top: '0px'});
-        drop.up('.drag_wrapper').append(ui.helper);
-    }else{
-        console.log('positioning in canvas (remove from parent?)');
-    }
-}
-
-
-function drag_drop(e, ui){
-    var drop_elem = ui.element.get(0);
-    var drag_elem = ui.draggable.get(0);
-    console.log('dropped ' + ui.draggable.info() + ' on ' + ui.element.info());
-    try{
-        ui.element.append(ui.draggable);
-    }catch(e){
-        console.log('DOM exception when adding ' + ui.element.info() + ' to ' + ui.draggable.info());
-    }
-    try{
-        ui.element.css({position: 'relative', top: '0', left: '0'});
-    }catch(e){
-        console.log('DOM exception when setting styles');
-    }
-//    show_structure(document.documentElement, 0);
-}
-
-function drag_over(e, ui){
-//    console.log(ui.draggable.info() + ' is over ' + ui.element.info());
-    this.css('background-color', 'red');
-}
-
-function drag_out(e, ui){
-//    console.log('out');
-    this.css('background-color', 'transparent');
-}
-
-function drag_activate(e, ui){
-    console.log('activate (' + this.nodeName + ')');
-}
-
-function drag_helper(e, ui){
-    return this.parentNode;
-}
-
-function drop_accept(draggable){
-    if (!draggable) return false;
-    var val = this.intersects($('.drop_pointer', draggable));
-    if (val){
-//        console.log(this.info() + ' will accept a drop of ' + draggable.info() + '?');
-        this.css('background-color', 'red');
-        $.ui.ddmanager.last_droppable = this;
-    }else{
-        this.css('background-color', 'transparent');
-        $.ui.ddmanager.last_droppable = null;
-    }
-    return val;
-}
-
-// Make this a utility method
-function show_structure(e, level){
-    e = $(e);
-    if (e.is('.block')){
-        var output = [];
-        for (var i = 0; i < level; i++){
-            output.push('    ');
-        }
-        output.push(e.get(0).className);
-        console.log(output.join(''));
-    }
-    e.children().each(function(){show_structure(this, level + 1);});
-}
-
-function initialize_test(){
-    var trigger = new Trigger({label: 'On event', color: 'gold'});
-    $(document.body).append(trigger.drag_wrapper);
-    var loop = new Loop({label: 'Forever', color: 'blueviolet'});
-    trigger.append(loop);
-    loop.appendLoop(new Step({label: 'Step one', color: 'lawngreen'}));
-    loop.appendLoop(new Step({label: 'Step two', color: 'magenta'}));
-    var loop2 = new Loop({label: 'While true', color: 'orangered'});
-    loop.appendLoop(loop2);
-    loop2.appendLoop(new Step({label: 'Step A', color: 'blue'}));
-    loop2.appendLoop(new Step({label: 'Step B', color: 'cyan'}));
-    loop.appendLoop(new Step({label: 'Step three', color: 'seagreen'}));
-    trigger.append(new Step({label: 'Step i', color: 'green'}));
-    trigger.append(new Step({label: 'Step ii', color: 'mediumblue'}));
-}
 
