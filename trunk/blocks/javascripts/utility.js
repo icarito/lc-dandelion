@@ -1,27 +1,12 @@
-function print(str){
-    if (console && console.log){
-        console.log(str);
-    }
-}
-
-// Make this a utility method
-function show_structure(e, level){
-    e = $(e);
-    if (e.is('.block')){
-        var output = [];
-        for (var i = 0; i < level; i++){
-            output.push('    ');
-        }
-        output.push(e.get(0).className);
-        console.log(output.join(''));
-    }
-    e.children().each(function(){show_structure(this, level + 1);});
-}
-
 // Additions to the global object
 
 
 $.extend({
+    print: function(str){
+        if (console && console.log){
+            console.log(str);
+        }
+    },
     contains: function(obj, array){
         var i;
         var len = array.length;
@@ -72,7 +57,7 @@ $.fn.extend({
         this.each(function(){
             this.style.position = 'absolute';
             if (this.parentNode.id != frame.id){
-                print('positioning in new frame');
+                $.print('positioning in new frame');
                 this.style.left = (parseInt(this.style.left) - pos.left) + 'px';
                 this.style.top = (parseInt(this.style.top) - pos.top) + 'px';
             }
@@ -83,8 +68,8 @@ $.fn.extend({
     box: function(){
         var pos = this.offset();
         if (!pos){
-            print('warning: trying to get offset failed (is object not visible?)');
-            print(this);
+            $.print('warning: trying to get offset failed (is object not visible?)');
+            $.print(this);
             pos = {left: 0, top: 0};
         }
 //        console.log(this.info() + '.box() called.  offset == ' + pos);
