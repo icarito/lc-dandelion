@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>javascripts/blocks.js</string>
+	<string>javascripts/utility.js</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -21,20 +21,6 @@
 	<integer>200</integer>
 	<key>metaData</key>
 	<dict>
-		<key>index.xhtml</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>7</integer>
-				<key>line</key>
-				<integer>20</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
 		<key>javascripts/blocks.js</key>
 		<dict>
 			<key>caret</key>
@@ -42,56 +28,54 @@
 				<key>column</key>
 				<integer>0</integer>
 				<key>line</key>
-				<integer>200</integer>
+				<integer>221</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>185</integer>
+			<integer>0</integer>
 		</dict>
 		<key>javascripts/layout.js</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>37</integer>
+				<integer>41</integer>
 				<key>line</key>
-				<integer>206</integer>
+				<integer>101</integer>
 			</dict>
-			<key>columnSelection</key>
-			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>183</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>32</integer>
-				<key>line</key>
-				<integer>206</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>37</integer>
-				<key>line</key>
-				<integer>206</integer>
-			</dict>
+			<integer>267</integer>
 		</dict>
 		<key>javascripts/utility.js</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>50</integer>
 				<key>line</key>
-				<integer>52</integer>
+				<integer>74</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>50</integer>
+			<integer>46</integer>
+		</dict>
+		<key>layout.xhtml</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>70</integer>
+				<key>line</key>
+				<integer>13</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
 		</dict>
 		<key>processing.html</key>
 		<dict>
@@ -140,25 +124,41 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>12</integer>
 				<key>line</key>
-				<integer>34</integer>
+				<integer>13</integer>
 			</dict>
+			<key>columnSelection</key>
+			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>1</integer>
+				<key>line</key>
+				<integer>13</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>12</integer>
+				<key>line</key>
+				<integer>13</integer>
+			</dict>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>index.xhtml</string>
+		<string>layout.xhtml</string>
 		<string>processing.html</string>
 		<string>stylesheets/block_backgrounds.css</string>
 		<string>readme.txt</string>
 		<string>stylesheets/block_dragging.css</string>
-		<string>javascripts/blocks.js</string>
 		<string>javascripts/utility.js</string>
+		<string>javascripts/blocks.js</string>
 		<string>javascripts/layout.js</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>

@@ -13,6 +13,21 @@
 		<script type="text/javascript" src="javascripts/utility.js"></script>
 		<script type="text/javascript" src="javascripts/blocks.js"></script>
 		<script type="text/javascript">
+		function initialize_test(){
+		    var trigger = new Trigger({label: 'On event', color: 'gold'});
+		    $(document.body).append(trigger.drag_wrapper);
+		    var loop = new Loop({label: 'Forever', color: 'blueviolet'});
+		    trigger.append(loop);
+		    loop.appendLoop(new Step({label: 'Step one', color: 'lawngreen'}));
+		    loop.appendLoop(new Step({label: 'Step two', color: 'magenta'}));
+		    var loop2 = new Loop({label: 'While true', color: 'orangered'});
+		    loop.appendLoop(loop2);
+		    loop2.appendLoop(new Step({label: 'Step A', color: 'blue'}));
+		    loop2.appendLoop(new Step({label: 'Step B', color: 'cyan'}));
+		    loop.appendLoop(new Step({label: 'Step three', color: 'seagreen'}));
+		    trigger.append(new Step({label: 'Step i', color: 'green'}));
+		    trigger.append(new Step({label: 'Step ii', color: 'mediumblue'}));
+		}
 			$(initialize_test);
 		</script>
 	</head>

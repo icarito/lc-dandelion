@@ -178,7 +178,7 @@ Block.prototype.position = function(x,y){
 Block.prototype.append = function(block){
     this.drag_wrapper.css('border', '1px solid red');
     block.drag_wrapper.css({left: 0, top: 0, position: 'relative'});
-    print(block.drag_wrapper);
+    $.print(block.drag_wrapper);
     if (this.next){
         block.append(this.next);
     }
@@ -231,7 +231,8 @@ Block.prototype.ondragend = function(){
         instance = this.clone();
     }
     script_canvas.append(instance.drag_wrapper);
-    if (!instance.isInstance){
+    if (!this.isInstance){ // reposition if factory
+        $.print('repositioning');
         instance.drag_wrapper.repositionInFrame(script_canvas);
     }
     if (this.snap_target){
