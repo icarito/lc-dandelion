@@ -171,14 +171,13 @@ Block.prototype.toString = function(){
 }
 
 Block.prototype.position = function(x,y){
-    this.drag_wrapper.css({position: 'absolute', left: x + 'px', top: y + 'px'});
+        this.drag_wrapper.css({position: 'absolute', left: x + 'px', top: y + 'px'});
     return this;
 };
 
 Block.prototype.append = function(block){
     this.drag_wrapper.css('border', '1px solid red');
     block.drag_wrapper.css({left: 0, top: 0, position: 'relative'});
-    $.print(block.drag_wrapper);
     if (this.next){
         block.append(this.next);
     }
@@ -199,6 +198,10 @@ Block.prototype.test_snapping = function(other){
         return false;
     }
 };
+
+Block.prototype.ondragstart = function(){
+    $.ui.ddmanager.current.cancelHelperRemoval = true;
+}
 
 Block.prototype.ondrag = function(){
     var self = this;
@@ -230,9 +233,8 @@ Block.prototype.ondragend = function(){
     if (!this.isInstance){
         instance = this.clone();
     }
-    script_canvas.append(instance.drag_wrapper);
     if (!this.isInstance){ // reposition if factory
-        $.print('repositioning');
+        script_canvas.append(instance.drag_wrapper);
         instance.drag_wrapper.repositionInFrame(script_canvas);
     }
     if (this.snap_target){
@@ -245,6 +247,14 @@ Block.prototype.ondragend = function(){
     if (!this.isInstance && this.current_helper){
         this.current_helper.hide();
     }
+    $.ui.ddmanager.current.cancelHelperRemoval = true;
+}
+
+function print_position(str, d){
+    var p = d.position();
+    var o = d.offset();
+    var n = d[0];
+    $.print(str + ' top: ' + p.top + ' (' + o.top + '), left: ' + p.left + ' (' + o.left + '), display: ' + d.css('display') + ', parent: ' + n.parentNode.id + '/' + n.parentNode.className);
 }
 
 Block.prototype.get_helper = function(){
@@ -259,13 +269,13 @@ Block.prototype.get_helper = function(){
             this.current_helper.css('display', 'block');
         }
         $(document.body).append(this.current_helper);
-        return this.current_helper;        
+        return this.current_helper;
     }
 };
 
 Block.prototype.make_draggable = function(){
     var self = this;
-    this.drag_wrapper.draggable({drag: function(){self.ondrag()}, helper: function(){return self.get_helper()}, handle: this.handle, stop: function(){self.ondragend()}, refreshPositions: true});
+    this.drag_wrapper.draggable({drag: function(){self.ondrag()}, start: function(){self.ondragstart()}, helper: function(){return self.get_helper()}, handle: this.handle, stop: function(){self.ondragend()}, refreshPositions: true});
     return this;
 }
 
