@@ -57,7 +57,6 @@ $.fn.extend({
         this.each(function(){
             this.style.position = 'absolute';
             if (this.parentNode.id != frame.id){
-                $.print('positioning in new frame');
                 this.style.left = (parseInt(this.style.left) - pos.left) + 'px';
                 this.style.top = (parseInt(this.style.top) - pos.top) + 'px';
             }
