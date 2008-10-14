@@ -1,5 +1,6 @@
 .drag_wrapper{
 /*    border: 1px solid red; */
+    white-space: nowrap;
 }
 
 .drop_pointer{

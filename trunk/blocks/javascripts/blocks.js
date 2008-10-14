@@ -145,6 +145,7 @@ Block.prototype.clone = function(){
     var instance = new this.constructor(this.initial_params);
     instance.drag_wrapper.css('left', this.current_helper.css('left'));
     instance.drag_wrapper.css('top', this.current_helper.css('top'));
+    instance.drag_wrapper.width(this.current_helper.width());
     return instance;
 }
 
@@ -176,15 +177,32 @@ Block.prototype.position = function(x,y){
 };
 
 Block.prototype.append = function(block){
-    this.drag_wrapper.css('border', '1px solid red');
+//    this.drag_wrapper.css('border', '1px solid red');
+//    $.print('trying to append ' + block + ' to ' + this);
+    if (this == block) return;
     block.drag_wrapper.css({left: 0, top: 0, position: 'relative'});
     if (this.next){
         block.append(this.next);
     }
     this.drag_wrapper.append(block.drag_wrapper);
+    block.drag_parent = this;
     this.next = block;
     return this;
 };
+
+Block.prototype.remove = function(){
+    var pos = this.drag_wrapper.position();
+    this.position(pos.left, pos.top);
+    if (this.drag_parent){
+        try{
+            this.drag_parent.drag_wrapper.remove(this.drag_wrapper);
+        }catch(e){
+            $.print('failed to remove ' + this + ' from ' + this.drag_parent);
+        }
+        this.drag_parent.next = null;
+        this.drag_parent = null;
+    }
+}
 
 Block.prototype.test_snapping = function(other){
     if (this.drop_intersects(other)){
@@ -201,6 +219,10 @@ Block.prototype.test_snapping = function(other){
 
 Block.prototype.ondragstart = function(){
     $.ui.ddmanager.current.cancelHelperRemoval = true;
+    if (this.drag_parent){
+        this.remove();
+        $('#scripts_container').append(this.drag_wrapper);
+    }
 }
 
 Block.prototype.ondrag = function(){
@@ -250,12 +272,7 @@ Block.prototype.ondragend = function(){
     $.ui.ddmanager.current.cancelHelperRemoval = true;
 }
 
-function print_position(str, d){
-    var p = d.position();
-    var o = d.offset();
-    var n = d[0];
-    $.print(str + ' top: ' + p.top + ' (' + o.top + '), left: ' + p.left + ' (' + o.left + '), display: ' + d.css('display') + ', parent: ' + n.parentNode.id + '/' + n.parentNode.className);
-}
+
 
 Block.prototype.get_helper = function(){
     if (this.isInstance){
@@ -320,6 +337,7 @@ Block.prototype.init = function(params){
 Block.prototype.initialize = function(params){
     // Block-level initialialization, all blocks
     //console.log('name: ' + this.constructor.name);
+    this.drag_parent = null;
     this.block_init(params); // block-level, do not over-ride
     this.block_dom_init(params); // DOM initialization to own method
     /// 3. Move DOM properties to jq_propertyname for code clarity
@@ -395,6 +413,8 @@ Block.prototype.drop_intersects = function(other){
     if (other === this) return false;
     if (!this.drop_pointer) return false;
     if (!other.drop_target) return false;
+    if (this.drag_parent == other) return false;
+    if (other.drag_parent == this) return false;
     return this.drop_pointer.intersects(other.drop_target);
 }
 
