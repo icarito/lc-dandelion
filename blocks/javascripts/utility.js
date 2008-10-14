@@ -159,5 +159,11 @@ $.fn.extend({
         this.each(function(){
             $.extend(this, obj);
         });
+    },
+    print_position: function(str, d){
+        var p = d.position();
+        var o = d.offset();
+        var n = d[0];
+        $.print(str + ' top: ' + p.top + ' (' + o.top + '), left: ' + p.left + ' (' + o.left + '), display: ' + d.css('display') + ', parent: ' + n.parentNode.id + '/' + n.parentNode.className);
     }
 });

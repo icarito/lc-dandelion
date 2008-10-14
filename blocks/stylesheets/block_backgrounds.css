@@ -1,7 +1,11 @@
 .block, .expression{
-    font-family: Palatino;
+    font-family: Helvetica;
     font-size: 10px;
     color: #000;
+}
+
+.block{
+    margin-bottom: -8px;
 }
 
 .trigger{
@@ -83,20 +87,14 @@
 
 
 .label{
+    display: block;
     position: relative;
-    top: 4px;
-    left: -10px;
-}
-
-.step > .label{
-    top: 6px;
-    left: -15px;
+    top: 2px;
 }
 
 input.int, input.bool{
     position: relative;
     text-align: center;
-    top: -4px;
     width: 25px;
     height: 10px;
     font-family: fixed;
