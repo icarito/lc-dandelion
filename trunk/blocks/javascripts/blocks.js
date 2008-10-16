@@ -190,18 +190,13 @@ Block.prototype.append = function(block){
     return this;
 };
 
-Block.prototype.remove = function(){
-    var pos = this.drag_wrapper.position();
-    this.position(pos.left, pos.top);
-    if (this.drag_parent){
-        try{
-            this.drag_parent.drag_wrapper.remove(this.drag_wrapper);
-        }catch(e){
-            $.print('failed to remove ' + this + ' from ' + this.drag_parent);
-        }
-        this.drag_parent.next = null;
-        this.drag_parent = null;
-    }
+Block.prototype.moveToScriptCanvas = function(){
+    var canvas = $('#scripts_container');
+    var elem = this.drag_wrapper;
+    var off = elem.offset();
+    var coff = canvas.offset();
+    canvas.append(elem);
+    elem.css({position: 'absolute', left: off.left - coff.left, top: off.top - coff.top});
 }
 
 Block.prototype.test_snapping = function(other){
@@ -220,8 +215,8 @@ Block.prototype.test_snapping = function(other){
 Block.prototype.ondragstart = function(){
     $.ui.ddmanager.current.cancelHelperRemoval = true;
     if (this.drag_parent){
-        this.remove();
-        $('#scripts_container').append(this.drag_wrapper);
+        this.drag_parent.next = null;
+        this.drag_parent = null;
     }
 }
 
@@ -258,6 +253,10 @@ Block.prototype.ondragend = function(){
     if (!this.isInstance){ // reposition if factory
         script_canvas.append(instance.drag_wrapper);
         instance.drag_wrapper.repositionInFrame(script_canvas);
+    }else{
+        if(this.drag_parent){
+            instance.moveToScriptCanvas();
+        }
     }
     if (this.snap_target){
         if (instance.drop_intersects(this.snap_target)){
