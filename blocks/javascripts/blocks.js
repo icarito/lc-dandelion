@@ -145,7 +145,9 @@ Block.prototype.clone = function(){
     var instance = new this.constructor(this.initial_params);
     instance.drag_wrapper.css('left', this.current_helper.css('left'));
     instance.drag_wrapper.css('top', this.current_helper.css('top'));
-    instance.drag_wrapper.width(this.current_helper.width());
+    if (! instance instanceof Expression){
+        instance.drag_wrapper.width(this.current_helper.width());
+    }
     return instance;
 }
 
@@ -454,6 +456,23 @@ Expression.prototype.make_nestable = function(params){
     this.drag_wrapper = this.block;
 };
 
+Expression.prototype.ondrag = function(){
+    var self = this;
+    if (!Expression.expressions.length) return;
+    var matched = false
+    $.each(Expression.expressions, function(idx, block){
+        matched = self.test_snapping(block);
+        if (matched){
+            self.snap_target = block;
+            return false // stop the iteration
+        }
+    });
+    if (!matched){
+        self.highlight_drop_target(false, self);
+    }
+};
+
+
 function Step(params){
     this.initialize(params);
     this.make_containable();
@@ -471,6 +490,16 @@ function IntExpr(params){
 }
 IntExpr.prototype = new Expression();
 IntExpr.prototype.constructor = IntExpr;
+
+IntExpr.prototype.drop_intersects = function(other){
+    if (other === this) return false;
+//    if (!this.drop_pointer) return false;
+    if (!((other instanceof IntExpr) || (other instanceof IntValue))) return false;
+//    if (this.drag_parent == other) return false;
+//    if (other.drag_parent == this) return false;
+    console.log(other.drag_wrapper);
+    return this.drag_wrapper.intersects(other.drag_wrapper.find('.int'));
+}
 
 function IntValue(params){
     this.initialize(params);

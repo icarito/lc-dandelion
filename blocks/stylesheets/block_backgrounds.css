@@ -90,6 +90,11 @@
     display: block;
     position: relative;
     top: 2px;
+    white-space: nowrap;
+}
+
+.label *{
+    white-space: nowrap;
 }
 
 input.int, input.bool{

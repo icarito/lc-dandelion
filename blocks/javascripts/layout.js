@@ -15,7 +15,7 @@ $.fn.extend({
     place: function(box){
         //creates a new div, gives it an id, places it absolutely, appends it to current item, and returns the new div (NOT current item)
         var div = $('<div id="' + box.name + '"></div>');
-        div.css({position: 'absolute', left: box.x + 'px', top: box.y + 'px', width: box.w + 'px', height: box.h + 'px', backgroundColor: box.c});
+        div.css({position: 'absolute', left: box.x, top: box.y, width: box.w, height: box.h, backgroundColor: box.c});
         this.append(div);
         return div;
     },
