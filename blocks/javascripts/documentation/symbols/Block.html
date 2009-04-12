@@ -1,0 +1,1574 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		
+		<title>JsDoc Reference - Block</title>
+
+		<style type="text/css">
+			/* default.css */
+body
+{
+	font: 12px "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+	width: 800px;
+}
+
+.header
+{
+	clear: both;
+	background-color: #ccc;
+	padding: 8px;
+}
+
+h1
+{
+	font-size: 150%;
+	font-weight: bold;
+	padding: 0;
+	margin: 1em 0 0 .3em;
+}
+
+hr
+{
+	border: none 0;
+	border-top: 1px solid #7F8FB1;
+	height: 1px;
+}
+
+pre.code
+{
+	display: block;
+	padding: 8px;
+	border: 1px dashed #ccc;
+}
+
+#index
+{
+	margin-top: 24px;
+	float: left;
+	width: 160px;
+	position: absolute;
+	left: 8px;
+	background-color: #F3F3F3;
+	padding: 8px;
+}
+
+#content
+{
+	margin-left: 190px;
+	width: 600px;
+}
+
+.classList
+{
+	list-style-type: none;
+	padding: 0;
+	margin: 0 0 0 8px;
+	font-family: arial, sans-serif;
+	font-size: 1em;
+	overflow: auto;
+}
+
+.classList li
+{
+	padding: 0;
+	margin: 0 0 8px 0;
+}
+
+.summaryTable { width: 100%; }
+
+h1.classTitle
+{
+	font-size:170%;
+	line-height:130%;
+}
+
+h2 { font-size: 110%; }
+caption, div.sectionTitle
+{
+	background-color: #7F8FB1;
+	color: #fff;
+	font-size:130%;
+	text-align: left;
+	padding: 2px 6px 2px 6px;
+	border: 1px #7F8FB1 solid;
+}
+
+div.sectionTitle { margin-bottom: 8px; }
+.summaryTable thead { display: none; }
+
+.summaryTable td
+{
+	vertical-align: top;
+	padding: 4px;
+	border-bottom: 1px #7F8FB1 solid;
+	border-right: 1px #7F8FB1 solid;
+}
+
+/*col#summaryAttributes {}*/
+.summaryTable td.attributes
+{
+	border-left: 1px #7F8FB1 solid;
+	width: 140px;
+	text-align: right;
+}
+
+td.attributes, .fixedFont
+{
+	line-height: 15px;
+	color: #002EBE;
+	font-family: "Courier New",Courier,monospace;
+	font-size: 13px;
+}
+
+.summaryTable td.nameDescription
+{
+	text-align: left;
+	font-size: 13px;
+	line-height: 15px;
+}
+
+.summaryTable td.nameDescription, .description
+{
+	line-height: 15px;
+	padding: 4px;
+	padding-left: 4px;
+}
+
+.summaryTable { margin-bottom: 8px; }
+
+ul.inheritsList
+{
+	list-style: square;
+	margin-left: 20px;
+	padding-left: 0;
+}
+
+.detailList {
+	margin-left: 20px; 
+	line-height: 15px;
+}
+.detailList dt { margin-left: 20px; }
+
+.detailList .heading
+{
+	font-weight: bold;
+	padding-bottom: 6px;
+	margin-left: 0;
+}
+
+.light, td.attributes, .light a:link, .light a:visited
+{
+	color: #777;
+	font-style: italic;
+}
+
+.fineprint
+{
+	text-align: right;
+	font-size: 10px;
+}
+		</style>
+	</head>
+
+	<body>
+<!-- ============================== header ================================= -->	
+		<!-- begin static/header.html -->
+		<div id="header">
+</div>
+		<!-- end static/header.html -->
+
+<!-- ============================== classes index ============================ -->
+		<div id="index">
+			<!-- begin publish.classesIndex -->
+			<div align="center"><a href="../index.html">Class Index</a>
+| <a href="../files.html">File Index</a></div>
+<hr />
+<h2>Classes</h2>
+<ul class="classList">
+	
+	<li><i><a href="../symbols/_global_.html">_global_</a></i></li>
+	
+	<li><a href="../symbols/Block.html">Block</a></li>
+	
+	<li><a href="../symbols/BlockUtil.html">BlockUtil</a></li>
+	
+	<li><a href="../symbols/BoolExpr.html">BoolExpr</a></li>
+	
+	<li><a href="../symbols/BoolValue.html">BoolValue</a></li>
+	
+	<li><a href="../symbols/Expression.html">Expression</a></li>
+	
+	<li><a href="../symbols/IntExpr.html">IntExpr</a></li>
+	
+	<li><a href="../symbols/IntValue.html">IntValue</a></li>
+	
+	<li><a href="../symbols/Layout.html">Layout</a></li>
+	
+	<li><a href="../symbols/Loop.html">Loop</a></li>
+	
+	<li><a href="../symbols/Scratch.html">Scratch</a></li>
+	
+	<li><a href="../symbols/Step.html">Step</a></li>
+	
+	<li><a href="../symbols/Trigger.html">Trigger</a></li>
+	
+	<li><a href="../symbols/Util.html">Util</a></li>
+	
+</ul>
+<hr />
+			<!-- end publish.classesIndex -->
+		</div>
+		
+		<div id="content">
+<!-- ============================== class title ============================ -->
+			<h1 class="classTitle">
+				
+				Class Block
+			</h1>
+
+<!-- ============================== class summary ========================== -->			
+			<p class="description">
+				
+			
+				
+				
+				
+					<br /><i>Defined in: </i> <a href="../symbols/src/blocks.js.html">blocks.js</a>.
+				
+			</p>
+
+<!-- ============================== constructor summary ==================== -->			
+			
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class Block.">
+				<caption>Class Summary</caption>
+				<thead>
+					<tr>
+						<th scope="col">Constructor Attributes</th>
+						<th scope="col">Constructor Name and Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="attributes">&nbsp;</td>
+						<td class="nameDescription" >
+							<div class="fixedFont">
+								<b><a href="../symbols/Block.html">Block</a></b>()
+							</div>
+							<div class="description"></div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+
+<!-- ============================== properties summary ===================== -->
+			
+
+<!-- ============================== methods summary ======================== -->
+			
+				
+				
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class Block.">
+					<caption>Method Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Method Attributes</th>
+							<th scope="col">Method Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#append">append</a></b>(block)
+								</div>
+								<div class="description">Adds a block to this block, as the next in a sequence</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#block_dom_init">block_dom_init</a></b>(params)
+								</div>
+								<div class="description">General DOM initialization for all block types</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#block_init">block_init</a></b>(params)
+								</div>
+								<div class="description">Setup of initialization initialization, remembers original parameters, sets isIntance, registers block in list of all Blocks.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#blocktype">blocktype</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#clone">clone</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#dom_init">dom_init</a></b>(params)
+								</div>
+								<div class="description">Empty initialization step, intended for specific block types to override</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#drop_intersects">drop_intersects</a></b>(other)
+								</div>
+								<div class="description">Tests to see if one object intersects (drop_pointer to drop_target) another</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#get_helper">get_helper</a></b>()
+								</div>
+								<div class="description">Returns the drag_wrapper element, wrapped in jQuery.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#highlight_drop_pointer">highlight_drop_pointer</a></b>(flag, other)
+								</div>
+								<div class="description">Debugging method for seeing the drop pointer while testing.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#highlight_drop_target">highlight_drop_target</a></b>(flag, other)
+								</div>
+								<div class="description">Debugging method for seeing the drop target while testing.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#init">init</a></b>(params)
+								</div>
+								<div class="description">Empty initialization step, intended for specific block types to override</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#initialize">initialize</a></b>(params)
+								</div>
+								<div class="description">General initialization for all block types</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#label">label</a></b>(str)
+								</div>
+								<div class="description">if str param is given, sets the label value and returns block, otherwise returns text of the block's label</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#make_containable">make_containable</a></b>()
+								</div>
+								<div class="description">Creates drop pointer and adds to block</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#make_draggable">make_draggable</a></b>()
+								</div>
+								<div class="description">Set up handlers for dragging</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#make_droppable">make_droppable</a></b>()
+								</div>
+								<div class="description">DOM initialization, adds drop_target</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#make_nestable">make_nestable</a></b>(params)
+								</div>
+								<div class="description">DOM initialization, adds and sizes drag_wrapper</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#moveToScriptCanvas">moveToScriptCanvas</a></b>()
+								</div>
+								<div class="description">Gets the current position of the block on the page and places it as a child of the script canvas element, with offsets adjusted to appear in the same location</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#ondrag">ondrag</a></b>()
+								</div>
+								<div class="description">during a drag, test to see if this block should snap to any other block.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#ondragend">ondragend</a></b>()
+								</div>
+								<div class="description">At the end of a drag, if we are outside script canvas, remove block.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#ondragstart">ondragstart</a></b>()
+								</div>
+								<div class="description">At the beginning of a drag, clear drag_parent and drag_parent.next, set cancelHelperRemoval to true (why?)</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#position">position</a></b>(x, y)
+								</div>
+								<div class="description">Sets the position of the block by it's top left corner</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#register">register</a></b>()
+								</div>
+								<div class="description">Adds block to list of all Blocks, unless it is a factory block.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#test_snapping">test_snapping</a></b>(other)
+								</div>
+								<div class="description">Tests to see if the either blocks' drop pointer interesects the other's drop target.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#toString">toString</a></b>()
+								</div>
+								<div class="description">Returns string representation of block: blocktype and label</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/Block.html#uniq">uniq</a></b>()
+								</div>
+								<div class="description">Get a uniq value for the block id</div>
+							</td>
+						</tr>
+					
+					</tbody>
+				</table>
+				
+				
+				
+			
+<!-- ============================== events summary ======================== -->
+			
+
+<!-- ============================== constructor details ==================== -->		
+			
+			<div class="details"><a name="constructor"> </a>
+				<div class="sectionTitle">
+					Class Detail
+				</div>
+				
+				<div class="fixedFont">
+						<b>Block</b>()
+				</div>
+				
+				<div class="description">
+					
+					
+				</div>
+				
+				
+				
+				
+					
+					
+					
+					
+					
+					
+					
+
+			</div>
+			
+
+<!-- ============================== field details ========================== -->		
+			
+
+<!-- ============================== method details ========================= -->		
+			
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+				
+					<a name="append"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/Block.html">Block</a>}</span>
+					<b>append</b>(block)
+					
+					</div>
+					<div class="description">
+						Adds a block to this block, as the next in a sequence
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/Block.html">Block</a>}</span> <b>block</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/Block.html">Block</a>}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="block_dom_init"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/Block.html">Block</a>}</span>
+					<b>block_dom_init</b>(params)
+					
+					</div>
+					<div class="description">
+						General DOM initialization for all block types
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>params</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/Block.html">Block</a>}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="block_init"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/Block.html">Block</a>}</span>
+					<b>block_init</b>(params)
+					
+					</div>
+					<div class="description">
+						Setup of initialization initialization, remembers original parameters, sets isIntance, registers block in list of all Blocks.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>params</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/Block.html">Block</a>}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="blocktype"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>blocktype</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>String</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="clone"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>clone</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>Block</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="dom_init"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/Block.html">Block</a>}</span>
+					<b>dom_init</b>(params)
+					
+					</div>
+					<div class="description">
+						Empty initialization step, intended for specific block types to override
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>params</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/Block.html">Block</a>}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="drop_intersects"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Boolean}</span>
+					<b>drop_intersects</b>(other)
+					
+					</div>
+					<div class="description">
+						Tests to see if one object intersects (drop_pointer to drop_target) another
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/Block.html">Block</a>}</span> <b>other</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Boolean}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="get_helper"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{jQuery}</span>
+					<b>get_helper</b>()
+					
+					</div>
+					<div class="description">
+						Returns the drag_wrapper element, wrapped in jQuery.  If block is a factory, create a new drag_helper to drag.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{jQuery}</span> drag_wrapper</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="highlight_drop_pointer"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{null}</span>
+					<b>highlight_drop_pointer</b>(flag, other)
+					
+					</div>
+					<div class="description">
+						Debugging method for seeing the drop pointer while testing.  Has no effect unless DEBUG is true.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>flag</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>other</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{null}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="highlight_drop_target"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{null}</span>
+					<b>highlight_drop_target</b>(flag, other)
+					
+					</div>
+					<div class="description">
+						Debugging method for seeing the drop target while testing.  Has no effect unless DEBUG is true.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>flag</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>other</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{null}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="init"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/Block.html">Block</a>}</span>
+					<b>init</b>(params)
+					
+					</div>
+					<div class="description">
+						Empty initialization step, intended for specific block types to override
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>params</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/Block.html">Block</a>}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="initialize"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/Block.html">Block</a>}</span>
+					<b>initialize</b>(params)
+					
+					</div>
+					<div class="description">
+						General initialization for all block types
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>params</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/Block.html">Block</a>}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="label"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/Block.html">Block</a>|String}</span>
+					<b>label</b>(str)
+					
+					</div>
+					<div class="description">
+						if str param is given, sets the label value and returns block, otherwise returns text of the block's label
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>str</b>
+									<i>Optional</i>
+								</dt>
+								<dd>label string is optional</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/Block.html">Block</a>|String}</span> depending on presence of str param</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="make_containable"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/Block.html">Block</a>}</span>
+					<b>make_containable</b>()
+					
+					</div>
+					<div class="description">
+						Creates drop pointer and adds to block
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/Block.html">Block</a>}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="make_draggable"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/Block.html">Block</a>}</span>
+					<b>make_draggable</b>()
+					
+					</div>
+					<div class="description">
+						Set up handlers for dragging
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/Block.html">Block</a>}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="make_droppable"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/Block.html">Block</a>}</span>
+					<b>make_droppable</b>()
+					
+					</div>
+					<div class="description">
+						DOM initialization, adds drop_target
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/Block.html">Block</a>}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="make_nestable"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/Block.html">Block</a>}</span>
+					<b>make_nestable</b>(params)
+					
+					</div>
+					<div class="description">
+						DOM initialization, adds and sizes drag_wrapper
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Object}</span> <b>params</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/Block.html">Block</a>}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="moveToScriptCanvas"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/Block.html">Block</a>}</span>
+					<b>moveToScriptCanvas</b>()
+					
+					</div>
+					<div class="description">
+						Gets the current position of the block on the page and places it as a child of the script canvas element, with offsets adjusted to appear in the same location
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/Block.html">Block</a>}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="ondrag"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{null}</span>
+					<b>ondrag</b>()
+					
+					</div>
+					<div class="description">
+						during a drag, test to see if this block should snap to any other block.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{null}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="ondragend"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{null}</span>
+					<b>ondragend</b>()
+					
+					</div>
+					<div class="description">
+						At the end of a drag, if we are outside script canvas, remove block. Otherwise, if block is a factory, put new block into position in script canvas. If block is passes the snapping test, snap it with other block.  If already snapped to another block, but it fails snapping test, unsnap.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{null}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="ondragstart"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{null}</span>
+					<b>ondragstart</b>()
+					
+					</div>
+					<div class="description">
+						At the beginning of a drag, clear drag_parent and drag_parent.next, set cancelHelperRemoval to true (why?)
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{null}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="position"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/Block.html">Block</a>}</span>
+					<b>position</b>(x, y)
+					
+					</div>
+					<div class="description">
+						Sets the position of the block by it's top left corner
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>x</b>
+									
+								</dt>
+								<dd>horizontal coordinate</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Number}</span> <b>y</b>
+									
+								</dt>
+								<dd>vertical coordinate</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/Block.html">Block</a>}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="register"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/Block.html">Block</a>}</span>
+					<b>register</b>()
+					
+					</div>
+					<div class="description">
+						Adds block to list of all Blocks, unless it is a factory block.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/Block.html">Block</a>}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="test_snapping"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Boolean}</span>
+					<b>test_snapping</b>(other)
+					
+					</div>
+					<div class="description">
+						Tests to see if the either blocks' drop pointer interesects the other's drop target. Highlights the drop target if so, and returns true, otherwise returns false.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{<a href="../symbols/Block.html">Block</a>}</span> <b>other</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Boolean}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="toString"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{String}</span>
+					<b>toString</b>()
+					
+					</div>
+					<div class="description">
+						Returns string representation of block: blocktype and label
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="uniq"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Number}</span>
+					<b>uniq</b>()
+					
+					</div>
+					<div class="description">
+						Get a uniq value for the block id
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Number}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					
+				
+			
+			
+<!-- ============================== event details ========================= -->		
+			
+			
+			<hr />
+		</div>
+
+		
+<!-- ============================== footer ================================= -->
+		<div class="fineprint" style="clear:both">
+			
+			Documentation generated by <a href="http://www.jsdoctoolkit.org/" target="_blank">JsDoc Toolkit</a> 2.1.0 on Fri Feb 06 2009 22:00:54 GMT-0800 (PST)
+		</div>
+	</body>
+</html>
