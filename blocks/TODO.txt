@@ -1,0 +1,13 @@
+Generalize things in Blocks:
+
+* Drag between canvases
+* Factories vs. instances
+* Drag handles/drag wrappers
+* Drop target/drop pointer
+* Extra elements for styling
+* Inheritance? Prefer composition
+* Assemble panels
+* Little language for layout
+* Little language for labels
+* Sprites as tab buttons
+* Put structure back in HTML
