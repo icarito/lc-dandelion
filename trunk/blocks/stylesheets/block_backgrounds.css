@@ -15,7 +15,7 @@
     height: 31px;
     width: 150px;
     display: inline-block;
-    background: transparent url(../images/trigger_seagreen.png) top left no-repeat;
+    background: transparent url(../images/trigger_blue.png) top left no-repeat;
 }
 
 .trigger > .right{
@@ -24,7 +24,7 @@
     height: 31px;
     right: -5px;
     top: 0px;
-    background: transparent url(../images/trigger_seagreen.png) -995px 0px no-repeat;
+    background: transparent url(../images/trigger_blue.png) -995px 0px no-repeat;
 }
 
 .step{
@@ -34,7 +34,7 @@
     padding-right: 10px;
     padding-top: 3px;
     height: 31px;
-    background: transparent url(../images/block_seagreen.png) top left no-repeat;
+    background: transparent url(../images/block_blue.png) top left no-repeat;
 }
 
 .step > .step{
@@ -47,7 +47,7 @@
     height: 31px;
     right: -5px;
     top: 0px;
-    background: transparent url(../images/block_seagreen.png) -995px 0px no-repeat;
+    background: transparent url(../images/block_blue.png) -995px 0px no-repeat;
 }
 
 .intexpr, .intvalue{
@@ -55,7 +55,7 @@
     padding-top: 3px;
     height: 25px;
     padding-left: 12px;
-    background: transparent url(../images/intexpr_seagreen.png) top left no-repeat;
+    background: transparent url(../images/intexpr_blue.png) top left no-repeat;
 }
 
 .intexpr > .right, .intvalue > .right{
@@ -64,7 +64,7 @@
     height: 25px;
     right: -12px;
     top: 0px;
-    background: transparent url(../images/intexpr_seagreen.png) -988px 0px no-repeat;
+    background: transparent url(../images/intexpr_blue.png) -988px 0px no-repeat;
 }
 
 .boolexpr, .boolvalue{
@@ -72,7 +72,7 @@
     padding-top: 3px;
     height: 25px;
     padding-left: 12px;
-    background: transparent url(../images/boolexpr_seagreen.png) top left no-repeat;
+    background: transparent url(../images/boolexpr_blue.png) top left no-repeat;
 }
 
 .boolexpr > .right, .boolvalue > .right{
@@ -81,7 +81,7 @@
     height: 25px;
     right: -12px;
     top: 0px;
-    background: transparent url(../images/boolexpr_seagreen.png) -988px 0px no-repeat;
+    background: transparent url(../images/boolexpr_blue.png) -988px 0px no-repeat;
 }
 
 
@@ -134,7 +134,7 @@ select.blocks_menu{
     top: -22px;
     width: 44px;
     height: 26px;
-    background: transparent url(../images/container_seagreen.png) top left no-repeat;
+    background: transparent url(../images/container_blue.png) top left no-repeat;
 }
 
 .loop > .top_right{
@@ -143,7 +143,7 @@ select.blocks_menu{
     top: -22px;
     width: 5px;
     height: 22px;
-    background: transparent url(../images/container_seagreen.png) top right no-repeat;
+    background: transparent url(../images/container_blue.png) top right no-repeat;
 }
 .loop > .bottom_left{
     position: absolute;
@@ -151,7 +151,7 @@ select.blocks_menu{
     bottom: -26px;
     width: 44px;
     height: 26px;
-    background: transparent url(../images/container_seagreen.png) bottom left no-repeat;
+    background: transparent url(../images/container_blue.png) bottom left no-repeat;
 }
 .loop > .bottom_right{
     position: absolute;
@@ -159,7 +159,7 @@ select.blocks_menu{
     bottom: -26px;
     width: 5px;
     height: 26px;
-    background: transparent url(../images/container_seagreen.png) bottom right no-repeat;
+    background: transparent url(../images/container_blue.png) bottom right no-repeat;
 }
 .loop > .top{
     position: absolute;
@@ -167,7 +167,7 @@ select.blocks_menu{
     top: -22px;
     width: 100%;
     height: 22px;
-    background: transparent url(../images/container_seagreen.png) -44px 0px no-repeat;
+    background: transparent url(../images/container_blue.png) -44px 0px no-repeat;
 }
 .loop > .bottom{
     position: absolute;
@@ -175,7 +175,7 @@ select.blocks_menu{
     bottom: -26px;
     width: 100%;
     height: 26px;
-    background: transparent url(../images/container_seagreen.png) -44px -985px no-repeat;
+    background: transparent url(../images/container_blue.png) -44px -985px no-repeat;
 }
 .loop > .left{
     position: absolute;
@@ -183,26 +183,26 @@ select.blocks_menu{
     top: 0px;
     width: 22px;
     height: 100%;
-    background: transparent url(../images/container_seagreen.png) 0px -22px no-repeat;
+    background: transparent url(../images/container_blue.png) 0px -22px no-repeat;
 }
 
 .loop > .loop, .loop > .step{
     left: -28px;
 }
 
-.step.seagreen, .step.seagreen .right{background-image: url(../images/block_seagreen.png);}
-.trigger.seagreen, .trigger.seagreen .right{background-image: url(../images/trigger_seagreen.png);}
-.intexpr.seagreen, .intexpr.seagreen .right{background-image: url(../images/intexpr_seagreen.png);}
-.boolexpr.seagreen, .boolexpr.seagreen .right{background-image: url(../images/boolexpr_seagreen.png);}
-.loop.seagreen .top_left, .loop.seagreen .top, .loop.seagreen .top_right, .loop.seagreen .left, .loop.seagreen .bottom_left, .loop.seagreen .bottom, .loop.seagreen .bottom_right{background-image: url(../images/container_seagreen.png);}
+.step.blue, .step.blue .right{background-image: url(../images/block_blue.png);}
+.trigger.blue, .trigger.blue .right{background-image: url(../images/trigger_blue.png);}
+.intexpr.blue, .intexpr.blue .right{background-image: url(../images/intexpr_blue.png);}
+.boolexpr.blue, .boolexpr.blue .right{background-image: url(../images/boolexpr_blue.png);}
+.loop.blue .top_left, .loop.blue .top, .loop.blue .top_right, .loop.blue .left, .loop.blue .bottom_left, .loop.blue .bottom, .loop.blue .bottom_right{background-image: url(../images/container_blue.png);}
 
-.step.seagreenviolet, .step.seagreenviolet .right{background-image: url(../images/block_seagreenviolet.png);}
-.trigger.seagreenviolet, .trigger.seagreenviolet .right{background-image: url(../images/trigger_seagreenviolet.png);}
-.intexpr.seagreenviolet, .intexpr.seagreenviolet .right{background-image: url(../images/intexpr_seagreenviolet.png);}
-.boolexpr.seagreenviolet, .boolexpr.seagreenviolet .right{background-image: url(../images/boolexpr_seagreenviolet.png);}
-.intvalue.seagreenviolet, .intvalue.seagreenviolet .right{background-image: url(../images/intexpr_seagreenviolet.png);}
-.boolvalue.seagreenviolet, .boolvalue.seagreenviolet .right{background-image: url(../images/boolexpr_seagreenviolet.png);}
-.loop.seagreenviolet .top_left, .loop.seagreenviolet .top, .loop.seagreenviolet .top_right, .loop.seagreenviolet .left, .loop.seagreenviolet .bottom_left, .loop.seagreenviolet .bottom, .loop.seagreenviolet .bottom_right{background-image: url(../images/container_seagreenviolet.png);}
+.step.blueviolet, .step.blueviolet .right{background-image: url(../images/block_blueviolet.png);}
+.trigger.blueviolet, .trigger.blueviolet .right{background-image: url(../images/trigger_blueviolet.png);}
+.intexpr.blueviolet, .intexpr.blueviolet .right{background-image: url(../images/intexpr_blueviolet.png);}
+.boolexpr.blueviolet, .boolexpr.blueviolet .right{background-image: url(../images/boolexpr_blueviolet.png);}
+.intvalue.blueviolet, .intvalue.blueviolet .right{background-image: url(../images/intexpr_blueviolet.png);}
+.boolvalue.blueviolet, .boolvalue.blueviolet .right{background-image: url(../images/boolexpr_blueviolet.png);}
+.loop.blueviolet .top_left, .loop.blueviolet .top, .loop.blueviolet .top_right, .loop.blueviolet .left, .loop.blueviolet .bottom_left, .loop.blueviolet .bottom, .loop.blueviolet .bottom_right{background-image: url(../images/container_blueviolet.png);}
 
 .step.cyan, .step.cyan .right{background-image: url(../images/block_cyan.png);}
 .trigger.cyan, .trigger.cyan .right{background-image: url(../images/trigger_cyan.png);}
@@ -242,13 +242,13 @@ select.blocks_menu{
 .boolvalue.magenta, .boolvalue.magenta .right{background-image: url(../images/boolexpr_magenta.png);}
 .loop.magenta .top_left, .loop.magenta .top, .loop.magenta .top_right, .loop.magenta .left, .loop.magenta .bottom_left, .loop.magenta .bottom, .loop.magenta .bottom_right{background-image: url(../images/container_magenta.png);}
 
-.step.mediumseagreen, .step.mediumseagreen .right{background-image: url(../images/block_mediumseagreen.png);}
-.trigger.mediumseagreen, .trigger.mediumseagreen .right{background-image: url(../images/trigger_mediumseagreen.png);}
-.intexpr.mediumseagreen, .intexpr.mediumseagreen .right{background-image: url(../images/intexpr_mediumseagreen.png);}
-.boolexpr.mediumseagreen, .boolexpr.mediumseagreen .right{background-image: url(../images/intexpr_mediumseagreen.png);}
-.intvalue.mediumseagreen, .intvalue.mediumseagreen .right{background-image: url(../images/intexpr_mediumseagreen.png);}
-.boolvalue.mediumseagreen, .boolvalue.mediumseagreen .right{background-image: url(../images/intexpr_mediumseagreen.png);}
-.loop.mediumseagreen .top_left, .loop.mediumseagreen .top, .loop.mediumseagreen .top_right, .loop.mediumseagreen .left, .loop.mediumseagreen .bottom_left, .loop.mediumseagreen .bottom, .loop.mediumseagreen .bottom_right{background-image: url(../images/container_mediumseagreen.png);}
+.step.mediumblue, .step.mediumblue .right{background-image: url(../images/block_mediumblue.png);}
+.trigger.mediumblue, .trigger.mediumblue .right{background-image: url(../images/trigger_mediumblue.png);}
+.intexpr.mediumblue, .intexpr.mediumblue .right{background-image: url(../images/intexpr_mediumblue.png);}
+.boolexpr.mediumblue, .boolexpr.mediumblue .right{background-image: url(../images/intexpr_mediumblue.png);}
+.intvalue.mediumblue, .intvalue.mediumblue .right{background-image: url(../images/intexpr_mediumblue.png);}
+.boolvalue.mediumblue, .boolvalue.mediumblue .right{background-image: url(../images/intexpr_mediumblue.png);}
+.loop.mediumblue .top_left, .loop.mediumblue .top, .loop.mediumblue .top_right, .loop.mediumblue .left, .loop.mediumblue .bottom_left, .loop.mediumblue .bottom, .loop.mediumblue .bottom_right{background-image: url(../images/container_mediumblue.png);}
 
 .step.orangered, .step.orangered .right{background-image: url(../images/block_orangered.png);}
 .trigger.orangered, .trigger.orangered .right{background-image: url(../images/trigger_orangered.png);}
