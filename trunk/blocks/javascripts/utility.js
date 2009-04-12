@@ -1,12 +1,40 @@
-// Additions to the global object
+/**
+ * Blocks Utilities 0.1 (http://livingcode.org/blocks)
+ * Copyright (c) 2008-2009 Dethe Elza (http://livingcode.org/)
+ * 
+ * Licensed under the MIT (MIT-LICENSE.txt)
+ *
+ */
+ 
+ /**
+ * @fileOverview Utility methods for Blocks code, generally useful.
+ * @name util
+ * @author Dethe Elza
+ */
 
+/**
+ * @class
+ * @name Util
+ * @description Static methods on the jQuery object
+ */
+jQuery.extend({
+    /**
+     * @lends Util
+     */ 
 
-$.extend({
+    /**
+     * @description sends str to console, if there is a console
+     * @returns null
+     */ 
     print: function(str){
         if (console && console.log){
             console.log(str);
         }
     },
+    /**
+     * @description  tests to see if obj is in array
+     * @returns boolean
+     */ 
     contains: function(obj, array){
         var i;
         var len = array.length;
@@ -15,19 +43,35 @@ $.extend({
         }
         return false;
     },
+    /**
+     * @description tests to see if str consists of only integers
+     * @return boolean
+     */ 
     isInteger: function(str){
         return (str.toString().search(/^-?[0-9]+$/) == 0);
     },
+    /**
+     * @description adds all numbers in list_of_numbers together
+     * @return Number
+     */ 
     sum: function(list_of_numbers){
         var value = 0;
         jQuery.each(list_of_numbers, function(){value += this});
         return value;
     },
+    /**
+     * @description returns largest number in list_of_numbers
+     * @return Number
+     */ 
     max: function(list_of_numbers){
         var value = 0;
         jQuery.each(list_of_numbers, function(){ if (this > value) value = this; });
         return value;
     },
+    /**
+     * @description returns all property names of obj
+     * @return Array
+     */ 
     keys: function(obj){
         var k = [];
         for (key in obj){
@@ -35,6 +79,11 @@ $.extend({
         }
         return '[' + k.join(', ') + ']';
     },
+    /**
+     * @static
+     * @description returns all property names of obj
+     * @return Array
+     */ 
     upcap: function(str){
         return str[0].toUpperCase() + str.slice(1);
     }
