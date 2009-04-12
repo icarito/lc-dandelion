@@ -1,3 +1,17 @@
+/**
+ * Blocks Utilities 0.1 (http://livingcode.org/blocks)
+ * Copyright (c) 2008-2009 Dethe Elza (http://livingcode.org/)
+ * 
+ * Licensed under the MIT (MIT-LICENSE.txt)
+ *
+ */
+ 
+ /**
+ * @fileOverview Scratch-specific extensions for jQuery
+ * @name layout
+ * @author Dethe Elza
+ */
+
 var dk_grey = '#666';
 var md_grey = '#999';
 var lt_grey = '#CCC';
@@ -10,15 +24,25 @@ var BLOCKS_COLUMN_WIDTH = 210;
 var STAGE_COLUMN_WIDTH = 450;
 var PAD = 10;
 
-// Scratch layout-specific extensions to jQuery
-$.fn.extend({
+/**
+ * @class
+ * @name Layout
+ */
+$.fn.extend( /** @lends Layout.prototype */ {
+    /**
+     * @returns Element
+     * @description creates a new div, gives it an id, places it absolutely, appends it to current item, and returns the new div (NOT current item)
+     */
     place: function(box){
-        //creates a new div, gives it an id, places it absolutely, appends it to current item, and returns the new div (NOT current item)
         var div = $('<div id="' + box.name + '"></div>');
         div.css({position: 'absolute', left: box.x, top: box.y, width: box.w, height: box.h, backgroundColor: box.c});
         this.append(div);
         return div;
     },
+    /**
+     * @returns jQuery
+     * @description applies CSS border rounding, border, and overflow, returns this
+     */
     round: function(topleft, topright, bottomright, bottomleft, bordercolor){
         this.css('-webkit-border-top-left-radius', topleft);
         this.css('-moz-border-radius-topleft', topleft);
@@ -36,6 +60,10 @@ $.fn.extend({
         this.css('overflow-x', 'auto');
         return this;
     },
+    /**
+     * @returns jQuery
+     * @description uses button_spec to create a button menu interface, returns this
+     */
     block_menu_buttons: function(button_spec){
         var parent = this;
         $.each(button_spec, function(idx, spec){
@@ -58,6 +86,10 @@ $.fn.extend({
         });
         return this;
     },
+    /**
+     * @returns jQuery
+     * @description creates a new block palette and hides it (they all occupy the same space), return this
+     */
     add_palette: function(name, color, block_spec){
         var palette = $('<div></div>');
         application['_' + name + '_palette'] = palette;
@@ -73,8 +105,16 @@ $.fn.extend({
 
 
 // Scratch object, rules for initializing and updating scratch layout (should be mostly declarative)
+/**
+ * @class
+ * @name Scratch
+ */
 function Scratch(){};
 
+/**
+ * @description second part of two-part initialization
+ * @returns null
+ */
 Scratch.prototype.initialize = function(){
     $(document.body).css({margin: 0, padding: 0, overflow: 'hidden'});
     $(document.body).round(15,15,15,15,md_grey).css({'border-style': 'outset', 'background-color': lt_grey, 'height': MAX_HEIGHT - 6});
@@ -101,7 +141,7 @@ Scratch.prototype.blocks_buttons = function(){
         {color: 'blue', name: 'motion', 'default': true},
         {color: 'orange', name: 'control'},
         {color: 'purple', name: 'looks'},
-        {color: 'blue', name: 'sensing'},
+        {color: 'lightblue', name: 'sensing'},
         {color: 'violet', name: 'sound'},
         {color: 'green', name: 'numbers'},
         {color: 'turquoise', name: 'pen'},
