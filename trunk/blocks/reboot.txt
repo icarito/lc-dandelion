@@ -1,0 +1,43 @@
+# Rethinking Scratch Blocks
+
+## Make it the web way
+
+* Use popovers for choosing new blocks
+* Use delete key for removing blocks
+* Use canvas/svg/css3 for making blocks, not pngs
+* Use jQuery drag-n-drop more rationally
+
+## Basic block types
+
+I think the best way to organize blocks is probably to have one element for the block and one for each tab of the block, to hold the contained (including next) blocks. Also have an element for each slot (maximum of one). If there is also an element for each value field, that makes things easier and should be manageable with jQuery dragging.
+
+* Any type with one or more variable fields
+* Single step (one slot, one tab)
+* Numeric value
+* Trigger (no slots, one tab)
+* Single container (one slot, two tabs)  [loops]
+* Double container (one slot, three tabs) [if/else]
+* Single terminal container (one slot, one inner tab)
+* Single terminal step (one slot, no tab) [stop all]
+* Boolean value
+* String value
+* List value
+  - Messages
+  - Sprites
+  - Keys
+  - Sensors
+  - Custom list
+* Colour value
+* Combining value
+
+## Types of drag/drop
+
+* Value to value slot (replace default, if any)
+* Value from value slot (restore default, if necessary)
+* Tab-to-slot
+* Tab-from-slot
+
+## Things to make it easier
+
+* Put all the HTML in the page. Yes, we might generate it dynamically later, but for now let's see what's happening
+* A block may have multiple container points (contained, next, etc.), but each container point can only hold one block. So we can turn off droppable when a container is full and turn it back on if the contained item is removed.

@@ -49,7 +49,7 @@ $.extend(/** @lends BlockUtil */{
      * @returns jQuery
      */
     colorPicker: function(str){
-        return $('<span></span>').addClass('color_picker').css({backgroundColor: 'green', border: '1px solid black'}).click(function(){alert('show color picker')});
+        return $('<span></span>').addClass('color_picker').css({backgroundColor: 'green', border: '1px solid black'}).click(function(){alert('show color picker');});
     },
     /**
      * @description parses the spec for a block label and returns the parts, including embedded expression slots
@@ -163,7 +163,7 @@ $.fn.extend(/** @lends BlockUtil.prototype */{
             return this;
         }
         return this.find('.block');
-    },
+    }
 });
 
 //  Structure of a block
@@ -190,7 +190,7 @@ function Block(){
  */
 Block.prototype.blocktype = function(){
     return this.constructor.name;
-}
+};
 
 /**
  * @returns Block
@@ -204,7 +204,7 @@ Block.prototype.clone = function(){
         instance.drag_wrapper.width(this.current_helper.width());
     }
     return instance;
-}
+};
 
 /**
  * @param {String} [str] label string is optional
@@ -227,7 +227,7 @@ Block.prototype.label = function(str){
     }else{
         return this._label.text();
     }
-}
+};
 
 /**
  * @description Returns string representation of block: blocktype and label
@@ -235,7 +235,7 @@ Block.prototype.label = function(str){
  */
 Block.prototype.toString = function(){
     return this.blocktype() + '(' + this.label() + ')';
-}
+};
 
 /**
  * @param {Number} x horizontal coordinate
@@ -279,7 +279,7 @@ Block.prototype.moveToScriptCanvas = function(){
     canvas.append(elem);
     elem.css({position: 'absolute', left: off.left - coff.left, top: off.top - coff.top});
     return this;
-}
+};
 
 /**
  * @param {Block} other
@@ -309,7 +309,7 @@ Block.prototype.ondragstart = function(){
         this.drag_parent.next = null;
         this.drag_parent = null;
     }
-}
+};
 
 /**
  * @description during a drag, test to see if this block should snap to any other block.
@@ -318,12 +318,12 @@ Block.prototype.ondragstart = function(){
 Block.prototype.ondrag = function(){
     var self = this;
     if (!Block.blocks.length) return;
-    var matched = false
+    var matched = false;
     $.each(Block.blocks, function(idx, block){
         matched = self.test_snapping(block);
         if (matched){
             self.snap_target = block;
-            return false // stop the iteration
+            return false; // stop the iteration
         }
     });
     if (!matched){
@@ -368,7 +368,7 @@ Block.prototype.ondragend = function(){
         this.current_helper.hide();
     }
     $.ui.ddmanager.current.cancelHelperRemoval = true;
-}
+};
 
 
 
@@ -398,9 +398,16 @@ Block.prototype.get_helper = function(){
  */
 Block.prototype.make_draggable = function(){
     var self = this;
-    this.drag_wrapper.draggable({drag: function(){self.ondrag()}, start: function(){self.ondragstart()}, helper: function(){return self.get_helper()}, handle: this.handle, stop: function(){self.ondragend()}, refreshPositions: true});
+    this.drag_wrapper.draggable({
+        drag: function(){ self.ondrag(); }, 
+        start: function(){ self.ondragstart(); }, 
+        helper: function(){ return self.get_helper(); }, 
+        handle: this.handle, 
+        stop: function(){ self.ondragend(); }, 
+        refreshPositions: true
+    });
     return this;
-}
+};
 
 /**
  * @description Creates drop pointer and adds to block
@@ -409,7 +416,7 @@ Block.prototype.make_draggable = function(){
 Block.prototype.make_containable = function(){
     this.drop_pointer = $('<div class="drop_pointer"></div>');
     this.block.prepend(this.drop_pointer);
-}
+};
 
 Block._last_uniq = 0;
 
@@ -559,7 +566,7 @@ Block.prototype.highlight_drop_pointer = function(flag, other){
     if (other){
         other.highlight_drop_target(flag);
     }
-}
+};
 
 /**
  * @param {Block} other
@@ -573,7 +580,7 @@ Block.prototype.drop_intersects = function(other){
     if (this.drag_parent == other) return false;
     if (other.drag_parent == this) return false;
     return this.drop_pointer.intersects(other.drop_target);
-}
+};
 
 /**
  * @param {Object} params
@@ -606,7 +613,7 @@ Block.prototype.make_droppable = function(){
  * @extends Block
  */
 function Expression(){
-}
+};
 Expression.prototype = new Block();
 
 Expression.expressions = [];
@@ -629,7 +636,7 @@ Expression.prototype.register = function(){
 Expression.prototype.init = function(params){
     this.block.addClass('expression').removeClass('block');
     return this;
-}
+};
 
 /**
  * @description DOM initialization specialized for Expressions, adds "right" element, purely for styling
@@ -638,7 +645,7 @@ Expression.prototype.init = function(params){
 Expression.prototype.dom_init = function(params){
     this.block.prepend('<div class="right"></div>');
     return this;
-}
+};
 
 /**
  * @description Sets drag_wrapper.  For an Expression, the drag wrapper is the expression's main block element.
@@ -656,12 +663,12 @@ Expression.prototype.make_nestable = function(params){
 Expression.prototype.ondrag = function(){
     var self = this;
     if (!Expression.expressions.length) return;
-    var matched = false
+    var matched = false;
     $.each(Expression.expressions, function(idx, block){
         matched = self.test_snapping(block);
         if (matched){
             self.snap_target = block;
-            return false // stop the iteration
+            return false; // stop the iteration
         }
     });
     if (!matched){
@@ -677,7 +684,7 @@ Expression.prototype.ondrag = function(){
 function Step(params){
     this.initialize(params);
     this.make_containable();
-}
+};
 Step.prototype = new Block();
 Step.prototype.constructor = Step;
 
@@ -693,7 +700,7 @@ Step.prototype.dom_init = function(params){
  */
 function IntExpr(params){
     this.initialize(params);
-}
+};
 IntExpr.prototype = new Expression();
 IntExpr.prototype.constructor = IntExpr;
 
@@ -705,7 +712,7 @@ IntExpr.prototype.drop_intersects = function(other){
 //    if (other.drag_parent == this) return false;
     console.log(other.drag_wrapper);
     return this.drag_wrapper.intersects(other.drag_wrapper.find('.int'));
-}
+};
 
 /**
  * @class
@@ -714,7 +721,7 @@ IntExpr.prototype.drop_intersects = function(other){
  */
 function IntValue(params){
     this.initialize(params);
-}
+};
 IntValue.prototype = new Expression();
 IntValue.prototype.constructor = IntValue;
 
@@ -724,7 +731,7 @@ IntValue.prototype.dom_init = function(params){
     this._checkbox = $('<input type="checkbox" />');
     this.block.prepend(this._checkbox);
     this._checkbox.css({position: 'absolute', top: '3px', left: '-20px'});
-}
+};
 
 /**
  * @class
@@ -733,7 +740,7 @@ IntValue.prototype.dom_init = function(params){
  */
 function BoolExpr(params){
     this.initialize(params);
-}
+};
 BoolExpr.prototype = new Expression();
 BoolExpr.prototype.constructor = BoolExpr;
 
@@ -748,7 +755,7 @@ function BoolValue(params){
     this._checkbox = $('<input type="checkbox" />');
     this.block.prepend(this._checkbox);
     this._checkbox.css({position: 'absolute', top: '3px', left: '-20px'});
-}
+};
 BoolValue.prototype = new Expression();
 BoolValue.prototype.constructor = BoolValue;
 
@@ -762,7 +769,7 @@ function Trigger(params){
     this.block.addClass('trigger container');
     this.block.prepend('<div class="right"></div>');
     Trigger.triggers.push(this);
-}
+};
 Trigger.prototype = new Block();
 Trigger.prototype.constructor = Trigger;
 Trigger.triggers = [];
@@ -787,7 +794,7 @@ function Loop(params){
     this.handle = $('<div class="top"></div>');
     this.block.prepend(this.handle);
     this.make_containable();
-}
+};
 Loop.prototype = new Block();
 Loop.prototype.constructor = Loop;
 
@@ -806,7 +813,7 @@ Loop.prototype.appendLoop = function(block){
         //console.log('setting next in loop: ' + block.toString());
     }
     return this;
-}
+};
 
 
 

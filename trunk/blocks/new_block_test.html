@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>New Block Test</title>
+    <script src="javascripts/modernizr-1.1.min.js"></script>
+    <style>
+        .wrapper{
+            display: inline-block;
+            position: relative;
+        }
+        .socket{
+            position: relative;
+            background-color: #FFF;
+            height: 20px;
+        }
+        .block{
+            position: relative;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+            padding-bottom: 1px;
+            background-color: #FC6;
+        }
+        p{
+            padding: 7px 20px;
+            padding-bottom: 3px;
+            margin: 0px;
+        }
+        label{
+            font-family: Georgia;
+            font-size: 12px;
+        }
+        .tab, .slot{
+            display: block;
+            position: absolute;
+            left: 0px;
+            margin: 0px;
+            margin-left: 30px;
+            margin-right: auto;
+            width: 16px;
+            height: 5px;
+            top: 0px;
+            -webkit-border-bottom-right-radius: 4px;
+            -webkit-border-bottom-left-radius: 4px;
+            -moz-border-radius-bottomright: 4px;
+            -moz-border-radius-bottomleft: 4px;
+            border-bottom-right-radius: 4px;
+            border-bottom-left-radius: 4px;
+        }
+        .slot{
+            background-color: #FFF;
+        }
+        .tab{
+            background-color: #FC6;
+            z-index: 10;
+        }
+        .acceptable tab{
+            outline: 2px solid #FFF;
+        }
+        .contained{
+            background-color: white;
+            position: relative;
+            margin-left: 10px;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            overflow: visible;
+            -webkit-border-top-left-radius: 10px;
+            -webkit-border-bottom-left-radius: 10px;
+            -moz-border-radius-topleft: 10px;
+            -moz-border-radius-bottomleft: 10px;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            
+        }
+        .contained.acceptable{
+            border: 1px solid red;
+        }
+        .next{
+            position: relative;
+            padding-top: 8px;
+            background-color: transparent;
+            width: 100%;
+            overflow: visible;
+            border: 1px dashed green;
+        }
+        .number{
+            border-radius: 20px;
+        }
+        .boolean{
+            width: 50px;
+            height: 20px;
+        }
+        input{
+            margin-left: 20px;
+            width: 3em;
+            margin-right: 20px;
+            border: 0px;
+            padding: 0px;
+            height: 20px;
+        }
+        .chunk{
+            width: 200px;
+            float: left;
+        }
+        section{
+            display: block;
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    <h1>New Block Test</h1>
+    <div class="block_canvas">
+        <section>
+            <div class="chunk">
+                <h1>Step</h1>
+                <div class="wrapper">
+                    <div class="block">
+                        <p><label>Step</label></p>
+                        <b class="slot"></b>
+                    </div>
+                    <div class="next"><i class="tab"></i></div>
+                </div>
+            </div>
+            <div class="chunk">
+                <h1>Step</h1>
+                <div class="wrapper">
+                    <div class="block">
+                        <p><label>Step</label></p>
+                        <b class="slot"></b>
+                    </div>
+                    <div class="next"><i class="tab"></i></div>
+                </div>
+            </div>
+            <div class="chunk">
+                <h1>Step</h1>
+                <div class="wrapper">
+                    <div class="block">
+                        <p><label>Step</label></p>
+                        <b class="slot"></b>
+                    </div>
+                    <div class="next"><i class="tab"></i></div>
+                </div>
+            </div>
+            <div class="chunk">
+                <h1>Step</h1>
+                <div class="wrapper">
+                    <div class="block">
+                        <p><label>Step</label></p>
+                        <b class="slot"></b>
+                    </div>
+                    <div class="next"><i class="tab"></i></div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <h1>Simple Container</h1>
+            <div class="wrapper">
+                <div class="block">
+                    <p><label>Container</label></p>
+                    <b class="slot"></b>
+                    <div class="contained">
+                        <i class="tab"></i>
+                    </div>
+                </div>
+                <div class="next">
+                    <i class="tab"></i>
+                </div>
+            </div>
+        </section>
+        <section>
+            <h1>Numeric Value</h1>
+            <div class="wrapper">
+                <div class="block value number">
+                    <p>
+                        <label>Number:</label>&nbsp;<span class="number socket"><input type="number" value="0"/>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </section>
+        <section>
+            <h1>Boolean Combiner</h1>
+            <div class="wrapper">
+                <div class="block value boolean">
+                    <p><span class="boolean socket">&nbsp;</span>&nbsp;<label>or</label>&nbsp;<span class="boolean socket">&nbsp;</span></p>
+                </div>
+            </div>
+        </section>
+        <section>
+            <h1>And in conclusion...</h1>
+        </section>
+    </div><!-- .block_canvas -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>    
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>    
+    <script>
+    // Extend the jQuery result object
+    $.fn.extend({
+        long_name: function() {
+            var e = this[0];
+            var parts = [e.tagName.toLowerCase()];
+            if (e.id) {
+                parts.push('#' + e.id);
+            }
+            if (e.className) {
+                parts.push('.' + e.className.split(/\s/).join('.'));
+            }
+            return parts.join('');
+        }
+    });
+    $(function(){
+        $('.wrapper').draggable({
+            cancel: 'input, .slot, .contained, .next, .socket',
+            handle: '.block',
+            revert: 'invalid',
+            containment: '.block_canvas',
+            scroll: true,
+            zIndex: 10
+        });
+        $('.block_canvas').droppable({
+        });
+        $('.contained, .next').droppable({
+            greedy: true,
+            accept: '.wrapper',
+            hoverClass: 'acceptable',
+            tolerance: 'touch',
+            drop: function(event, ui){
+                console.log('dropped %s on %s', ui.draggable.long_name(), $(this).long_name());
+                $(this).append(ui.draggable);
+                $(this).droppable('option', 'disabled', true);
+                if ($(this).hasClass('contained')){
+                    ui.draggable.css({position: 'relative', top: 0, left: 0});
+                }else{
+                    ui.draggable.css({position: 'relative', top: -8, left: 0});
+                }
+            },
+            over: function(event, ui){
+                console.log('%s is over %s', ui.draggable.long_name(), $(this).long_name());
+            }            
+        });
+        $('.socket.number').droppable({
+            greedy: true,
+            accept: '.block.number'
+        });
+        $('.socket.boolean').droppable({
+            greedy: true,
+            accept: '.block.boolean'
+        });
+    });
+    </script>
+</body>
+</html>
