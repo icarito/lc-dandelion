@@ -1,0 +1,3786 @@
+<div id="toolbar" style="width:400px;height: 40px;">
+	<select onchange="$p.demo(this)">
+		<option value="==">Choose a demo</option>
+		<optgroup label="Structure">
+			<option value="statements_and_comments">Statements and Comments</option>
+			<option value="coordinates">Coordinates</option>
+			<option value="width_and_height">Width and Height</option>
+			<option value="setup_and_draw">Setup and Draw</option>
+			<option value="no_loop">No Loop</option>
+			<option value="loop">Loop</option>
+			<option value="redraw">Redraw</option>
+			<option value="functions">Functions</option>
+			<option value="recursion">Recursion</option>
+			<option value="recursion_2">Recursion 2</option>
+			<option value="create_graphics">Create Graphics</option>
+		</optgroup>
+		<optgroup label="Form">
+			<option value="points_and_lines">Points and Lines</option>
+			<option value="shape_primitives">Shape Primitives</option>
+			<option value="simple_curves">Simple Curves</option>
+			<option value="pie_chart">Pie Chart</option>
+			<option value="vertices">Vertices</option>
+			<option value="triangle_strip">Triangle Strip</option>
+			<option value="bezier">Bezier</option>
+			<option value="bezier_ellipse">Bezier Ellipse</option>
+		</optgroup>
+		<optgroup label="Data">
+			<option value="variables">Variables</option>
+			<option value="integers_and_floats">Integers and Floats</option>
+			<option value="characters_and_strings">Characters and Strings</option>
+			<option value="datatype_conversion">Datatype Conversion</option>
+			<option value="variable_scope">Variable Scope</option>
+		</optgroup>
+		<optgroup label="Control">
+			<option value="iteration">Iteration</option>
+			<option value="embedded_iteration">Embedded Iteration</option>
+			<option value="conditionals_1">Conditionals 1</option>
+			<option value="conditionals_2">Conditionals 2</option>
+			<option value="logical_operators">Logical Operators</option>
+		</optgroup>
+		<optgroup label="Math">
+			<option value="increment_decrement">Increment/Decrement</option>
+			<option value="operator_precedence">Operator Precedence</option>
+			<option value="modulo">Modulo</option>
+			<option value="distance_1d">Distance 1D</option>
+			<option value="distance_2d">Distance 2D</option>
+			<option value="sine">Sine</option>
+			<option value="sine_and_cosine">Sine and Cosine</option>
+			<option value="sine_wave">Sine Wave</option>
+			<option value="additive_wave">Additive Wave</option>
+			<option value="polar_to_cartesian">Polar to Cartesian</option>
+			<option value="arctangent">Arctangent</option>
+			<option value="graphing_2d_equation">Graphing 2D Equation</option>
+			<option value="random">Random</option>
+			<option value="double_random">Double Random</option>
+			<option value="noise_1D">Noise 1D</option>
+			<option value="noise_2D">Noise 2D</option>
+			<option value="noise_3D">Noise 3D</option>
+			<option value="noise_wave">Noise Wave</option>
+		</optgroup>
+		<optgroup label="Typography">
+			<option value="letters">Letters</option>
+			<option value="words">Words</option>
+		</optgroup>
+		<optgroup label="Image">
+			<option value="displaying">Displaying</option>
+			<option value="background_image">Background Image</option>
+			<option value="pointillism">Pointillism</option>
+			<option value="transparency">Transparency</option>
+			<option value="sprite">Sprite</option>
+			<option value="alpha_mask">Alpha Mask</option>
+			<option value="create_image">Create Image</option>
+		</optgroup>
+		<optgroup label="Color">
+			<option value="hue">Hue</option>
+			<option value="saturation">Saturation</option>
+			<option value="brightness">Brightness</option>
+			<option value="color_wheel">Color Wheel</option>
+			<option value="reading">Reading</option>
+			<option value="creating">Creating</option>
+			<option value="relativity">Relativity</option>
+			<option value="linear_gradient">Linear Gradient</option>
+		</optgroup>
+		<optgroup label="Transform">
+			<option value="translate">Translate</option>
+			<option value="scale">Scale</option>
+			<option value="rotate">Rotate</option>
+			<option value="triangle_flower">Triangle Flower</option>
+			<option value="arm">Arm</option>
+		</optgroup>
+		<optgroup label="Input">
+			<option value="mouse_1d">Mouse 1D</option>
+			<option value="mouse_2d">Mouse 2D</option>
+			<option value="mouse_press">Mouse Press</option>
+			<option value="mouse_signals">Mouse Signals</option>
+			<option value="easing">Easing</option>
+			<option value="constrain">Constrain</option>
+			<option value="storing_input">Storing Input</option>
+			<option value="mouse_functions">Mouse Functions</option>
+			<option value="keyboard">Keyboard</option>
+			<option value="keyboard_functions">Keyboard Functions</option>
+			<option value="milliseconds">Milliseconds</option>
+			<option value="clock">Clock</option>
+		</optgroup>
+		<optgroup label="Arrays">
+			<option value="array">Array</option>
+			<option value="array_2d">Array 2D</option>
+			<option value="array_objects">Array Objects</option>
+		</optgroup>
+		<optgroup label="Objects">
+			<option value="objects">Objects</option>
+			<option value="multiple_constructors">Multiple Constructors</option>
+			<option value="composite_objects">Composite Objects</option>
+			<option value="inheritance">Inheritance</option>
+			<option value="neighborhood">Neighborhood</option>
+		</optgroup>
+		<optgroup label="Web">
+			<option value="embedded_links">Embedded Links</option>
+		</optgroup>
+	</select>
+	<button onclick="$p.run_script()">Run Script</button>
+	<button onclick="$p.stop()">Reset</button>
+</div><!-- #toolbar -->
+		<div style="display:none">
+			<textarea id="statements_and_comments">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+// The size function is a statement that tells the computer 
+// how large to make the window.
+// Each function statement has zero or more parameters. 
+// Parameters are data passed into the function
+// and used as values for specifying what the computer will do.
+size(200, 200);
+
+// The background function is a statement that tells the computer
+// which color to make the background of the window 
+background(102);
+			</textarea>
+			<textarea id="coordinates">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+// Sets the screen to be 200, 200, so the width of the window is 200 pixels
+// and the height of the window is 200 pixels
+size(200, 200);
+background(0);
+noFill();
+stroke(255);
+
+// The two parameters of the point() method each specify coordinates.
+// This call to point() draws at the position [100, 100]
+point(width/2, height/2);
+
+// Draws to the position [100, 50]
+point(width/2, height/4); 
+
+// It is also possible to specify a point with any parameter, 
+// but only 	 on the screen are visible
+point(60, 30);
+point(60, 134);
+point(160, 50);
+point(280, -800);
+point(201, 100);
+
+// Coordinates are used for drawing all shapes, not just points.
+// Parameters for different methods are used for different purposes.
+// For example, the first two parameters to line() specify the coordinates of the 
+// first point and the second two parameters specify the second point
+stroke(204);
+line(0, 73, width, 73);
+
+// The first two parameters to rect() are coordinates
+// and the second two are the width and height
+rect(110, 55, 40, 36);
+			</textarea>
+			<textarea id="width_and_height">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+size(200, 200);
+background(127);
+noStroke();
+for(int i=0; i<height; i+=20) {
+	 fill(0);
+	 rect(0, i, width, 10);
+	 fill(255);
+	 rect(i, 0, 10, height);
+}
+			</textarea>
+			<textarea id="setup_and_draw">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+// The statements in the setup() function 
+// execute once when the program begins
+void setup() 
+{
+  size(200, 200);  // Size should be the first statement
+  stroke(255);     // Set line drawing color to white
+  frameRate(30);
+}
+
+float y = 100;
+
+// The statements in draw() are executed until the 
+// program is stopped. Each statement is executed in 
+// sequence and after the last line is read, the first 
+// line is executed again.
+void draw() 
+{ 
+  background(0);   // Set the background to black
+  y = y - 1; 
+  if (y < 0) { y = height; } 
+  line(0, y, width, y);  
+}
+			</textarea>
+			<textarea id="no_loop">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+// The statements in the setup() function 
+// execute once when the program begins
+void setup() 
+{
+  size(200, 200);  // Size should be the first statement
+  stroke(255);     // Set line drawing color to white
+  frameRate(30);
+  noLoop();
+}
+
+float y = 100;
+
+// The statements in draw() are executed until the 
+// program is stopped. Each statement is executed in 
+// sequence and after the last line is read, the first 
+// line is executed again.
+void draw() 
+{ 
+  background(0);   // Set the background to black
+  y = y - 1; 
+  if (y < 0) { y = height; } 
+  line(0, y, width, y);  
+}
+			</textarea>
+			<textarea id="loop">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+// The statements in the setup() function 
+// execute once when the program begins
+void setup() 
+{
+  size(200, 200);  // Size should be the first statement
+  stroke(255);     // Set stroke color to white
+  noLoop();
+}
+
+float y = 100;
+
+// The statements in draw() are run until the 
+// program is stopped. Each statement is run in 
+// sequence and after the last line is read, the first 
+// line is run again.
+void draw() 
+{ 
+  background(0);   // Set the background to black
+  line(0, y, width, y);  
+
+  y = y - 1; 
+  if (y < 0) { 
+    y = height; 
+  } 
+} 
+
+void mousePressed() 
+{
+  loop();
+}
+			</textarea>
+			<textarea id="redraw">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+// The statements in the setup() function 
+// execute once when the program begins
+void setup() 
+{
+  size(200, 200);  // Size should be the first statement
+  stroke(255);     // Set line drawing color to white
+  noLoop();
+}
+
+float y = 100;
+
+// The statements in draw() are executed until the 
+// program is stopped. Each statement is executed in 
+// sequence and after the last line is read, the first 
+// line is executed again.
+void draw() 
+{ 
+  background(0);   // Set the background to black
+  y = y - 1; 
+  if (y < 0) { y = height; } 
+  line(0, y, width, y);  
+} 
+
+void mousePressed() 
+{
+  redraw();
+}			
+			</textarea>
+			<textarea id="functions">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+void setup() 
+{
+  size(200, 200);
+  background(51);
+  noStroke();
+  smooth();
+  noLoop();
+}
+
+void draw() 
+{
+  draw_target(68, 34, 200, 10);
+  draw_target(152, 16, 100, 3);
+  draw_target(100, 144, 80, 5);
+}
+
+void draw_target(int xloc, int yloc, int size, int num) 
+{
+  float grayvalues = 255/num;
+  float steps = size/num;
+  for(int i=0; i<num; i++) {
+    fill(i*grayvalues);
+    ellipse(xloc, yloc, size-i*steps, size-i*steps);
+  }
+}
+			</textarea>
+			<textarea id="recursion">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+void setup() 
+{
+  size(200, 200);
+  noStroke();
+  smooth();
+  noLoop();
+}
+
+void draw() 
+{
+  drawCircle(126, 170, 6);
+}
+
+void drawCircle(int x, int radius, int level) 
+{                    
+  float tt = 126 * level/4.0;
+  fill(tt);
+  ellipse(x, 100, radius*2, radius*2);      
+  if(level > 1) {
+    level = level - 1;
+    drawCircle(x - radius/2, radius/2, level);
+    drawCircle(x + radius/2, radius/2, level);
+  }
+}
+			</textarea>
+			<textarea id="recursion_2">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+void setup() 
+{
+  size(200, 200);
+  noStroke();
+  smooth();
+  drawCircle(100, 100, 80, 8);
+}
+
+void drawCircle(float x, float y, int radius, int level) 
+{                    
+  float tt = 126 * level/6.0;
+  fill(tt, 153);
+  ellipse(x, y, radius*2, radius*2);      
+  if(level > 1) {
+    level = level - 1;
+    int num = int(random(2, 6));
+    for(int i=0; i<num; i++) {
+      float a = random(0, TWO_PI);
+      float nx = x + cos(a) * 6.0 * level;
+      float ny = y + sin(a) * 6.0 * level;
+      drawCircle(nx, ny, radius/2, level);
+    }
+  }
+}				
+			</textarea>
+			<textarea id="create_graphics">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+PGraphics pg;
+
+void setup() {
+  size(200, 200);
+  pg = createGraphics(80, 80, P3D);
+}
+
+void draw() {
+  fill(0, 12);
+  rect(0, 0, width, height);
+  fill(255);
+  noStroke();
+  ellipse(mouseX, mouseY, 60, 60);
+
+  pg.beginDraw();
+  pg.background(102);
+  pg.noFill();
+  pg.stroke(255);
+  pg.ellipse(mouseX-60, mouseY-60, 60, 60);
+  pg.endDraw();
+
+  image(pg, 60, 60); 
+}
+			</textarea>
+			<textarea id="points_and_lines">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int d = 40;
+int p1 = d;
+int p2 = p1+d;
+int p3 = p2+d;
+int p4 = p3+d;
+
+size(200, 200);
+background(0);
+
+// Draw gray box
+stroke(153);
+line(p3, p3, p2, p3);
+line(p2, p3, p2, p2);
+line(p2, p2, p3, p2);
+line(p3, p2, p3, p3);
+
+// Draw white points
+stroke(255);
+point(p1, p1);
+point(p1, p3); 
+point(p2, p4);
+point(p3, p1); 
+point(p4, p2);
+point(p4, p4);				
+			</textarea>
+			<textarea id="shape_primitives">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+size(200, 200);
+smooth(); 
+background(0);
+noStroke();
+fill(226);
+triangle(10, 10, 10, 200, 45, 200);
+rect(45, 45, 35, 35);
+quad(105, 10, 120, 10, 120, 200, 80, 200);
+ellipse(140, 80, 40, 40);
+triangle(160, 10, 195, 200, 160, 200);				
+			</textarea>
+<textarea id="simple_curves">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+void setup() {
+  size(200, 200);
+  colorMode(RGB, 100);
+  background(0);
+  noFill();
+  noLoop();
+}
+
+void draw() {
+  stroke(40);
+  beginShape();
+  for(int i=0; i<width; i++) {
+   vertex(i, singraph((float)i/width)*height);
+  }
+  endShape();
+
+  stroke(55);
+  beginShape();
+  for(int i=0; i<width; i++) {
+   vertex(i, quad((float)i/width)*height);
+  }
+  endShape();
+
+  stroke(70);
+  beginShape();
+  for(int i=0; i<width; i++) {
+   vertex(i, quadHump((float)i/width)*height);
+  }
+  endShape();
+
+  stroke(85);
+  beginShape();
+  for(int i=0; i<width; i++) {
+   vertex(i, hump((float)i/width)*height);
+  }
+  endShape();
+
+  stroke(100);
+  beginShape();
+  for(int i=0; i<width; i++) {
+   vertex(i, squared((float)i/width)*height);
+  }
+  endShape();
+}
+
+float singraph(float sa) {
+  sa = (sa - 0.5) * 1.0; //scale from -1 to 1
+  sa = sin(sa*PI)/2 + 0.5;
+  return sa;
+}
+
+float quad(float sa) {
+  return sa*sa*sa*sa;
+}
+
+float quadHump(float sa) {
+  sa = (sa - 0.5); //scale from -2 to 2
+  sa = sa*sa*sa*sa * 16;
+  return sa;
+}
+
+float hump(float sa) {
+  sa = (sa - 0.5) * 2; //scale from -2 to 2
+  sa = sa*sa;
+  if(sa > 1) { sa = 1; }
+  return 1-sa;
+}
+
+float squared(float sa) {
+  sa = sa*sa;
+  return sa;
+}
+</textarea>
+<textarea id="pie_chart">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+size(200, 200);
+background(100);
+smooth();
+noStroke();
+
+int diameter = 150;
+int[] angs = {30, 10, 45, 35, 60, 38, 75, 67};
+float lastAng = 0;
+
+for (int i=0; i<angs.length; i++){
+  fill(angs[i] * 3.0);
+  arc(width/2, height/2, diameter, diameter, lastAng, lastAng+radians(angs[i]));
+  lastAng += radians(angs[i]);  
+}
+</textarea>
+<textarea id="vertices">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+size(200, 200);
+background(0);
+noFill();
+
+stroke(102);
+beginShape();
+curveVertex(168, 182);
+curveVertex(168, 182);
+curveVertex(136, 38);
+curveVertex(42, 34);
+curveVertex(64, 200);
+curveVertex(64, 200);
+endShape();
+
+stroke(51);
+beginShape(LINES);
+vertex(60, 40);
+vertex(160, 10);
+vertex(170, 150);
+vertex(60, 150);
+endShape();
+
+stroke(126);
+beginShape();
+vertex(60, 40);
+bezierVertex(160, 10, 170, 150, 60, 150);
+endShape();
+
+stroke(255);
+beginShape(POINTS);
+vertex(60, 40);
+vertex(160, 10);
+vertex(170, 150);
+vertex(60, 150);
+endShape();
+</textarea>
+<textarea id="triangle_strip">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+size(200, 200);
+background(204);
+smooth();
+
+int x = width/2;
+int y = height/2;
+int outerRad = 80;
+int innerRad = 50;
+float px = 0, py = 0, angle = 0;
+float pts = 36;
+float rot = 360.0/pts;
+
+beginShape(TRIANGLE_STRIP); 
+for (int i=0; i<pts; i++) {
+  px = x+cos(radians(angle))*outerRad;
+  py = y+sin(radians(angle))*outerRad;
+  angle+=rot;
+  vertex(px, py);
+  px = x+cos(radians(angle))*innerRad;
+  py = y+sin(radians(angle))*innerRad;
+  vertex(px, py); 
+  angle+=rot;
+}
+endShape();
+</textarea>
+<textarea id="bezier">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+size(200, 200); 
+background(0); 
+stroke(255);
+noFill();
+smooth(); 
+
+for(int i = 0; i < 100; i += 20) {
+  bezier(90-(i/2.0), 20+i, 210, 10, 220, 150, 120-(i/8.0), 150+(i/4.0));
+}
+</textarea>
+<textarea id="bezier_ellipse">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+// arrays to hold ellipse coordinate data
+float[] px, py, cx, cy, cx2, cy2;
+
+// global variable-points in ellipse
+int pts = 4;
+
+color controlPtCol = #222222;
+color anchorPtCol = #BBBBBB;
+
+void setup(){
+  size(200, 200);
+  smooth();
+  setEllipse(pts, 65, 65);
+  frameRate(0.5);
+}
+
+void draw(){
+  background(145);
+  drawEllipse();
+  setEllipse(int(random(3, 12)), random(-100, 150), random(-100, 150));
+}
+
+// draw ellipse with anchor/control points
+void drawEllipse(){
+  strokeWeight(1.125);
+  stroke(255);
+  noFill();
+  // create ellipse
+  for (int i=0; i<pts; i++){
+    if (i==pts-1) {
+      bezier(px[i], py[i], cx[i], cy[i], cx2[i], cy2[i],  px[0], py[0]);
+    }
+    else{
+      bezier(px[i], py[i], cx[i], cy[i], cx2[i], cy2[i],  px[i+1], py[i+1]);
+    }
+  }
+  strokeWeight(.75);
+  stroke(0);
+  rectMode(CENTER);
+
+  // control handles and tangent lines
+  for ( int i=0; i< pts; i++){
+    if (i==pts-1){  // last loop iteration-close path
+      line(px[0], py[0], cx2[i], cy2[i]);
+    }
+    if (i>0){
+      line(px[i], py[i], cx2[i-1], cy2[i-1]);
+    }
+    line(px[i], py[i], cx[i], cy[i]);
+  }
+
+  for ( int i=0; i< pts; i++){
+    fill(controlPtCol);
+    noStroke();
+    //control handles
+    ellipse(cx[i], cy[i], 4, 4);
+    ellipse(cx2[i], cy2[i], 4, 4);
+
+    fill(anchorPtCol);
+    stroke(0);
+    //anchor points
+    rect(px[i], py[i], 5, 5);
+  }
+}
+
+// fill up arrays with ellipse coordinate data
+void setEllipse(int points, float radius, float controlRadius){
+  pts = points;
+  px = new float[points];
+  py = new float[points];
+  cx = new float[points];
+  cy = new float[points];
+  cx2 = new float[points];
+  cy2 = new float[points];
+  float angle = 360.0/points;
+  float controlAngle1 = angle/3.0;
+  float controlAngle2 = controlAngle1*2.0;
+  for ( int i=0; i<points; i++){
+    px[i] = width/2+cos(radians(angle))*radius;
+    py[i] = height/2+sin(radians(angle))*radius;
+    cx[i] = width/2+cos(radians(angle+controlAngle1))* 
+      controlRadius/cos(radians(controlAngle1));
+    cy[i] = height/2+sin(radians(angle+controlAngle1))* 
+      controlRadius/cos(radians(controlAngle1));
+    cx2[i] = width/2+cos(radians(angle+controlAngle2))* 
+      controlRadius/cos(radians(controlAngle1));
+    cy2[i] = height/2+sin(radians(angle+controlAngle2))* 
+      controlRadius/cos(radians(controlAngle1));
+
+    //increment angle so trig functions keep chugging along
+    angle+=360.0/points;
+  }
+}
+</textarea>
+<textarea id="variables">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+size(200, 200);
+background(0);
+stroke(153);
+
+int a = 20;
+int b = 50;
+int c = a*8;
+int d = a*9;
+int e = b-a;
+int f = b*2;
+int g = f+e;
+
+line(a, f, b, g);
+line(b, e, b, g);
+line(b, e, d, c);
+line(a, e, d-e, c);
+</textarea>
+<textarea id="integers_and_floats">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int a = 0;      // Create a variable "a" of the datatype "int"
+float b = 0.0;  // Create a variable "b" of the datatype "float"
+
+void setup()
+{
+  size(200, 200);
+  stroke(255);
+  frameRate(30);
+}
+
+void draw()
+{
+  background(51);
+
+  a = a + 1;
+  b = b + 0.2; 
+  line(a, 0, a, height/2);
+  line(b, height/2, b, height);
+
+  if(a > width) {
+    a = 0;
+  }
+  if(b > width) {
+    b = 0;
+  }
+}
+</textarea>
+<textarea id="true_false">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+boolean x = false;
+
+size(200, 200);
+background(0);
+stroke(0);
+
+for (int i = 1; i < width; i += 2) 
+{
+  if (i < width/2) {
+    x = true;
+  } else {
+    x = false;
+  }
+
+  if (x) {
+    stroke(255);
+    line(i, 1, i, height-1);
+  }
+
+  if (!x) {
+    stroke(126);
+    line(width/2 , i, width-2, i);
+  }
+}
+</textarea>
+<textarea id="characters_and_strings">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+PImage frog;
+PFont fontA;
+int lettersize = 90;
+int xoffset;
+char letter;
+
+void setup() 
+{
+  size(200, 200);
+  fontA = loadFont("Arial"); 
+  textFont(fontA); 
+  textSize(lettersize);
+
+  // The String datatype must be capitalized because it is a complex datatype.
+  // A String is actually a class with its own methods, some of which are
+  // featured below.
+  String name= "rathausFrog";
+  String extension = ".jpg";
+  int nameLength = name.length();
+  println("The length of " + name + " is " + nameLength + ".");
+  name = name.concat(extension);
+  nameLength = name.length();
+  println("The length of " + name + " is " + nameLength + ".");
+
+  // The parameter for the loadImage() method must be a string
+  // This line could also be written "frog = loadImage("rathausFrog.jpg");
+  frog = loadImage(name);
+}
+
+void draw() 
+{
+  background(51); // Set background to dark gray
+
+  image(frog, xoffset, 0);
+
+  // Draw an X
+  line(0, 0, width, height);  
+  line(0, height, width, 0); 
+
+  // Get the width of the letter
+  int letterWidth = int(fontA.width(letter) * lettersize);
+
+  // Draw the letter to the center of the screen
+  text(letter, width/2-letterWidth/2, height/2);
+}
+
+void keyPressed()
+{
+  // The variable "key" always contains the value of the most recent key pressed.
+  // If the key is an upper or lowercase letter between 'A' and 'z'
+  // the image is shifted to the corresponding value of that key
+  if(key >= 'A' && key <= 'z') {
+    letter = char(key);
+    // Scale the values to numbers between 0 and 100
+    float scale = 100.0/57.0;
+    int temp = int((key - 'A') * scale);
+    // Set the offset for the image
+    xoffset = temp;
+    println(key);
+  }
+}
+</textarea>
+<textarea id="datatype_conversion">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+size(200, 200);
+background(51);
+noStroke();
+
+char c;    // Chars are used for storing typographic symbols
+float f;   // Floats are decimal numbers
+int i;     // Ints are values between 2,147,483,647 and -2147483648
+byte b;    // Bytes are values between -128 and 128
+
+c = 'A';
+f = float(c);     // Sets f = 65.0
+i = int(f * 1.4); // Sets i to 91
+b = byte(c / 2);  // Sets b to 32
+
+rect(f, 0, 40, 66);
+fill(204);
+rect(i, 67, 40, 66);
+fill(255);
+rect(b, 134, 40, 66);
+</textarea>
+<textarea id="variable_scope">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int a = 20;  // Create a global variable "a"
+
+void setup() 
+{
+  size(200, 200);
+  background(51);
+  stroke(255);
+  noLoop();
+}
+
+void draw()
+{
+  // Draw a line using the global variable "a"
+  line(a, 0, a, height);
+
+  // Create a new variable "a" local to the for() statement 
+  for(int a=50; a<80; a += 2) {
+    line(a, 0, a, height);
+  }
+
+  // Create a new variable "a" local to the loop() method
+  int a = 100;
+  // Draw a line using the new local variable "a"
+  line(a, 0, a, height);  
+
+  // Make a call to the custom function drawAnotherLine()
+  drawAnotherLine();
+
+  // Make a call to the custom function setYetAnotherLine()
+  drawYetAnotherLine();
+}
+
+void drawAnotherLine() 
+{
+  // Create a new variable "a" local to this method
+  int a = 185;
+  // Draw a line using the local variable "a"
+  line(a, 0, a, height);
+}
+
+void drawYetAnotherLine() 
+{
+  // Because no new local variable "a" is set, 
+  // this lines draws using the original global
+  // variable "a" which is set to the value 20.
+  line(a+2, 0, a+2, height);
+}
+</textarea>
+<textarea id="iteration">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int k;
+int xpos1 = 100; 
+int xpos2 = 118; 
+int count = 0; 
+int timey = 0;
+int num = 12;
+
+size(200, 200);
+background(102);
+noStroke();
+
+// Draw gray bars 
+fill(255);
+k=60;
+for(int i=0; i < num/3; i++) {
+  rect(25, k, 155, 5);
+  k+=10;
+}
+
+// Black bars
+fill(51);
+k = 40;
+for(int i=0; i < num; i++) {
+  rect(105, k, 30, 5);
+  k += 10;
+}
+k = 15;
+for(int i = 0; i < num; i++) {
+  rect(125, k, 30, 5);
+  k +=10;
+}
+
+// Thin lines
+k = 42;
+fill(0);
+for(int i=0; i < num-1; i++) {
+  rect(36, k, 20, 1);
+  k+=10;
+}
+</textarea>
+<textarea id="embedded_iteration">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+float box_size = 11; 
+float box_space = 12; 
+int margin = 7; 
+
+size(200, 200); 
+background(0); 
+noStroke(); 
+
+// Draw gray boxes 
+
+for(int i = margin; i < width-margin; i += box_space) { 
+  for(int j = margin; j < height-margin; j += box_space) { 
+    fill(255 - box_size*10); 
+    rect(j, i, box_size, box_size); 
+  } 
+  box_size = box_size - 0.6; 
+}
+</textarea>
+<textarea id="conditionals_1">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+size(200, 200);
+background(0);
+
+for(int i=10; i<width; i+=10) {
+  // If 'i' divides by 20 with no remainder draw the first line
+  // else draw the second line
+  if(i%20 == 0) {
+    stroke(153);
+    line(i, 40, i, height/2);
+  } else {
+    stroke(102);
+    line(i, 20, i, 180); 
+  }
+}
+</textarea>
+<textarea id="conditionals_2">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+size(200, 200);
+background(0);
+
+for(int i=2; i<width-2; i+=2) {
+  // If 'i' divides by 20 with no remainder 
+  // draw the first line else draw the second line
+  if(i%20 == 0) {
+    stroke(255);
+    line(i, 40, i, height/2);
+  } else if (i%10 == 0) {
+    stroke(153);
+    line(i, 20, i, 180); 
+  } else {
+    stroke(102);
+    line(i, height/2, i, height-40);
+  }
+}
+</textarea>
+<textarea id="logical_operators">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+size(200, 200);
+background(126);
+
+boolean op = false;
+
+for(int i=5; i<=195; i+=5) {
+  // Logical AND
+  stroke(0);
+  if((i > 35) && (i < 100)) {
+    line(5, i, 95, i);
+    op = false;
+  }
+
+  // Logical OR
+  stroke(76);
+  if((i <= 35) || (i >= 100)) {
+    line(105, i, 195, i);
+    op = true;
+  }
+
+  // Testing if a boolean value is "true"
+  // The expression "if(op)" is equivalent to "if(op == true)"
+  if(op) {
+    stroke(0);
+    point(width/2, i);
+  }
+
+  // Testing if a boolean value is "false"
+  // The expression "if(!op)" is equivalent to "if(op == false)"
+  if(!op) {
+    stroke(255);
+    point(width/4, i);
+  }
+}
+</textarea>
+<textarea id="increment_decrement">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int a;
+int b;
+boolean direction;
+
+void setup()
+{
+  size(200, 200);
+  colorMode(RGB, width);
+  a = 0;
+  b = width;
+  direction = true;
+  frameRate(30);
+}
+
+void draw()
+{
+  a++;
+  if(a > width) {
+    a = 0;
+    direction = !direction;
+  }
+  if(direction == true){
+    stroke(a);
+  } else {
+    stroke(width-a);
+  }
+  line(a, 0, a, height/2);
+
+  b--;
+  if(b < 0) {
+    b = width;
+  }
+  if(direction == true) {
+    stroke(width-b);
+  } else {
+    stroke(b);
+  }
+  line(b, height/2+1, b, height);
+}
+</textarea>
+<textarea id="operator_precedence">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+// The highest precedence is at the top of the list and 
+// the lowest is at the bottom.
+// Multiplicative: * / %
+// Additive: + -
+// Relational: < > <= >=
+// Equality: == !=
+// Logical AND: &&
+// Logical OR: ||
+// Assignment: = += -= *= /= %=
+
+size(200, 200);
+background(51);
+noFill();
+stroke(51);
+
+stroke(204);
+for(int i=0; i< width-20; i+= 4) {
+  // The 30 is added to 70 and then evaluated
+  // if it is greater than the current value of "i"
+  // For clarity, write as "if(i > (30 + 70)) {"
+  if(i > 30 + 70) {
+    line(i, 0, i, 50);
+  }
+}
+
+stroke(255);
+// The 2 is multiplied by the 8 and the result is added to the 5
+// For clarity, write as "rect(5 + (2 * 8), 0, 90, 20);"
+rect(4 + 2 * 8, 52, 90, 48);
+rect((4 + 2) * 8, 100, 90, 49);
+
+stroke(153);
+for(int i=0; i< width; i+= 2) {
+  // The relational statements are evaluated 
+  // first, and then the logical AND statements and 
+  // finally the logical OR. For clarity, write as:
+  // "if(((i > 10) && (i < 50)) || ((i > 80) && (i < 160))) {"
+  if(i > 20 && i < 50 || i > 100 && i < width-20) {
+    line(i, 151, i, height-1);
+  } 
+}
+</textarea>
+<textarea id="modulo">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int num = 20;
+float c;
+
+void setup()
+{
+  size(200,200);
+  fill(255);
+  frameRate(30);
+}
+
+void draw() 
+{ 
+  background(0);
+  c+=0.1;
+  for(int i=1; i<height/num; i++) { 
+    float x = (c%i)*i*i;
+    stroke(102);
+    line(0, i*num, x, i*num);
+    noStroke();
+    rect(x, i*num-num/2, 8, num);
+  } 
+}
+</textarea>
+<textarea id="distance_1d">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int thin = 8;
+int thick = 36;
+float xpos1 = 134.0;
+float xpos2 = 44.0;
+float xpos3 = 58.0;
+float xpos4 = 120.0;
+
+void setup() 
+{
+  size(200, 200);
+  noStroke();
+  frameRate(60);
+}
+
+void draw() 
+{
+  background(0);
+
+  float mx = mouseX * 0.4 - width/5.0;
+
+  fill(102);
+  rect(xpos2, 0, thick, height/2);
+  fill(204);
+  rect(xpos1, 0, thin, height/2);
+  fill(102);
+  rect(xpos4, height/2, thick, height/2);
+  fill(204);
+  rect(xpos3, height/2, thin, height/2);
+
+  xpos1 += mx/16;
+  xpos2 += mx/64;
+  xpos3 -= mx/16;
+  xpos4 -= mx/64;
+
+  if(xpos1 < -thin)  { xpos1 =  width; }
+  if(xpos1 >  width) { xpos1 = -thin; }
+  if(xpos2 < -thick) { xpos2 =  width; }
+  if(xpos2 >  width) { xpos2 = -thick; }
+  if(xpos3 < -thin)  { xpos3 =  width; }
+  if(xpos3 >  width) { xpos3 = -thin; }
+  if(xpos4 < -thick) { xpos4 =  width; }
+  if(xpos4 >  width) { xpos4 = -thick; }
+}
+</textarea>
+<textarea id="distance_2d">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+float max_distance;
+
+void setup() {
+  size(200, 200); 
+  smooth();
+  noStroke();
+  max_distance = dist(0, 0, width, height);
+}
+
+void draw() 
+{
+  background(51);
+
+  for(int i = 0; i <= width; i += 20) {
+    for(int j = 0; j <= width; j += 20) {
+      float size = dist(mouseX, mouseY, i, j);
+      size = size/max_distance * 66;
+      ellipse(i, j, size, size);
+    }
+  }
+}
+</textarea>
+<textarea id="sine">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+float spin = 0.0; 
+float diameter = 84.0; 
+float angle;
+
+float angle_rot; 
+int rad_points = 90;
+
+void setup() 
+{
+  size(200, 200);
+  noStroke();
+  smooth();
+}
+
+void draw() 
+{ 
+  background(153);
+
+  translate(130, 65);
+
+  fill(255);
+  ellipse(0, 0, 16, 16);
+
+  angle_rot = 0;
+  fill(51);
+
+  for(int i=0; i<5; i++) {
+    pushMatrix();
+    rotate(angle_rot + -45);
+    ellipse(-116, 0, diameter, diameter);
+    popMatrix();
+    angle_rot += PI*2/5;
+  }
+
+  diameter = 34 * sin(angle) + 168;
+
+  angle += 0.02;
+  if (angle > TWO_PI) { angle = 0; }
+}
+</textarea>
+<textarea id="sine_and_cosine">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int i = 45;
+int j = 225; 
+float pos1 = 0; 
+float pos2 = 0; 
+float pos3 = 0; 
+float pos4 = 0;
+int sc = 40;
+
+void setup() 
+{
+  size(200, 200);
+  noStroke();
+  smooth();
+}
+
+void draw() 
+{
+  background(0);
+
+  fill(51);
+  rect(60, 60, 80, 80);
+
+  fill(255);
+  ellipse(pos1, 36, 32, 32);
+
+  fill(153);
+  ellipse(36, pos2, 32, 32);
+
+  fill(255);
+  ellipse(pos3, 164, 32, 32);
+
+  fill(153);
+  ellipse(164, pos4, 32, 32);
+
+  i += 3;
+  j -= 3;
+
+  if(i > 405) {
+    i = 45;
+    j = 225;
+  }
+
+  float ang1 = radians(i); // convert degrees to radians
+  float ang2 = radians(j); // convert degrees to radians
+  pos1 = width/2 + (sc * cos(ang1));
+  pos2 = width/2 + (sc * sin(ang1));
+  pos3 = width/2 + (sc * cos(ang2));
+  pos4 = width/2 + (sc * sin(ang2));
+}
+</textarea>
+<textarea id="sine_wave">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int xspacing = 8;   // How far apart should each horizontal location be spaced
+int w;              // Width of entire wave
+
+float theta = 0.0;       // Start angle at 0
+float amplitude = 75.0;  // Height of wave
+float period = 500.0;    // How many pixels before the wave repeats
+float dx;                 // Value for incrementing X, to be calculated as a function of period and xspacing
+float[] yvalues;          // Using an array to store height values for the wave (not entirely necessary)
+
+void setup() {
+  size(200,200);
+  frameRate(30);
+  colorMode(RGB,255,255,255,100);
+  smooth();
+  w = width+16;
+  dx = (TWO_PI / period) * xspacing;
+  yvalues = new float[w/xspacing];
+}
+
+void draw() {
+  background(0);
+  calcWave();
+  renderWave();
+
+}
+
+void calcWave() {
+  // Increment theta (try different values for 'angular velocity' here
+  theta += 0.02;
+
+  // For every x value, calculate a y value with sine function
+  float x = theta;
+  for (int i = 0; i < yvalues.length; i++) {
+    yvalues[i] = sin(x)*amplitude;
+    x+=dx;
+  }
+}
+
+void renderWave() {
+  // A simple way to draw the wave with an ellipse at each location
+  for (int x = 0; x < yvalues.length; x++) {
+    noStroke();
+    fill(255,50);
+    ellipseMode(CENTER);
+    ellipse(x*xspacing,width/2+yvalues[x],16,16);
+  }
+}
+</textarea>
+<textarea id="additive_wave">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int xspacing = 8;   // How far apart should each horizontal location be spaced
+int w;              // Width of entire wave
+int maxwaves = 4;   // total # of waves to add together
+
+float theta = 0.0f;
+float[] amplitude = new float[maxwaves];   // Height of wave
+float[] dx = new float[maxwaves];          // Value for incrementing X, to be calculated as a function of period and xspacing
+float[] yvalues;                           // Using an array to store height values for the wave (not entirely necessary)
+
+void setup() {
+  size(200,200);
+  frameRate(30);
+  colorMode(RGB,255,255,255,100);
+  smooth();
+  w = width+16;
+
+  for (int i = 0; i < maxwaves; i++) {
+    amplitude[i] = random(10,30);
+    float period = random(100,300); // How many pixels before the wave repeats
+    dx[i] = (TWO_PI / period) * xspacing;
+  }
+
+  yvalues = new float[w/xspacing];
+}
+
+void draw() {
+  background(0);
+  calcWave();
+  renderWave();
+}
+
+void calcWave() {
+  // Increment theta (try different values for 'angular velocity' here
+  theta += 0.02;
+
+  // Set all height values to zero
+  for (int i = 0; i < yvalues.length; i++) {
+    yvalues[i] = 0.0f;
+  }
+
+  // Accumulate wave height values
+  for (int j = 0; j < maxwaves; j++) {
+    float x = theta;
+    for (int i = 0; i < yvalues.length; i++) {
+      // Every other wave is cosine instead of sine
+      if (j % 2 == 0)  yvalues[i] += sin(x)*amplitude[j];
+      else yvalues[i] += cos(x)*amplitude[j];
+      x+=dx[j];
+    }
+  }
+}
+
+void renderWave() {
+  // A simple way to draw the wave with an ellipse at each location
+  noStroke();
+  fill(255,50);
+  ellipseMode(CENTER);
+  for (int x = 0; x < yvalues.length; x++) {
+    ellipse(x*xspacing,width/2+yvalues[x],16,16);
+  }
+}
+</textarea>
+<textarea id="polar_to_cartesian">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+float r;
+
+// Angle and angular velocity, accleration
+float theta;
+float theta_vel;
+float theta_acc;
+
+void setup() {
+  size(200,200);
+  frameRate(30);
+  smooth();
+
+  // Initialize all values
+  r = 50.0f;
+  theta = 0.0f;
+  theta_vel = 0.0f;
+  theta_acc = 0.0001f;
+}
+
+void draw() {
+  background(0);
+  // Translate the origin point to the center of the screen
+  translate(width/2,height/2);
+
+  // Convert polar to cartesian
+  float x = r * cos(theta);
+  float y = r * sin(theta);
+
+  // Draw the ellipse at the cartesian coordinate
+  ellipseMode(CENTER);
+  noStroke();
+  fill(200);
+  ellipse(x,y,16,16);
+
+  // Apply acceleration and velocity to angle (r remains static in this example)
+  theta_vel += theta_acc;
+  theta += theta_vel;
+
+}
+</textarea>
+<textarea id="arctangent">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+Eye e1, e2, e3, e4, e5;
+
+void setup() 
+{
+  size(200, 200);
+  smooth();
+  noStroke();
+  e1 = new Eye( 50,  16,  80);
+  e2 = new Eye( 64,  85,  40);  
+  e3 = new Eye( 90, 200, 120);
+  e4 = new Eye(150,  44,  40); 
+  e5 = new Eye(175, 120,  80);
+}
+
+void draw() 
+{
+  background(102);
+
+  e1.update(mouseX, mouseY);
+  e2.update(mouseX, mouseY);
+  e3.update(mouseX, mouseY);
+  e4.update(mouseX, mouseY);
+  e5.update(mouseX, mouseY);
+
+  e1.display();
+  e2.display();
+  e3.display();
+  e4.display();
+  e5.display();
+}
+
+class Eye 
+{
+  int ex, ey;
+  int size;
+  float angle = 0.0;
+
+  Eye(int x, int y, int s) {
+    ex = x;
+    ey = y;
+    size = s;
+ }
+
+  void update(int mx, int my) {
+    angle = atan2(my-ey, mx-ex);
+  }
+
+  void display() {
+    pushMatrix();
+    translate(ex, ey);
+    fill(255);
+    ellipse(0, 0, size, size);
+    rotate(angle);
+    fill(153);
+    ellipse(size/4, 0, size/2, size/2);
+    popMatrix();
+  }
+}
+</textarea>
+<textarea id="graphing_2d_equation">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+void setup() {
+  size(200,200);
+  frameRate(30);
+}
+
+void draw() {
+  loadPixels();
+  float n = (mouseX * 10.0) / width;
+  float w = 16.0;         // 2D space width
+  float h = 16.0;         // 2D space height
+  float dx = w / width;    // Increment x this amount per pixel
+  float dy = h / height;   // Increment y this amount per pixel
+  float x = -w/2;          // Start x at -1 * width / 2
+  for (int i = 0; i < width; i++) {
+    float y = -h/2;        // Start y at -1 * height / 2
+    for (int j = 0; j < height; j++) {
+      float r = sqrt((x*x) + (y*y));    // Convert cartesian to polar
+      float theta = atan2(y,x);         // Convert cartesian to polar
+      // Compute 2D polar coordinate function
+      float val = sin(n*cos(r) + 5 * theta);           // Results in a value between -1 and 1
+      //float val = cos(r);                            // Another simple function
+      //float val = sin(theta);                        // Another simple function
+      // Map resulting vale to grayscale value
+      pixels[i+j*width] = color((val + 1.0) * 255.0/2.0);     // Scale to between 0 and 255
+      y += dy;                // Increment y
+    }
+    x += dx;                  // Increment x
+  }
+  updatePixels();
+}
+</textarea>
+<textarea id="random">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+size(200, 200);
+smooth();
+background(0);
+strokeWeight(10);
+
+for(int i = 0; i < width; i++) {
+  float r = random(255);
+  float x = random(0, width);
+  stroke(r, 100);
+  line(i, 0, x, height);
+}
+</textarea>
+<textarea id="double_random">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+size(200, 200);
+background(0);
+int totalPts = 300;
+float steps = totalPts+1;
+stroke(255);
+float rand = 0;
+
+for  (int i=1; i< steps; i++){
+  point( (width/steps) * i, (height/2) + random(-rand, rand) );
+  rand += random(-5, 5);
+}
+</textarea>
+<textarea id="noise_1d">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+float xoff = 0.0;
+float xincrement = 0.01; 
+
+void setup() {
+  size(200,200);
+  background(0);
+  frameRate(30);
+  smooth();
+  noStroke();
+}
+
+void draw()
+{
+  // Create an alpha blended background
+  fill(0, 10);
+  rect(0,0,width,height);
+
+  //float n = random(0,width);  // Try this line instead of noise
+
+  // Get a noise value based on xoff and scale it according to the window's width
+  float n = noise(xoff)*width;
+
+  // With each cycle, increment xoff
+  xoff += xincrement;
+
+  // Draw the ellipse at the value produced by perlin noise
+  fill(200);
+  ellipse(n,height/2,16,16);
+}
+</textarea>
+<textarea id="noise_2d">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+float increment = 0.02;
+
+void setup() {
+  size(200,200);
+  noLoop();
+}
+
+void draw() {
+  background(0);
+
+  // Optional: adjust noise detail here
+  // noiseDetail(8,0.65f);
+
+  loadPixels();
+
+  float xoff = 0.0; // Start xoff at 0
+
+  // For every x,y coordinate in a 2D space, calculate a noise value and produce a brightness value
+  for (int x = 0; x < width; x++) {
+    xoff += increment;   // Increment xoff 
+    float yoff = 0.0;   // For every xoff, start yoff at 0
+    for (int y = 0; y < height; y++) {
+      yoff += increment; // Increment yoff
+
+      // Calculate noise and scale by 255
+      float bright = noise(xoff,yoff)*255;
+
+      // Try using this line instead
+      //float bright = random(0,255);
+
+      // Set each pixel onscreen to a grayscale value
+      pixels[x+y*width] = color(bright);
+    }
+  }
+
+  updatePixels();
+}
+</textarea>
+<textarea id="noise_3d">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+float increment = 0.01;
+// The noise function's 3rd argument, a global variable that increments once per cycle
+float zoff = 0.0;  
+// We will increment zoff differently than xoff and yoff
+float zincrement = 0.02; 
+
+void setup() {
+  size(200,200);
+  frameRate(30);
+}
+
+void draw() {
+  background(0);
+
+  // Optional: adjust noise detail here
+  // noiseDetail(8,0.65f);
+
+  loadPixels();
+
+  float xoff = 0.0; // Start xoff at 0
+
+  // For every x,y coordinate in a 2D space, calculate a noise value and produce a brightness value
+  for (int x = 0; x < width; x++) {
+    xoff += increment;   // Increment xoff 
+    float yoff = 0.0f;   // For every xoff, start yoff at 0
+    for (int y = 0; y < height; y++) {
+      yoff += increment; // Increment yoff
+
+      // Calculate noise and scale by 255
+      float bright = noise(xoff,yoff,zoff)*255;
+
+      // Try using this line instead
+      //float bright = random(0,255);
+
+      // Set each pixel onscreen to a grayscale value
+      pixels[x+y*width] = color(bright,bright,bright);
+    }
+  }
+  updatePixels();
+
+  zoff += zincrement; // Increment zoff
+
+
+}
+</textarea>
+<textarea id="noise_wave">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int xspacing = 8;   // How far apart should each horizontal location be spaced
+int w;              // Width of entire wave
+
+float yoff = 0.0f;        // 2nd dimension of perlin noise
+float[] yvalues;          // Using an array to store height values for the wave (not entirely necessary)
+
+void setup() {
+  size(200,200);
+  frameRate(30);
+  colorMode(RGB,255,255,255,100);
+  smooth();
+  w = width+16;
+  yvalues = new float[w/xspacing];
+}
+
+void draw() {
+  background(0);
+  calcWave();
+  renderWave();
+
+}
+
+void calcWave() {
+  float dx = 0.05f;
+  float dy = 0.01f;
+  float amplitude = 100.0f;
+
+  // Increment y ('time')
+  yoff += dy;
+
+  //float xoff = 0.0;  // Option #1
+  float xoff = yoff; // Option #2
+
+  for (int i = 0; i < yvalues.length; i++) {
+    // Using 2D noise function
+    //yvalues[i] = (2*noise(xoff,yoff)-1)*amplitude; // Option #1
+    // Using 1D noise function
+    yvalues[i] = (2*noise(xoff)-1)*amplitude;    // Option #2
+    xoff+=dx;
+  }
+
+}
+
+void renderWave() {
+  // A simple way to draw the wave with an ellipse at each location
+  for (int x = 0; x < yvalues.length; x++) {
+    noStroke();
+    fill(255,50);
+    ellipseMode(CENTER);
+    ellipse(x*xspacing,width/2+yvalues[x],16,16);
+  }
+}
+</textarea>
+<textarea id="letters">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+size(200, 200);
+background(0);
+
+// Load the font. Fonts are located within the 
+// main Processing directory/folder and they
+// must be placed within the data directory
+// of your sketch for them to load
+PFont fontA = loadFont("Courier New");
+textFont(fontA, 36);
+textAlign(CENTER);
+
+// Set the gray value of the letters
+fill(255);
+
+// Set the left and top margin
+int margin = 6;
+int gap = 30;
+translate(margin*1.5, margin*2);
+
+// Create a matrix of letterforms
+int counter = 0;
+for(int i=0; i<margin; i++) {
+  for(int j=0; j<margin; j++) {
+    char letter;
+
+    // Select the letter
+    int count = 65+(i*margin)+j;
+    if(count <= 90) {
+      letter = char(65+counter);
+      if(letter == 'A' || letter == 'E' || letter == 'I' || 
+         letter == 'O' || letter == 'U') {
+           fill(204, 204, 0);
+      } else {
+        fill(255);
+      }
+    } else {
+      fill(153);
+      letter = char(48+counter);
+    }
+
+    // Draw the letter to the screen
+    text(letter, 15+j*gap, 20+i*gap);
+
+    // Increment the counter
+    counter++;
+    if(counter >= 26) {
+      counter = 0;
+    }
+  }
+}
+</textarea>
+<textarea id="words">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+size(200, 200);
+background(102);
+
+// Load the font. Fonts are located within the 
+// main Processing directory/folder and they
+// must be placed within the data directory
+// of your sketch for them to load
+PFont fontA = loadFont("Arial");
+
+// Set the font and its size (in units of pixels)
+textFont(fontA, 32);
+
+int x = 30;
+
+// Use fill() to change the value or color of the text
+fill(0);
+text("ichi", x, 60);
+fill(51);
+text("ni", x, 95);
+fill(204);
+text("san", x, 130);
+fill(255);
+text("shi", x, 165);
+</textarea>
+<textarea id="displaying">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+size(200, 200);
+PImage a;  // Declare variable "a" of type PImage
+a = loadImage("arch.jpg"); // Load the images into the program
+image(a, 0, 0); // Displays the image from point (0,0)
+image(a, width/2, 0, a.width/2, a.height/2);
+</textarea>
+<textarea id="background_image">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+PImage bg;
+int a; 
+
+void setup() 
+{
+  size(200,200);
+  frameRate(30);
+  // The background image must be the same size as the parameters
+  // into the size() method. In this program, the size of "milan_rubbish.jpg"
+  // is 200 x 200 pixels.
+  bg = loadImage("milan_rubbish.jpg");
+}
+
+void draw() 
+{
+  background(bg);
+
+  a = (a + 1)%(width+32);
+  stroke(226, 204, 0);
+  line(0, a, width, a-26);
+  line(0, a-6, width, a-32);
+}
+</textarea>
+<textarea id="pointillism">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+PImage a;
+
+void setup()
+{
+  a = loadImage("eames.jpg");
+  size(200,200);
+  noStroke();
+  background(255);
+  smooth();
+}
+
+void draw()
+{ 
+  float pointillize = map(mouseX, 0, width, 2, 18);
+  int x = int(random(a.width));
+  int y = int(random(a.height));
+  color pix = a.get(x, y);
+  fill(pix, 126);
+  ellipse(x, y, pointillize, pointillize);
+}
+</textarea>
+<textarea id="transparency">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+PImage a, b;
+float offset;
+
+void setup() 
+{
+  size(200, 200);
+  a = loadImage("construct.jpg");  // Load an image into the program 
+  b = loadImage("wash.jpg");   // Load an image into the program 
+  frameRate(60);
+}
+
+void draw() 
+{ 
+  image(a, 0, 0);
+  float offsetTarget = map(mouseX, 0, width, -b.width/2 - width/2, 0);
+  offset += (offsetTarget-offset)*0.05; 
+  tint(255, 153);
+  image(b, offset, 20);
+}
+</textarea>
+<textarea id="sprite">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+PImage teddy;
+
+float xpos;
+float ypos;
+float drag = 30.0;
+
+void setup() 
+{
+  size(200,200);
+  teddy = loadImage("teddy.gif");
+  xpos = width/2;
+  ypos = height/2;
+  frameRate(60);
+}
+
+void draw() 
+{ 
+  background(102);
+
+  float difx = mouseX - xpos-teddy.width/2;
+  if(abs(difx) > 1.0) {
+    xpos = xpos + difx/drag;
+    xpos = constrain(xpos, 0, width-teddy.width);
+  }  
+
+  float dify = mouseY - ypos-teddy.height/2;
+  if(abs(dify) > 1.0) {
+    ypos = ypos + dify/drag;
+    ypos = constrain(ypos, 0, height-teddy.height);
+  }  
+
+  // Display the sprite at the position xpos, ypos
+  image(teddy, xpos, ypos);
+}
+</textarea>
+<textarea id="alpha_mask">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+PImage img;
+PImage maskImg;
+
+void setup() 
+{
+  size(200,200);
+  img = loadImage("test.jpg");
+  maskImg = loadImage("mask.jpg");
+  img.mask(maskImg);
+}
+
+void draw() 
+{
+  background((mouseX+mouseY)/1.5);
+  image(img, 50, 50);
+  image(img, mouseX-50, mouseY-50);
+}
+</textarea>
+<textarea id="create_image">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+PImage img;
+
+void setup() 
+{
+  size(200, 200);  
+  img = createImage(120, 120, RGB);
+  for(int i=0; i < img.pixels.length; i++) {
+    img.pixels[i] = color(0, 90, 102, i%img.width * 2); 
+  }
+}
+
+void draw() 
+{
+  background(204);
+  image(img, 33, 33);
+  image(img, mouseX-60, mouseY-60);
+}
+</textarea>
+<textarea id="hue">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int barWidth = 5;
+int[] hue;
+
+void setup() 
+{
+  size(400, 400);
+  colorMode(HSB, 360, height, height);  
+  hue = new int[width/barWidth];
+  noStroke();
+}
+
+void draw() 
+{
+  int j = 0;
+  for (int i=0; i<=(width-barWidth); i+=barWidth) {  
+    if ((mouseX > i) && (mouseX < i+barWidth)) {
+      hue[j] = mouseY;
+    }
+    fill(hue[j], height/1.2, height/1.2);
+    rect(i, 0, barWidth, height);  
+    j++;
+  }
+}
+</textarea>
+<textarea id="saturation">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int barWidth = 5;
+int[] saturation;
+
+void setup() 
+{
+  size(200, 200);
+  colorMode(HSB, 360, height, height); 
+  saturation = new int[width/barWidth];
+}
+
+void draw() 
+{
+  int j = 0;
+  for (int i=0; i<=(width-barWidth); i+=barWidth) {  
+    noStroke();
+    if ((mouseX > i) && (mouseX < i+barWidth)) {
+      saturation[j] = mouseY;
+    }
+    fill(i, saturation[j], height/1.5);
+    rect(i, 0, barWidth, height);  
+    j++;
+  }
+}
+</textarea>
+<textarea id="brightness">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int barWidth = 5;
+int[] brightness;
+
+void setup() 
+{
+  size(200, 200);
+  colorMode(HSB, 360, height, height);  
+  brightness = new int[width/barWidth];
+}
+
+void draw() 
+{
+  int j = 0;
+  for (int i = 0; i <= (width-barWidth); i += barWidth) {  
+    noStroke();
+    if ((mouseX > i) && (mouseX < i+barWidth)) {
+      brightness[j] = mouseY;
+    }
+    fill(i, height, brightness[j]);
+    rect(i, 0, barWidth, height);  
+    j++;
+  }
+}
+</textarea>
+<textarea id="color_wheel">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int segs = 12;
+int steps = 6;
+float rotAdjust = radians(360.0/segs/2.0);
+float radius = 95.0;
+float segWidth = radius/steps;
+float interval = TWO_PI/segs;
+int SHADE = 0;
+int TINT = 1;
+
+void setup(){
+  size(200, 200);
+  background(127);
+  smooth();
+  ellipseMode(CENTER_RADIUS);
+  noStroke();
+ // you can substitue TINT for SHADE argument
+ createWheel(width/2, height/2, SHADE);
+}
+
+void createWheel(int x, int y, int valueShift){
+  if (valueShift == SHADE){
+    for (int j=0; j<steps; j++){
+      color[]cols = { 
+        color(255-(255/steps)*j, 255-(255/steps)*j, 0), 
+        color(255-(255/steps)*j, (255/1.5)-((255/1.5)/steps)*j, 0), 
+        color(255-(255/steps)*j, (255/2)-((255/2)/steps)*j, 0), 
+        color(255-(255/steps)*j, (255/2.5)-((255/2.5)/steps)*j, 0), 
+        color(255-(255/steps)*j, 0, 0), 
+        color(255-(255/steps)*j, 0, (255/2)-((255/2)/steps)*j), 
+        color(255-(255/steps)*j, 0, 255-(255/steps)*j), 
+        color((255/2)-((255/2)/steps)*j, 0, 255-(255/steps)*j), 
+        color(0, 0, 255-(255/steps)*j),
+        color(0, 255-(255/steps)*j, (255/2.5)-((255/2.5)/steps)*j), 
+        color(0, 255-(255/steps)*j, 0), 
+        color((255/2)-((255/2)/steps)*j, 255-(255/steps)*j, 0) };
+      for (int i=0; i< segs; i++){
+        fill(cols[i]);
+        arc(x, y, radius, radius, interval*i+rotAdjust, interval*(i+1)+rotAdjust);
+      }
+      radius -= segWidth;
+    }
+  } else  if (valueShift == TINT){
+    for (int j=0; j<steps; j++){
+      color[]cols = { 
+        color((255/steps)*j, (255/steps)*j, 0), 
+        color((255/steps)*j, ((255/1.5)/steps)*j, 0), 
+        color((255/steps)*j, ((255/2)/steps)*j, 0), 
+        color((255/steps)*j, ((255/2.5)/steps)*j, 0), 
+        color((255/steps)*j, 0, 0), 
+        color((255/steps)*j, 0, ((255/2)/steps)*j), 
+        color((255/steps)*j, 0, (255/steps)*j), 
+        color(((255/2)/steps)*j, 0, (255/steps)*j), 
+        color(0, 0, (255/steps)*j),
+        color(0, (255/steps)*j, ((255/2.5)/steps)*j), 
+        color(0, (255/steps)*j, 0), 
+        color(((255/2)/steps)*j, (255/steps)*j, 0) };
+      for (int i=0; i< segs; i++){
+        fill(cols[i]);
+        arc(x, y, radius, radius, interval*i+rotAdjust, interval*(i+1)+rotAdjust);
+      }
+      radius -= segWidth;
+    }
+  } 
+}
+</textarea>
+<textarea id="reading">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+size(200, 200);
+noStroke();
+background(0);
+
+// Load an image from the data directory
+PImage c;
+c = loadImage("cait.jpg");
+
+int xoff = 0;
+int yoff = 0;
+int p = 2;
+int pix = p*3;
+
+
+for(int i = 0; i < c.width*c.height; i += 1) 
+{  
+  int here = c.pixels[i];
+
+  fill(red(here), 0, 0);
+  rect(xoff, yoff, p, pix);
+
+  fill(0, green(here), 0);
+  rect(xoff+p, yoff, p, pix);
+
+  fill(0, 0, blue(here));
+  rect(xoff+p*2, yoff, p, pix);
+
+  xoff+=pix;
+  if(xoff >= width-pix) {
+    xoff = 0;
+    yoff += pix;
+  }
+}
+</textarea>
+<textarea id="creating">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+size(200, 200);
+noStroke();
+
+color inside = color(204, 102, 0);
+color middle = color(204, 153, 0);
+color outside = color(153, 51, 0);
+
+// These statements are equivalent to the statements above.
+// Programmers may use the format they prefer.
+//color inside = #CC6600;
+//color middle = #CC9900;
+//color outside = #993300;
+
+fill(outside);
+rect(0, 0, 200, 200);
+fill(middle);
+rect(40, 60, 120, 120);
+fill(inside);
+rect(60, 90, 80, 80);
+</textarea>
+<textarea id="relativity">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+color a, b, c, d, e;
+
+void setup() {
+  size(200, 200);
+  noStroke();
+  a = color(165, 167, 20);
+  b = color(77, 86, 59);
+  c = color(42, 106, 105);
+  d = color(165, 89, 20);
+  e = color(146, 150, 127);
+  noLoop();
+}
+
+void draw() {
+  drawBand(a, b, c, d, e, 0, 4);
+  drawBand(c, a, d, b, e, height/2, 4);
+}
+
+void drawBand(color v, color w, color x, color y, color z, int ypos, int barWidth) {
+  int num = 5;
+  color[] colorOrder = { v, w, x, y, z };
+  for(int i = 0; i < width; i += barWidth*num) {
+    for(int j = 0; j < num; j++) {
+      fill(colorOrder[j]);
+      rect(i+j*barWidth, ypos, barWidth, height/2);
+    }
+  }
+}
+</textarea>
+<textarea id="linear_gradient">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+// constants
+int Y_AXIS = 1;
+int X_AXIS = 2;
+
+void setup(){
+  size(200, 200);
+
+  // create some gradients
+  // background
+  color b1 = color(190, 190, 190);
+  color b2 = color(20, 20, 20);
+  setGradient(0, 0, width, height, b1, b2, Y_AXIS);
+  //center squares
+  color c1 = color(255, 120, 0);
+  color c2 = color(10, 45, 255);
+  color c3 = color(10, 255, 15);
+  color c4 = color(125, 2, 140);
+  color c5 = color(255, 255, 0);
+  color c6 = color(25, 255, 200);
+  setGradient(25, 25, 75, 75, c1, c2, Y_AXIS);
+  setGradient(100, 25, 75, 75, c3, c4, X_AXIS);
+  setGradient(25, 100, 75, 75, c2, c5, X_AXIS);
+  setGradient(100, 100, 75, 75, c4, c6, Y_AXIS);
+}
+
+void setGradient(int x, int y, float w, float h, color c1, color c2, int axis ){
+  // calculate differences between color components 
+  float deltaR = red(c2)-red(c1);
+  float deltaG = green(c2)-green(c1);
+  float deltaB = blue(c2)-blue(c1);
+
+  // choose axis
+  if(axis == Y_AXIS){
+    /*nested for loops set pixels
+     in a basic table structure */
+    // column
+    for (int i=x; i<=(x+w); i++){
+      // row
+      for (int j = y; j<=(y+h); j++){
+        color c = color(
+        (red(c1)+(j-y)*(deltaR/h)),
+        (green(c1)+(j-y)*(deltaG/h)),
+        (blue(c1)+(j-y)*(deltaB/h)) 
+          );
+        set(i, j, c);
+      }
+    }  
+  }  
+  else if(axis == X_AXIS){
+    // column 
+    for (int i=y; i<=(y+h); i++){
+      // row
+      for (int j = x; j<=(x+w); j++){
+        color c = color(
+        (red(c1)+(j-x)*(deltaR/h)),
+        (green(c1)+(j-x)*(deltaG/h)),
+        (blue(c1)+(j-x)*(deltaB/h)) 
+          );
+        set(j, i, c);
+      }
+    }  
+  }
+}
+</textarea>
+<textarea id="translate">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+float x, y;
+float s = 40.0;
+
+void setup() 
+{
+  size(200,200);
+  noStroke();
+  frameRate(30);
+}
+
+void draw() 
+{
+  background(102);
+
+  x = x + 0.8;
+
+  if (x > width + s) {
+    x = -s;
+  } 
+
+  translate(x, height/2-s/2);
+  fill(255);
+  rect(-s/2, -s/2, s, s);
+
+  // Transforms accumulate.
+  // Notice how this rect moves twice
+  // as fast as the other, but it has
+  // the same parameter for the x-axis value
+  translate(x, s);
+  fill(0);
+  rect(-s/2, -s/2, s, s);
+}
+</textarea>
+<textarea id="scale">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+float a = 0.0;
+float s = 0.0;
+
+void setup()
+{
+  size(200,200);
+  noStroke();
+  rectMode(CENTER);
+  frameRate(30);
+}
+
+void draw()
+{
+  background(102);
+
+  a = a + 0.04;
+  s = cos(a)*2;
+
+  translate(width/2, height/2);
+  scale(s); 
+  fill(51);
+  rect(0, 0, 50, 50); 
+
+  translate(75, 0);
+  fill(255);
+  scale(s);
+  rect(0, 0, 50, 50);       
+}
+</textarea>
+<textarea id="rotate">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+void setup()
+{
+  size(200,200);
+  noStroke();
+  fill(255);
+  frameRate(30);
+}
+
+float angle;
+float cosine;
+float jitter;
+
+void draw()
+{
+  background(102);
+
+  if(second()%2 == 0){
+    jitter = (random(-0.1, 0.1));
+  }
+  angle = angle + jitter;
+  cosine = cos(angle);
+
+  translate(width/2, height/2);
+  rotate(cosine);
+  rectMode(CENTER);
+  rect(0, 0, 115, 115);   
+}
+</textarea>
+<textarea id="triangle_flower">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+Point[]p = new Point[3];
+float shift = 1.0;
+float fade = 0;
+float fillCol = 0;
+float rot = 0;
+float spin = 0;
+
+void setup(){
+  size(200, 200);
+  background(0);
+  smooth();
+  fade = 255.0/(width/2.0/shift);
+  spin = 360.0/(width/2.0/shift);
+  p[0] = new Point(-width/2, height/2);
+  p[1] = new Point(width/2, height/2);
+  p[2] = new Point(0, -height/2);
+  noStroke();
+  translate(width/2, height/2);
+  triBlur();
+}
+
+void triBlur(){
+  fill(fillCol);
+  fillCol+=fade;
+  rotate(spin);
+  // another interesting variation: uncomment the line below 
+  // rotate(rot+=radians(spin));
+  triangle(p[0].x+=shift, p[0].y-=shift/2, p[1].x-=shift, p[1].y-=shift/2, p[2].x, p[2].y+=shift); 
+  if(p[0].x<0){
+    // recursive call
+    triBlur();
+  }
+}
+</textarea>
+<textarea id="arm">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+float x = 50;
+float y = 100;
+float angle1 = 0.0;
+float angle2 = 0.0;
+float segLength = 50;
+
+void setup() {
+  size(200, 200);
+  smooth(); 
+  strokeWeight(20.0);
+  stroke(0, 100);
+}
+
+void draw() {
+  background(226);
+
+  angle1 = (mouseX/float(width) - 0.5) * -PI;
+  angle2 = (mouseY/float(height) - 0.5) * PI;
+
+  pushMatrix();
+  segment(x, y, angle1); 
+  segment(segLength, 0, angle2);
+  popMatrix();
+}
+
+void segment(float x, float y, float a) {
+  translate(x, y);
+  rotate(a);
+  line(0, 0, segLength, 0);
+}
+</textarea>
+<textarea id="mouse_1d">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int gx = 15;
+int gy = 35;
+float leftColor = 0.0;
+float rightColor = 0.0;
+
+void setup() 
+{
+  size(200, 200);
+  colorMode(RGB, 1.0);
+  noStroke();
+}
+
+void draw() 
+{
+  background(0.0);
+  update(mouseX); 
+  fill(0.0, leftColor + 0.4, leftColor + 0.6); 
+  rect(width/4-gx, width/2-gx, gx*2, gx*2); 
+  fill(0.0, rightColor + 0.2, rightColor + 0.4); 
+  rect(width/1.33-gy, width/2-gy, gy*2, gy*2);
+}
+
+void update(int x) 
+{
+  leftColor = -0.002 * x/2 + 0.06;
+  rightColor =  0.002 * x/2 + 0.06;
+
+  gx = x/2;
+  gy = 100-x/2;
+
+  if (gx < 10) {
+    gx = 10;
+  } else if (gx > 90) {
+    gx = 90;
+  }
+
+  if (gy > 90) {
+    gy = 90;
+  } else if (gy < 10) {
+    gy = 10;
+  }
+}
+</textarea>
+<textarea id="mouse_2d">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+void setup() 
+{
+  size(200, 200); 
+  noStroke();
+  colorMode(RGB, 255, 255, 255, 100);
+  rectMode(CENTER);
+}
+
+void draw() 
+{   
+  background(51); 
+  fill(255, 80);
+  rect(mouseX, height/2, mouseY/2+10, mouseY/2+10);
+  fill(255, 80);
+  rect(width-mouseX, height/2, ((height-mouseY)/2)+10, ((height-mouseY)/2)+10);
+}
+</textarea>
+<textarea id="mouse_press">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+void setup() {
+  size(200, 200);
+  fill(126);
+  background(102);
+}
+
+void draw() {
+  if(mousePressed) {
+    stroke(255);
+  } else {
+    stroke(0);
+  }
+  line(mouseX-66, mouseY, mouseX+66, mouseY);
+  line(mouseX, mouseY-66, mouseX, mouseY+66); 
+}
+</textarea>
+<textarea id="mouse_signals">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int[] xvals;
+int[] yvals;
+int[] bvals;
+
+void setup() 
+{
+  size(200, 200);
+  xvals = new int[width];
+  yvals = new int[width];
+  bvals = new int[width];
+}
+
+int arrayindex = 0;
+
+void draw()
+{
+  background(102);
+
+  for(int i=1; i<width; i++) { 
+    xvals[i-1] = xvals[i]; 
+    yvals[i-1] = yvals[i];
+    bvals[i-1] = bvals[i];
+  } 
+  // Add the new values to the end of the array 
+  xvals[width-1] = mouseX; 
+  yvals[width-1] = mouseY;
+  if(mousePressed) {
+    bvals[width-1] = 0;
+  } else {
+    bvals[width-1] = 255;
+  }
+
+  fill(255);
+  noStroke();
+  rect(0, height/3, width, height/3+1);
+
+  for(int i=1; i<width; i++) {
+    stroke(255);
+    point(i, xvals[i]/3);
+    stroke(0);
+    point(i, height/3+yvals[i]/3);
+    stroke(255);
+    line(i, 2*height/3+bvals[i]/3, i, (2*height/3+bvals[i-1]/3));
+  }
+}
+</textarea>
+<textarea id="easing">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+float x;
+float y;
+float targetX, targetY;
+float easing = 0.05;
+
+void setup() 
+{
+  size(200, 200); 
+  smooth();
+  noStroke();  
+}
+
+void draw() 
+{ 
+  background( 51 );
+
+  targetX = mouseX;
+  float dx = mouseX - x;
+  if(abs(dx) > 1) {
+    x += dx * easing;
+  }
+
+  targetY = mouseY;
+  float dy = mouseY - y;
+  if(abs(dy) > 1) {
+    y += dy * easing;
+  }
+
+  ellipse(x, y, 33, 33);
+}
+</textarea>
+<textarea id="constrain">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+float mx;
+float my;
+float easing = 0.05;
+float esize = 25.0;
+int box = 30;
+
+void setup() 
+{
+  size(200, 200);
+  noStroke(); 
+  smooth();
+  ellipseMode(CENTER_RADIUS);  
+}
+
+void draw() 
+{ 
+  background(51);
+
+  if(abs(mouseX - mx) > 0.1) {
+    mx = mx + (mouseX - mx) * easing;
+  }
+  if(abs(mouseY - my) > 0.1) {
+    my = my + (mouseY- my) * easing;
+  }
+
+  float distance = esize * 2;
+  mx = constrain(mx, box+distance, width-box-distance);
+  my = constrain(my, box+distance, height-box-distance);
+  fill(76);
+  rect(box+esize, box+esize, box*3, box*3);
+  fill(255);  
+  ellipse(mx, my, esize, esize);
+}
+</textarea>
+<textarea id="storing_input">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int num = 60;
+float mx[] = new float[num];
+float my[] = new float[num];
+
+void setup() 
+{
+  size(200, 200);
+  smooth();
+  noStroke();
+  fill(255, 153); 
+}
+
+void draw() 
+{
+  background(51); 
+
+  // Reads throught the entire array
+  // and shifts the values to the left
+  for(int i=1; i<num; i++) {
+    mx[i-1] = mx[i];
+    my[i-1] = my[i];
+  } 
+  // Add the new values to the end of the array
+  mx[num-1] = mouseX;
+  my[num-1] = mouseY;
+
+  for(int i=0; i<num; i++) {
+    ellipse(mx[i], my[i], i/2, i/2);
+  }
+}
+</textarea>
+<textarea id="mouse_functions">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+float bx;
+float by;
+int bs = 20;
+boolean bover = false;
+boolean locked = false;
+float bdifx = 0.0; 
+float bdify = 0.0; 
+
+
+void setup() 
+{
+  size(200, 200);
+  bx = width/2.0;
+  by = height/2.0;
+  rectMode(CENTER_RADIUS);  
+}
+
+void draw() 
+{ 
+  background(0);
+
+  // Test if the cursor is over the box 
+  if (mouseX > bx-bs && mouseX < bx+bs && 
+      mouseY > by-bs && mouseY < by+bs) {
+    bover = true;  
+    if(!locked) { 
+      stroke(255); 
+      fill(153);
+    } 
+  } else {
+    stroke(153);
+    fill(153);
+    bover = false;
+  }
+
+  // Draw the box
+  rect(bx, by, bs, bs);
+}
+
+void mousePressed() {
+  if(bover) { 
+    locked = true; 
+    fill(255, 255, 255);
+  } else {
+    locked = false;
+  }
+  bdifx = mouseX-bx; 
+  bdify = mouseY-by; 
+
+}
+
+void mouseDragged() {
+  if(locked) {
+    bx = mouseX-bdifx; 
+    by = mouseY-bdify; 
+  }
+}
+
+void mouseReleased() {
+  locked = false;
+}
+</textarea>
+<textarea id="keyboard">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int numChars = 26;
+color[] colors = new color[numChars];
+int keyIndex;
+float keyScale;
+int rectWidth;
+
+
+void setup()
+{
+  size(200, 200);
+  noStroke();
+  background(0);
+  keyScale = 200/numChars-1.0;
+  rectWidth = width/4;
+}
+
+void draw()
+{ 
+  if(keyPressed) {
+    if(key >= 'A' && key <= 'z') {
+      if(key <= 'Z') {
+        keyIndex = key-'A';
+      } else {
+        keyIndex = key-'a';
+      }
+      fill(millis()%255);
+      float beginRect = rectWidth/2 + keyIndex*keyScale-rectWidth/2;
+      rect(beginRect, 0.0, rectWidth, height);
+    }
+  }
+}
+</textarea>
+<textarea id="keyboard_functions">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int max_height = 20;
+int min_height = 10;
+int letter_height = max_height; // Height of the letters
+int letter_width = 10;          // Width of the letter
+
+int x = -letter_width;          // X position of the letters
+int y = 0;                      // Y position of the letters
+
+boolean newletter;              
+
+int numChars = 26;      // There are 26 characters in the alphabet
+color[] colors = new color[numChars];
+
+void setup()
+{
+  size(200, 200);
+  noStroke();
+  colorMode(RGB, numChars);
+  background(numChars/2);
+  // Set a gray value for each key
+  for(int i=0; i<numChars; i++) {
+    colors[i] = color(i, i, i);    
+  }
+}
+
+void draw()
+{
+  if(newletter == true) {
+    // Draw the "letter"
+    int y_pos;
+    if (letter_height == max_height) {
+      y_pos = y;
+      rect( x, y_pos, letter_width, letter_height );
+    } else {
+      y_pos = y + min_height;
+      rect( x, y_pos, letter_width, letter_height );
+      fill(numChars/2);
+      rect( x, y_pos-min_height, letter_width, letter_height );
+    }
+    newletter = false;
+  }
+}
+
+void keyPressed()
+{
+  // if the key is between 'A'(65) and 'z'(122)
+  if( key >= 'A' && key <= 'z') {
+    int keyIndex;
+    if(key <= 'Z') {
+      keyIndex = key-'A';
+      letter_height = max_height;
+      fill(colors[key-'A']);
+    } else {
+      keyIndex = key-'a';
+      letter_height = min_height;
+      fill(colors[key-'a']);
+    }
+  } else {
+    fill(0);
+    letter_height = 10;
+  }
+
+  newletter = true;
+
+  // Update the "letter" position
+  x = ( x + letter_width ); 
+
+  // Wrap horizontally
+  if (x > width - letter_width) {
+    x = 0;
+    y+= max_height;
+  }
+
+  // Wrap vertically
+  if( y > height - letter_height) {
+    y = 0;      // reset y to 0
+  }
+}
+</textarea>
+<textarea id="milliseconds">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+float scale;
+
+void setup()
+{
+  size(200, 200);
+  noStroke();
+  scale = width/10;
+}
+
+void draw()
+{ 
+  for(int i=0; i<scale; i++) {
+    colorMode(RGB, (i+1) * scale * 10);
+    fill(millis()%((i+1) * scale * 10) );
+    rect(i*scale, 0, scale, height);
+  }
+}
+</textarea>
+<textarea id="clock">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+void setup() {
+  size(200, 200);
+  stroke(255);
+  smooth();
+}
+void draw() {
+  background(0);
+  fill(80);
+  noStroke();
+  // Angles for sin() and cos() start at 3 o'clock;
+  // subtract HALF_PI to make them start at the top
+  ellipse(100, 100, 160, 160);
+  float s = map(second(), 0, 60, 0, TWO_PI) - HALF_PI;
+  float m = map(minute(), 0, 60, 0, TWO_PI) - HALF_PI;
+  float h = map(hour() % 12, 0, 12, 0, TWO_PI) - HALF_PI;
+  stroke(255);
+  strokeWeight(1);
+  line(100, 100, cos(s) * 72 + 100, sin(s) * 72 + 100);
+  strokeWeight(2);
+  line(100, 100, cos(m) * 60 + 100, sin(m) * 60 + 100);
+  strokeWeight(4);
+  line(100, 100, cos(h) * 50 + 100, sin(h) * 50 + 100);
+}
+</textarea>
+<textarea id="array">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+size(200, 200);
+
+float[] coswave = new float[width];
+
+for(int i=0; i<width; i++) {
+  float ratio = (float)i/(float)width;
+  coswave[i] = abs( cos(ratio*PI) );
+}
+
+for(int i=0; i<width; i++) {
+  stroke(coswave[i]*255);
+  line(i, 0, i, width/3);
+}
+
+for(int i=0; i<width; i++) {
+  stroke(coswave[i]*255/4);
+  line(i, width/3, i, width/3*2);
+}
+
+for(int i=0; i<width; i++) {
+  stroke(255-coswave[i]*255);
+  line(i, width/3*2, i, height);
+}
+</textarea>
+<textarea id="array_2d">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+float[][] distances;
+float maxDistance;
+
+size(200, 200);
+background(0);
+maxDistance = dist(width/2, height/2, width, height);
+distances = new float[width][height];
+for(int i=0; i<height; i++) {
+  for(int j=0; j<width; j++) {
+    float d = dist(width/2, height/2, j, i);
+    distances[j][i] = d/maxDistance * 255; 
+  }
+}
+
+for(int i=0; i<height; i+=2) {
+  for(int j=0; j<width; j+=2) {
+    stroke(distances[j][i]);
+    point(j, i);
+  }
+}
+</textarea>
+<textarea id="array_objects">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+int unit = 40;
+int num;
+Module[] mods;
+
+void setup() 
+{
+  size(200, 200);
+  background(176);
+  noStroke();
+
+  num = width/unit * width/unit;
+  mods = new Module[num];
+
+  for (int i=0; i<height/unit; i++) {
+    for(int j=0; j<height/unit; j++) {
+      int index = i*height/unit + j;
+      mods[index] = new Module(j*unit, i*unit, unit/2, unit/2, random(0.05, 0.8));  
+    }
+  }
+}
+
+void draw() 
+{
+  for(int i=0; i<num; i++) {
+    mods[i].update();
+    mods[i].draw();
+  }
+}
+
+class Module {
+  float mx, my;
+  int size = unit;
+  float x, y = 0;
+  int xdir = 1;
+  int ydir = 1;
+  float speed; 
+
+  // Contructor (required)
+  Module(float imx, float imy, float ix, float iy, float ispeed) {
+    mx = imy;
+    my = imx;
+    x = int(ix);
+    y = int(iy);
+    speed = ispeed;
+  }
+
+  // Custom method for updating the variables
+  void update() {
+    x = x + (speed * xdir);
+    if (x >= size || x <= 0) {
+      xdir *= -1;
+      x = x + (1 * xdir);
+      y = y + (1 * ydir);
+    }
+    if (y >= size || y <= 0) {
+      ydir *= -1;
+      y = y + (1 * ydir);
+    }
+  }
+
+  // Custom method for drawing the object
+  void draw() {
+    stroke(second()*4);
+    point(mx+x-1, my+y-1);
+  }
+}
+</textarea>
+<textarea id="objects">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+MRect r1, r2, r3, r4;
+
+void setup()
+{
+  size(200, 200);
+  fill(255, 204);
+  noStroke();
+  r1 = new MRect(1, 134.0, 0.532, 0.083*height, 10.0, 60.0);
+  r2 = new MRect(2, 44.0, 0.166, 0.332*height, 5.0, 50.0);
+  r3 = new MRect(2, 58.0, 0.332, 0.4482*height, 10.0, 35.0);
+  r4 = new MRect(1, 120.0, 0.0498, 0.913*height, 15.0, 60.0);
+}
+
+void draw()
+{
+  background(0);
+
+  r1.display();
+  r2.display();
+  r3.display();
+  r4.display();
+
+  r1.move(mouseX-(width/2), mouseY+(height*0.1), 30);
+  r2.move((mouseX+(width*0.05))%width, mouseY+(height*0.025), 20);
+  r3.move(mouseX/4, mouseY-(height*0.025), 40);
+  r4.move(mouseX-(width/2), (height-mouseY), 50);
+}
+
+class MRect 
+{
+  int w; // single bar width
+  float xpos; // rect xposition
+  float h; // rect height
+  float ypos ; // rect yposition
+  float d; // single bar distance
+  float t; // number of bars
+
+  MRect(int iw, float ixp, float ih, float iyp, float id, float it) {
+    w = iw;
+    xpos = ixp;
+    h = ih;
+    ypos = iyp;
+    d = id;
+    t = it;
+  }
+
+  void move (float posX, float posY, float damping) {
+    float dif = ypos - posY;
+    if (abs(dif) > 1) {
+      ypos -= dif/damping;
+    }
+    dif = xpos - posX;
+    if (abs(dif) > 1) {
+      xpos -= dif/damping;
+    }
+  }
+
+  void display() {
+    for (int i=0; i<t; i++) {
+      rect(xpos+(i*(d+w)), ypos, w, height*h);
+    }
+  }
+}
+</textarea>
+<textarea id="multiple_constructors">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+Spot sp1, sp2;
+void setup() 
+{
+  size(200, 200);
+  background(204);
+  smooth();
+  noLoop();
+  // Run the constructor without parameters
+  sp1 = new Spot();
+  // Run the constructor with three parameters
+  sp2 = new Spot(122, 100, 40);
+}
+
+void draw() {
+  sp1.display();
+  sp2.display();
+}
+
+class Spot {
+  float x, y, radius;
+  // First version of the Spot constructor;
+  // the fields are assigned default values
+  Spot() {
+    x = 66;
+    y = 100;
+    radius = 16;
+  }
+  // Second version of the Spot constructor;
+  // the fields are assigned with parameters
+  Spot(float xpos, float ypos, float r) {
+    x = xpos;
+    y = ypos;
+    radius = r;
+  }
+  void display() {
+    ellipse(x, y, radius*2, radius*2);
+  }
+}
+</textarea>
+<textarea id="composite_objects">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+EggRing er1, er2;
+
+void setup() 
+{
+  size(200, 200);
+  smooth();
+  er1 = new EggRing(66, 132, 0.1, 66);
+  er2 = new EggRing(132, 180, 0.05, 132);
+}
+
+void draw() 
+{
+  background(0);
+  er1.transmit();
+  er2.transmit();
+}
+
+class EggRing 
+{
+  Egg ovoid;
+  Ring circle = new Ring();
+  EggRing(int x, int y, float t, float sp) {
+    ovoid = new Egg(x, y, t, sp);
+    circle.start(x, y - sp/2);
+  }
+  void transmit() {
+    ovoid.wobble();
+    ovoid.display();
+    circle.grow();
+    circle.display();
+    if (circle.on == false) {
+      circle.on = true;
+    }
+  }
+}
+
+class Egg {
+  float x, y; // X-coordinate, y-coordinate
+  float tilt; // Left and right angle offset
+  float angle; // Used to define the tilt
+  float scalar; // Height of the egg
+  // Constructor
+  Egg(int xpos, int ypos, float t, float s) {
+    x = xpos;
+    y = ypos;
+    tilt = t;
+    scalar = s / 100.0;
+  }
+  void wobble() {
+    tilt = cos(angle) / 8;
+    angle += 0.1;
+  }
+  void display() {
+    noStroke();
+    fill(255);
+    pushMatrix();
+    translate(x, y);
+    rotate(tilt);
+    scale(scalar);
+    beginShape();
+    vertex(0, -100);
+    bezierVertex(25, -100, 40, -65, 40, -40);
+    bezierVertex(40, -15, 25, 0, 0, 0);
+    bezierVertex(-25, 0, -40, -15, -40, -40);
+    bezierVertex(-40, -65, -25, -100, 0, -100);
+    endShape();
+    popMatrix();
+  }
+}
+
+class Ring {
+  float x, y; // X-coordinate, y-coordinate
+  float diameter; // Diameter of the ring
+  boolean on = false; // Turns the display on and off
+  void start(float xpos, float ypos) {
+    x = xpos;
+    y = ypos;
+    on = true;
+    diameter = 1;
+  }
+  void grow() {
+    if (on == true) {
+      diameter += 0.5;
+      if (diameter > width*2) {
+        diameter = 0.0;
+      }
+    }
+  }
+  void display() {
+    if (on == true) {
+      noFill();
+      strokeWeight(4);
+      stroke(155, 153);
+      ellipse(x, y, diameter, diameter);
+    }
+  }
+}
+</textarea>
+<textarea id="inheritance">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+SpinSpots spots;
+SpinArm arm;
+
+void setup() 
+{
+  size(200, 200);
+  smooth();
+  arm = new SpinArm(width/2, height/2, 0.01);
+  spots = new SpinSpots(width/2, height/2, -0.02, 33.0);
+}
+
+void draw() 
+{
+  background(204);
+  arm.update();
+  arm.display();
+  spots.update();
+  spots.display();
+}
+
+class Spin 
+{
+  float x, y, speed;
+  float angle = 0.0;
+  Spin(float xpos, float ypos, float s) {
+    x = xpos;
+    y = ypos;
+    speed = s;
+  }
+  void update() {
+    angle += speed;
+  }
+}
+
+class SpinArm extends Spin 
+{
+  SpinArm(float x, float y, float s) {
+    super(x, y, s);
+  }
+  void display() {
+    strokeWeight(1);
+    stroke(0);
+    pushMatrix();
+    translate(x, y);
+    angle += speed;
+    rotate(angle);
+    line(0, 0, 66, 0);
+    popMatrix();
+  }
+}
+
+class SpinSpots extends Spin 
+{
+  float dim;
+  SpinSpots(float x, float y, float s, float d) {
+    super(x, y, s);
+    dim = d;
+  }
+  void display() {
+    noStroke();
+    pushMatrix();
+    translate(x, y);
+    angle += speed;
+    rotate(angle);
+    ellipse(-dim/2, 0, dim, dim);
+    ellipse(dim/2, 0, dim, dim);
+    popMatrix();
+  }
+}
+</textarea>
+<textarea id="neighborhood">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+void setup(){
+  size(200, 200);
+  background(190);
+  smooth();
+  // Ground plane
+  int groundHeight = 10;
+  fill(0);
+  rect(0, height-groundHeight, width, groundHeight);
+  fill(255);
+
+  // Center the houses
+  translate(12, 0);
+
+  // Houses
+  Door door1 = new Door(20, 40);
+  Window window1 = new Window(50, 62, false, Window.DOUBLE);
+  Roof roof1 = new Roof(Roof.DOME);
+  House house1 = new House(75, 75, door1, window1, roof1, House.MIDDLE_DOOR);
+  house1.drawHouse(0, height-groundHeight-house1.h, true);
+
+  Door door2 = new Door(20, 40);
+  Window window2 = new Window(50, 62, true, Window.QUAD);
+  Roof roof2 = new Roof(Roof.GAMBREL);
+  House house2 = new House(100, 60, door2, window2, roof2, House.LEFT_DOOR);
+  house2.drawHouse(house1.x + house1.w, height-groundHeight-house2.h, true);
+}
+
+class Door{
+  //door properties
+  int x;
+  int y;
+  int w;
+  int h;
+
+  // for knob
+  int knobLoc = 1;
+  //constants
+  final static int RT = 0;
+  final static int LFT = 1;
+
+  // constructor
+  Door(int w, int h){
+    this.w = w;
+    this.h = h;
+  }
+
+  // draw the door
+  void drawDoor(int x, int y) {
+    rect(x, y, w, h);
+    int knobsize = w/10;
+    if (knobLoc == 0){
+      //right side
+      ellipse(x+w-knobsize, y+h/2, knobsize, knobsize);
+    }
+    else {
+      //left side
+      ellipse(x+knobsize, y+h/2, knobsize, knobsize);
+    }
+  }
+
+  // set knob position
+  void setKnob(int knobLoc){
+    this. knobLoc = knobLoc;
+  }
+}
+
+class Window{
+  //window properties
+  int x;
+  int y;
+  int w;
+  int h;
+
+  // customized features
+  boolean hasSash = false;
+
+  // single, double, quad pane
+  int style = 0;
+  //constants
+  final static int SINGLE = 0;
+  final static int DOUBLE = 1;
+  final static int QUAD = 2;
+
+  // constructor 1
+  Window(int w, int h){
+    this.w = w;
+    this.h = h;
+  }
+  // constructor 2
+  Window(int w, int h, int style){
+    this.w = w;
+    this.h = h;
+    this.style = style;
+  }
+  // constructor 3
+  Window(int w, int h, boolean hasSash, int style){
+    this.w = w;
+    this.h = h;
+    this.hasSash = hasSash;
+    this.style = style;
+  }
+
+  // draw the window
+  void drawWindow(int x, int y) {
+    //local variables
+    int margin = 0;
+    int winHt = 0;
+    int winWdth = 0;
+
+    if (hasSash){
+      margin = w/15;
+    }
+
+    switch(style){
+    case 0:
+      //outer window (sash)
+      rect(x, y, w, h);
+      //inner window
+      rect(x+margin, y+margin, w-margin*2, h-margin*2);
+      break;
+    case 1:
+      winHt = (h-margin*3)/2;
+      //outer window (sash)
+      rect(x, y, w, h);
+      //inner window (top)
+      rect(x+margin, y+margin, w-margin*2, winHt);
+      //inner windows (bottom)
+      rect(x+margin, y+winHt+margin*2, w-margin*2, winHt);
+      break;
+    case 2:
+      winWdth = (w-margin*3)/2;
+      winHt = (h-margin*3)/2;
+      //outer window (sash)
+      rect(x, y, w, h);
+      //inner window (top-left)
+      rect(x+margin, y+margin, winWdth, winHt);
+      //inner window (top-right)
+      rect(x+winWdth+margin*2,  y+margin, winWdth, winHt);
+      //inner windows (bottom-left)
+      rect(x+margin, y+winHt+margin*2, winWdth, winHt);
+      //inner windows (bottom-right)
+      rect(x+winWdth+margin*2,  y+winHt+margin*2, winWdth, winHt);
+      break;
+    }
+  }
+
+  // set window style (number of panes)
+  void setStyle(int style){
+    this.style = style;
+  }
+}
+
+class Roof{
+  //roof properties
+  int x;
+  int y;
+  int w;
+  int h;
+
+  // roof style
+  int style = 0;
+  //constants  
+  final static int CATHEDRAL = 0;
+  final static int GAMBREL = 1;
+  final static int DOME = 2;
+
+  // default constructor
+  Roof(){
+  }
+
+   // constructor 2
+   Roof(int style){
+    this.style = style;
+  }
+
+  // draw the roof
+  void drawRoof(int x, int y, int w, int h) {
+    switch(style){
+    case 0:
+      beginShape();
+      vertex(x, y);
+      vertex(x+w/2, y-h/3);
+      vertex(x+w, y);
+      endShape(CLOSE);
+      break;
+    case 1:
+     beginShape();
+      vertex(x, y);
+      vertex(x+w/7, y-h/4);
+      vertex(x+w/2, y-h/2);
+      vertex(x+(w-w/7), y-h/4);
+      vertex(x+w, y);
+      endShape(CLOSE);
+      break;
+    case 2:
+      ellipseMode(CORNER);
+      arc(x, y-h/2, w, h, PI, TWO_PI);
+      line(x, y, x+w, y);
+      break;
+    }
+
+  }
+
+  // set roof style
+  void setStyle(int style){
+    this.style = style;
+  }
+}
+
+class House{
+  //house properties
+  int x;
+  int y;
+  int w;
+  int h;
+
+  //component reference variables
+  Door door;
+  Window window;
+  Roof roof;
+
+  //optional autosize variable
+  boolean AutoSizeComponents = false;
+
+  //door placement
+  int doorLoc = 0;
+  //constants
+  final static int MIDDLE_DOOR = 0;
+  final static int LEFT_DOOR = 1;
+  final static int RIGHT_DOOR = 2;
+
+  //constructor
+  House(int w, int h, Door door, Window window, Roof roof, int doorLoc) {
+    this.w = w;
+    this.h = h;
+    this.door = door;
+    this.window = window;
+    this.roof = roof;
+    this.doorLoc = doorLoc;
+  }
+
+  void drawHouse(int x, int y, boolean AutoSizeComponents) {
+    this.x = x;
+    this.y =y;
+    this.AutoSizeComponents = AutoSizeComponents;
+
+    //automatically sizes doors and windows
+    if(AutoSizeComponents){
+      //autosize door
+      door.h = h/4;
+      door.w = door.h/2;
+
+      //autosize windows
+      window.h = h/3;
+      window.w = window.h/2;
+
+    }
+    // draw bldg block
+    rect(x, y, w, h);
+
+    // draw door
+    switch(doorLoc){
+    case 0:
+      door.drawDoor(x+w/2-door.w/2, y+h-door.h);
+      break;
+    case 1:
+      door.drawDoor(x+w/8, y+h-door.h);
+      break;
+    case 2:
+      door.drawDoor(x+w-w/8-door.w,  y+h-door.h);
+      break;
+    }
+
+    // draw windows
+    int windowMargin = (w-window.w*2)/3;
+    window.drawWindow(x+windowMargin, y+h/6);
+    window.drawWindow(x+windowMargin*2+window.w, y+h/6);
+
+    // draw roof
+    roof.drawRoof(x, y, w, h);
+  }
+
+  // catch drawHouse method without boolean argument
+  void drawHouse(int x, int y){
+    // recall with required 3rd argument
+    drawHouse(x, y, false);
+  }
+}
+</textarea>
+<textarea id="embedded_links">
+// All Examples Written by Casey Reas and Ben Fry
+// unless otherwise stated.
+boolean overLeftButton = false;
+boolean overRightButton = false;
+
+void setup()
+{
+  size(200, 200);
+}
+
+void draw()
+{
+  background(204);
+
+  // Left buttom
+  if(overLeftButton == true) {
+    fill(255);
+  } else {
+    noFill();
+  }
+  rect(20, 60, 75, 75);
+  rect(50, 90, 15, 15);
+
+  // Right button
+  if(overRightButton == true) {
+    fill(255);
+  } else {
+    noFill();
+  }
+  rect(105, 60, 75, 75);
+  line(135, 105, 155, 85);
+  line(140, 85, 155, 85);
+  line(155, 85, 155, 100);
+}
+
+void mousePressed() 
+{
+  if(overLeftButton) { 
+    link("http://www.processing.org");
+  } else if (overRightButton) {
+    link("http://www.processing.org", "_new");
+  }
+}
+
+void mouseMoved() { 
+  checkButtons(); 
+}
+
+void mouseDragged() {
+  checkButtons(); 
+}
+
+void checkButtons() {
+  if(mouseX > 20 && mouseX < 95 &&
+     mouseY > 60 && mouseY <135) {
+    overLeftButton = true;   
+  }  else if (mouseX > 105 && mouseX < 180 &&
+     mouseY > 60 && mouseY <135) {
+    overRightButton = true; 
+  } else {
+    overLeftButton = overRightButton = false;
+  }
+
+}
+</textarea>
+		</div>

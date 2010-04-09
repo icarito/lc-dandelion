@@ -123,7 +123,7 @@ Scratch.prototype.initialize = function(){
     this.blocks_column();
     this.scripts_column();
     this.stage_column();
-}
+};
 
 Scratch.prototype.blocks_column = function(){
     var box = {x: PAD, y: TOP_BUTTON_BAR_HEIGHT + PAD,
@@ -134,7 +134,7 @@ Scratch.prototype.blocks_column = function(){
     $('body').place(box).round(5,5,15,15, md_grey);
     this.blocks_palettes();
     this.blocks_buttons();
-}
+};
 
 Scratch.prototype.blocks_buttons = function(){
     $('#blocks_menu').block_menu_buttons([
@@ -147,7 +147,7 @@ Scratch.prototype.blocks_buttons = function(){
         {color: 'turquoise', name: 'pen'},
         {color: 'red', name: 'variables'}
     ]);
-}
+};
 
 Scratch.prototype.blocks_palettes = function(){
     this.load_images();
@@ -159,7 +159,7 @@ Scratch.prototype.blocks_palettes = function(){
     this.numbers_palette();
     this.pen_palette();
     this.variables_palette();
-}
+};
 
 Scratch.prototype.load_images = function(){
     this.images = {
@@ -168,7 +168,7 @@ Scratch.prototype.load_images = function(){
         clockwise: $('<img class="block_icon" width="18" height="18" src="images/clockwise.png" />'),
         counterclockwise: $('<img class="block_icon" width="18" height="18" src="images/counterclockwise.png" />')
     };
-}
+};
 
 
 Scratch.prototype.show_block_palette = function(palette_name){
@@ -177,7 +177,7 @@ Scratch.prototype.show_block_palette = function(palette_name){
     }
     this._current_palette = this['_' + palette_name + '_palette'];
     this._current_palette.show();
-}
+};
 
 Scratch.prototype.control_palette = function(){
     return $('#blocks_palette').add_palette('control', 'gold', [
@@ -196,9 +196,9 @@ Scratch.prototype.control_palette = function(){
         {type: Step, label: 'wait until [bool]',x: 2, y: 855},
         {type: Loop, label: 'repeat until [bool]', y: 895},
         {type: Step, label: 'stop script', y: 1005},
-        {type: Step, label: 'stop all [{stopsign}]', y: 1045},
+        {type: Step, label: 'stop all [{stopsign}]', y: 1045}
     ]);
-}
+};
 
 Scratch.prototype.motion_palette = function(){
     return $('#blocks_palette').add_palette('motion', 'blue', [
@@ -219,7 +219,7 @@ Scratch.prototype.motion_palette = function(){
         {type: Step, label: '[check] y position', y: 590},
         {type: Step, label: '[check] direction', y: 630}
     ]);
-}
+};
 
 Scratch.prototype.looks_palette = function(){
     return $('#blocks_palette').add_palette('looks', 'blueviolet', [
@@ -240,7 +240,7 @@ Scratch.prototype.looks_palette = function(){
         {type: Step, label: 'go to front', y: 590},
         {type: Step, label: 'go back [1] layers', y: 630}
     ]);
-}
+};
 
 Scratch.prototype.sensing_palette = function(){
     return $('#blocks_palette').add_palette('sensing', 'cyan', [
@@ -258,7 +258,7 @@ Scratch.prototype.sensing_palette = function(){
         {type: BoolValue, label: 'loud?', y: 470}
         // Not implemented: sensor values
     ]);
-}
+};
 
 Scratch.prototype.sound_palette = function(){
     return $('#blocks_palette').add_palette('sound', 'magenta', [
@@ -267,7 +267,7 @@ Scratch.prototype.sound_palette = function(){
         {type: Step, label: 'stop all sounds', y: 85}
         // Not implemented: midi notes and instruments
     ]);
-}
+};
 
 Scratch.prototype.numbers_palette = function(){
     return $('#blocks_palette').add_palette('numbers', 'seagreen', [
@@ -286,7 +286,7 @@ Scratch.prototype.numbers_palette = function(){
         {type: IntExpr, label: 'abs [int]', y: 505},
         {type: IntExpr, label: 'round [int]', y: 545}
     ]);
-}
+};
 
 Scratch.prototype.pen_palette = function(){
     return $('#blocks_palette').add_palette('pen', 'green', [
@@ -302,7 +302,7 @@ Scratch.prototype.pen_palette = function(){
         {type: Step, label: 'set pen size to [1]', y: 380},
         {type: Step, label: 'stamp', y: 425}
     ]);
-}
+};
 
 Scratch.prototype.variables_palette = function(){
     return $('#blocks_palette').add_palette('variables', 'orangered', [
@@ -315,7 +315,7 @@ Scratch.prototype.variables_palette = function(){
         {type: Step, label: 'set y to [0]', y: 255},
         {type: IntValue, label: 'y', y: 295}
     ]);
-}
+};
 
 
 Scratch.prototype.scripts_column = function(){
@@ -327,7 +327,7 @@ Scratch.prototype.scripts_column = function(){
     top = top + height + PAD;
     height = COLUMN_HEIGHT - top - PAD;
     $('body').place({name: 'scripts_container', x: left, y: top, w: width, h: height, c: dk_grey}).round(5,5,15,15, md_grey);
-}
+};
 
 Scratch.prototype.stage_column = function(){
     var left = MAX_WIDTH - (STAGE_COLUMN_WIDTH + PAD);
@@ -344,7 +344,7 @@ Scratch.prototype.stage_column = function(){
     top = top + height + PAD;
     height = COLUMN_HEIGHT - top - PAD;
     $('body').place({name: 'stage_sprites', x: left, y: top, w: width, h: height, c: lt_grey}).round(15,15,15,15,md_grey);
-}
+};
 
 
 $(function(){
