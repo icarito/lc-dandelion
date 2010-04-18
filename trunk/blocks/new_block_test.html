@@ -60,6 +60,7 @@
         .contained{
             background-color: white;
             position: relative;
+            padding-top: 1px;
             margin-left: 10px;
             margin-bottom: 10px;
             padding-bottom: 10px;
@@ -77,11 +78,12 @@
         }
         .next{
             position: relative;
-            padding-top: 8px;
+            padding-bottom: 8px;
+            padding-top: 1px;
             background-color: transparent;
             width: 100%;
             overflow: visible;
-            border: 1px dashed green;
+/*            border: 1px dashed green;*/
         }
         .number{
             border-radius: 20px;
@@ -192,7 +194,8 @@
         </section>
     </div><!-- .block_canvas -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>    
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>    
+    <script src="javascripts/jquery.event.drag-1.5.min.js"></script>    
+    <script src="javascripts/jquery.event.drop-1.2.min.js"></script>    
     <script>
     // Extend the jQuery result object
     $.fn.extend({
@@ -206,46 +209,68 @@
                 parts.push('.' + e.className.split(/\s/).join('.'));
             }
             return parts.join('');
+        },
+        isSameNode: function(jqOrNode){
+            var self = this.get(0);
+            var other = jqOrNode.TEXT_NODE ? jqOrNode: jqOrNode.get(0);
+            return self.isSameNode(other);
         }
     });
-    $(function(){
-        $('.wrapper').draggable({
-            cancel: 'input, .slot, .contained, .next, .socket',
-            handle: '.block',
-            revert: 'invalid',
-            containment: '.block_canvas',
-            scroll: true,
-            zIndex: 10
+    $('.block').bind('dragstart', function(event){
+        var drag = $(this);
+        var canvas = drag.closest('.block_canvas');
+        var proxy = drag.closest('.wrapper');
+        $.dropManage(); // reset positions?
+        console.log('offsetX: %s, cursorOffsetX: %s, pageX: %s, offsetX: %s, positionX: %s, scrollLeft: %s', event.offsetX, event.cursorOffsetX, event.pageX, proxy.offset().left, proxy.position().left, proxy.scrollLeft());
+        canvas.append(proxy);
+        console.log('offsetX: %s, cursorOffsetX: %s, pageX: %s, offsetX: %s, positionX: %s, scrollLeft: %s', event.offsetX, event.cursorOffsetX, event.pageX, proxy.offset().left, proxy.position().left, proxy.scrollLeft());
+        proxy.css({
+            position: 'absolute',
+            left: event.offsetX,
+            top: event.offsetY
         });
-        $('.block_canvas').droppable({
+        
+        proxy.css('z-index', 100);
+        return proxy;
+    });
+    
+    $('.block').bind('drag', function(event){
+        $(event.dragProxy).css({
+            position: 'absolute',
+            left: event.offsetX, 
+            top: event.offsetY
         });
-        $('.contained, .next').droppable({
-            greedy: true,
-            accept: '.wrapper',
-            hoverClass: 'acceptable',
-            tolerance: 'touch',
-            drop: function(event, ui){
-                console.log('dropped %s on %s', ui.draggable.long_name(), $(this).long_name());
-                $(this).append(ui.draggable);
-                $(this).droppable('option', 'disabled', true);
-                if ($(this).hasClass('contained')){
-                    ui.draggable.css({position: 'relative', top: 0, left: 0});
-                }else{
-                    ui.draggable.css({position: 'relative', top: -8, left: 0});
-                }
-            },
-            over: function(event, ui){
-                console.log('%s is over %s', ui.draggable.long_name(), $(this).long_name());
-            }            
-        });
-        $('.socket.number').droppable({
-            greedy: true,
-            accept: '.block.number'
-        });
-        $('.socket.boolean').droppable({
-            greedy: true,
-            accept: '.block.boolean'
-        });
+    });
+    
+    $('.block').bind('dragend', function(event){
+        if (event.dropTarget){
+            $(event.dragProxy).css({
+                position: 'relative',
+                left: 0, 
+                top: 0,
+                'z-index': 0
+            });
+        }
+    });
+    
+    $('.tab').bind('dropstart', function(event){
+        // don't drop if already inside
+        if ($(this).parent().find('.wrapper').length) return false;
+        if ($.contains(this.parentNode, event.dragTarget)) return false;
+        // don't drop if this is the same block
+        if ($(this).closest('.wrapper').isSameNode($(event.dragTarget).closest('.wrapper'))) return false;
+        // activate the drop target element
+        $(this).css('border', '1px dashed red');
+        $(event.dragTarget).find('.slot').css('background-color', 'green');
+    });
+    
+    $('.tab').bind('drop', function(event){
+        $(this).parent().append($(event.dragTarget).closest('.wrapper'));
+    });
+    
+    $('.tab').bind('dropend', function(event){
+        $(this).css('border', 0);
+        $(event.dragTarget).find('.slot').css('background-color', '#FFF');
     });
     </script>
 </body>
