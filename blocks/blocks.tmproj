@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>stylesheets/block_backgrounds.css</string>
+	<string>new_block_test.html</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -21,6 +21,20 @@
 	<integer>200</integer>
 	<key>metaData</key>
 	<dict>
+		<key>TODO.txt</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>28</integer>
+				<key>line</key>
+				<integer>12</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
 		<key>bin/regex.c</key>
 		<dict>
 			<key>caret</key>
@@ -35,33 +49,19 @@
 			<key>firstVisibleLine</key>
 			<integer>13</integer>
 		</dict>
-		<key>javascripts/blocks.js</key>
+		<key>blocks_in_scratch.txt</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>19</integer>
 				<key>line</key>
-				<integer>681</integer>
+				<integer>44</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>637</integer>
-		</dict>
-		<key>javascripts/documentation first try.txt</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>138</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>94</integer>
+			<integer>23</integer>
 		</dict>
 		<key>javascripts/layout.js</key>
 		<dict>
@@ -77,43 +77,41 @@
 			<key>firstVisibleLine</key>
 			<integer>80</integer>
 		</dict>
-		<key>javascripts/utility.js</key>
+		<key>new_block_test.html</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>6</integer>
+				<integer>38</integer>
 				<key>line</key>
-				<integer>32</integer>
+				<integer>221</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>8</integer>
+			<integer>212</integer>
 		</dict>
-		<key>stylesheets/block_backgrounds.css</key>
+		<key>reboot.txt</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>24</integer>
+				<integer>227</integer>
 				<key>line</key>
-				<integer>96</integer>
+				<integer>42</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>226</integer>
+			<integer>0</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>javascripts/blocks.js</string>
-		<string>bin/regex.c</string>
-		<string>stylesheets/block_backgrounds.css</string>
-		<string>javascripts/utility.js</string>
-		<string>javascripts/layout.js</string>
-		<string>javascripts/documentation first try.txt</string>
+		<string>blocks_in_scratch.txt</string>
+		<string>reboot.txt</string>
+		<string>new_block_test.html</string>
+		<string>TODO.txt</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<false/>
@@ -127,13 +125,6 @@
 			<true/>
 			<key>subItems</key>
 			<dict>
-				<key>bin</key>
-				<dict>
-					<key>isExpanded</key>
-					<true/>
-					<key>subItems</key>
-					<dict/>
-				</dict>
 				<key>javascripts</key>
 				<dict>
 					<key>isExpanded</key>
@@ -152,6 +143,6 @@
 		</dict>
 	</dict>
 	<key>windowFrame</key>
-	<string>{{312, 21}, {970, 757}}</string>
+	<string>{{310, 21}, {970, 757}}</string>
 </dict>
 </plist>
