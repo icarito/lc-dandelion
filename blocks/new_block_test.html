@@ -4,14 +4,14 @@
     <title>New Block Test</title>
     <script src="javascripts/modernizr-1.1.min.js"></script>
     <style>
-        .wrapper{
+        .wrapper, .socket{
             display: inline-block;
             position: relative;
         }
         .socket{
             position: relative;
-            background-color: #FFF;
-            height: 20px;
+/*            background-color: #FFF;*/
+/*            height: 20px;*/
         }
         .block{
             position: relative;
@@ -20,13 +20,14 @@
             border-radius: 10px;
             padding-bottom: 1px;
             background-color: #FC6;
+            white-space: nowrap;
         }
-        p{
+        p, socket{
             padding: 7px 20px;
             padding-bottom: 3px;
             margin: 0px;
         }
-        label{
+        label, p{
             font-family: Georgia;
             font-size: 12px;
         }
@@ -54,9 +55,6 @@
             background-color: #FC6;
             z-index: 10;
         }
-        .acceptable tab{
-            outline: 2px solid #FFF;
-        }
         .contained{
             background-color: white;
             position: relative;
@@ -73,9 +71,6 @@
             border-bottom-left-radius: 10px;
             
         }
-        .contained.acceptable{
-            border: 1px solid red;
-        }
         .next{
             position: relative;
             padding-bottom: 8px;
@@ -85,20 +80,13 @@
             overflow: visible;
 /*            border: 1px dashed green;*/
         }
-        .number{
-            border-radius: 20px;
-        }
-        .boolean{
-            width: 50px;
-            height: 20px;
-        }
         input{
-            margin-left: 20px;
+            margin-left: 5px;
             width: 3em;
-            margin-right: 20px;
+            margin-right: 5px;
             border: 0px;
             padding: 0px;
-            height: 20px;
+            height: 16px;
         }
         .chunk{
             width: 200px;
@@ -171,21 +159,47 @@
             </div>
         </section>
         <section>
-            <h1>Numeric Value</h1>
-            <div class="wrapper">
+            <h1>Value</h1>
+            <div class="wrapper">            
                 <div class="block value number">
-                    <p>
-                        <label>Number:</label>&nbsp;<span class="number socket"><input type="number" value="0"/>
-                        </span>
-                    </p>
+                    <div class="number socket">
+                        <input type="number" value="0"/>
+                    </div>
+                </div>
+            </div>
+            <div class="wrapper">            
+                <div class="block value number">
+                    <div class="number socket">
+                        <input type="number" value="0"/>
+                    </div>
+                </div>
+            </div>
+            <div class="wrapper">    
+                <div class="block value number">
+                    <div class="number socket">
+                        <input type="number" value="0"/>
+                    </div>
+                </div>
+            </div>
+            <div class="wrapper">            
+                <div class="block value number">
+                    <div class="number socket">
+                        <input type="number" value="0"/>
+                    </div>
                 </div>
             </div>
         </section>
         <section>
-            <h1>Boolean Combiner</h1>
+            <h1>Value Combiner</h1>
             <div class="wrapper">
                 <div class="block value boolean">
-                    <p><span class="boolean socket">&nbsp;</span>&nbsp;<label>or</label>&nbsp;<span class="boolean socket">&nbsp;</span></p>
+                    <div class="boolean socket">
+                        <input />
+                    </div>
+                    <label>or</label>
+                    <div class="boolean socket">
+                        <input />
+                    </div>
                 </div>
             </div>
         </section>
@@ -221,9 +235,7 @@
         var canvas = drag.closest('.block_canvas');
         var proxy = drag.closest('.wrapper');
         $.dropManage(); // reset positions?
-        console.log('offsetX: %s, cursorOffsetX: %s, pageX: %s, offsetX: %s, positionX: %s, scrollLeft: %s', event.offsetX, event.cursorOffsetX, event.pageX, proxy.offset().left, proxy.position().left, proxy.scrollLeft());
         canvas.append(proxy);
-        console.log('offsetX: %s, cursorOffsetX: %s, pageX: %s, offsetX: %s, positionX: %s, scrollLeft: %s', event.offsetX, event.cursorOffsetX, event.pageX, proxy.offset().left, proxy.position().left, proxy.scrollLeft());
         proxy.css({
             position: 'absolute',
             left: event.offsetX,
@@ -254,14 +266,18 @@
     });
     
     $('.tab').bind('dropstart', function(event){
-        // don't drop if already inside
+        // Don't drop if this tab is already filled
         if ($(this).parent().find('.wrapper').length) return false;
+        // This should prevent dropping on a block we're already part of, but I don't think that is possible anymore
         if ($.contains(this.parentNode, event.dragTarget)) return false;
-        // don't drop if this is the same block
+        // don't drop if this is the same block, shouldn't be possible
         if ($(this).closest('.wrapper').isSameNode($(event.dragTarget).closest('.wrapper'))) return false;
+        // don't drop a value on a tab
+        if ($(event.dragTarget).is('.value')) return false;
         // activate the drop target element
         $(this).css('border', '1px dashed red');
         $(event.dragTarget).find('.slot').css('background-color', 'green');
+        return true;
     });
     
     $('.tab').bind('drop', function(event){
@@ -270,7 +286,30 @@
     
     $('.tab').bind('dropend', function(event){
         $(this).css('border', 0);
-        $(event.dragTarget).find('.slot').css('background-color', '#FFF');
+        $(event.dragTarget).find('.slot').css('background-color', '');
+    });
+    
+    $('.socket').bind('dropstart', function(event){
+        // if this socket is filled, return false
+        if ($(this).find('.value').length) return false;
+        // don't acccept non-value blocks
+        if (!$(event.dragTarget).is('.value')) return false;
+        // don't drop if this is the same block, shouldn't be possible
+        if ($(this).closest('.wrapper').isSameNode($(event.dragTarget).closest('.wrapper'))) return false;
+        // activate the drop target
+        $(this).find('input').css('border', '1px dashed red');
+        $(eventTarget).css('border', '1px dashed green');
+        return true;
+    });
+    
+    $('.socket').bind('drop', function(event){
+        var socket = $(this);
+        socket.find('input').hide();
+        socket.append($(event.dragTarget).closest('.wrapper'));
+    });
+    
+    $('.socket').bind('dropend', function(event){
+        $(event.dragTarget).css('border', '1px solid white');
     });
     </script>
 </body>
