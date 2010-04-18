@@ -22,9 +22,13 @@
             background-color: #FC6;
             white-space: nowrap;
         }
-        p, socket{
+        p{
             padding: 7px 20px;
             padding-bottom: 3px;
+            margin: 0px;
+        }
+        .socket{
+            padding: 4px;
             margin: 0px;
         }
         label, p{
@@ -234,6 +238,9 @@
         var drag = $(this);
         var canvas = drag.closest('.block_canvas');
         var proxy = drag.closest('.wrapper');
+        if (proxy.parent().is('.socket')){
+            proxy.siblings('input').show();
+        }
         $.dropManage(); // reset positions?
         canvas.append(proxy);
         proxy.css({
@@ -304,7 +311,7 @@
     
     $('.socket').bind('drop', function(event){
         var socket = $(this);
-        socket.find('input').hide();
+        socket.find('input').css('border', '').hide();
         socket.append($(event.dragTarget).closest('.wrapper'));
     });
     
