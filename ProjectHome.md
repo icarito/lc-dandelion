@@ -1,0 +1,3 @@
+Inspired by Scratch (http://scratch.mit.edu/) and implemented using Python (http://python.org) and PyGame (http://pygame.org), this project aspires to be a way to make Python approachable for children of all ages, but specifically targeting 6-12 year olds.
+
+The goal is to make it easy for them to get started with a graphical environment and get things moving and reacting in that environment, and to make it easy to share their projects with others. A parallel goal is to allow them to use the full repertoire of Python, without dumbing it down.
